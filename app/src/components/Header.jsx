@@ -24,10 +24,12 @@ const StyledNavLink = styled(Nav.Link)`
     }
 
     @media (max-width: 767px) {
+        border: 0;
         // Bootstrap 的中型螢幕斷點以下
         color: black !important; // 在 Offcanvas 中將鏈接顏色改為黑色
         &:hover, &:focus {
             color: black;
+            background-color: lightgray;
         }
 
         &.active {
