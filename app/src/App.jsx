@@ -25,6 +25,20 @@ class App extends Component {
         this.setState({ isCollapsed: !this.state.isCollapsed });
     };
 
+    handleResize = () => {
+        if (window.innerWidth >= 768) {
+            this.setState({ isCollapsed: false });
+        }
+    };
+
+    componentDidMount() {
+        window.addEventListener('resize', this.handleResize);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+    }
+
     render() {
         const { isCollapsed } = this.state;
         const slideStyle = {
