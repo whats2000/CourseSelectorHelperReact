@@ -17,9 +17,9 @@ class SelectorSetting extends Component {
 
     render() {
         return (
-            <Container>
+            <>
                 {this.mapTabToComponent[this.props.currentTab]??<h1>我很確 Tab 傳遞某處出錯，請回報</h1>}
-            </Container>
+            </>
         )
     }
 }

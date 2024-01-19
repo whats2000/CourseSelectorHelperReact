@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import {Component} from "react";
 import Header from "./components/Header";
 import ScheduleTable from "./components/ScheduleTable";
 import SelectorSetting from "./components/SelectorSetting";
@@ -94,7 +94,7 @@ class App extends Component {
                             {isCollapsed ? '>' : '<'}
                         </ToggleButton>
 
-                        <div className="col-md-6 h-100">
+                        <div className="col-md h-100">
                             <SelectorSetting currentTab={this.state.currentTab}/>
                         </div>
                     </div>
