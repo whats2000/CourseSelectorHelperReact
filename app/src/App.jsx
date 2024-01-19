@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import ScheduleTable from "./components/ScheduleTable";
 import SelectorSetting from "./components/SelectorSetting";
 import styled from 'styled-components';
@@ -22,12 +22,12 @@ class App extends Component {
     };
 
     toggleSchedule = () => {
-        this.setState({ isCollapsed: !this.state.isCollapsed });
+        this.setState({isCollapsed: !this.state.isCollapsed});
     };
 
     handleResize = () => {
         if (window.innerWidth >= 768) {
-            this.setState({ isCollapsed: false });
+            this.setState({isCollapsed: false});
         }
     };
 
@@ -40,10 +40,10 @@ class App extends Component {
     }
 
     render() {
-        const { isCollapsed } = this.state;
+        const {isCollapsed} = this.state;
         const slideStyle = {
             marginLeft: isCollapsed ? (window.innerWidth >= 768 ? '-50%' : '0') : '0',
-            marginTop: isCollapsed ? (window.innerWidth < 768 ? '-200%' : '0') : '0'
+            marginTop: isCollapsed ? (window.innerWidth < 768 ? '-600%' : '0') : '0'
         };
 
         return (

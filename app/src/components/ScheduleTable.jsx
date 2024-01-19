@@ -43,7 +43,7 @@ class ScheduleTable extends React.Component {
 
     render() {
         return (
-            <div className="table-responsive"> {/* Bootstrap 的響應式表格容器 */}
+            <div className="table-responsive">
                 <StyledTable
                     className="table table-bordered border-white border-5 rounded-5 table-secondary text-center">
                     <thead>
