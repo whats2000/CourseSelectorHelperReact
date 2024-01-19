@@ -26,7 +26,7 @@ const ToggleButton = styled.button`
 class App extends Component {
     state = {
         isCollapsed: false,
-        currentTab: '#公告'
+        currentTab: '公告'
     };
 
     /**
@@ -91,7 +91,7 @@ class App extends Component {
                         </ToggleButton>
 
                         <div className="col-md-6 h-100">
-                            <SelectorSetting/>
+                            <SelectorSetting currentTab={this.state.currentTab}/>
                         </div>
                     </div>
                 </div>

@@ -5,7 +5,7 @@ class SelectorSetting extends Component {
     render() {
         return (
             <Container>
-                <h1>Selector Setting</h1>
+                <h1>{this.props.currentTab}</h1>
             </Container>
         )
     }
