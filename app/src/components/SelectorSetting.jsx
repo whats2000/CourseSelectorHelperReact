@@ -1,9 +1,12 @@
 import {Component} from "react";
+import {Container} from "react-bootstrap";
 
 class SelectorSetting extends Component {
     render() {
         return (
-            <h1>Selector Setting</h1>
+            <Container>
+                <h1>Selector Setting</h1>
+            </Container>
         )
     }
 }
