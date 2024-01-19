@@ -4,6 +4,10 @@ import ScheduleTable from "./components/ScheduleTable";
 import SelectorSetting from "./components/SelectorSetting";
 import styled from 'styled-components';
 
+const MainContent = styled.main`
+    margin-top: 68px;
+`;
+
 const SlideContainer = styled.div`
     transition: margin 0.5s;
     height: 100%;
@@ -80,7 +84,7 @@ class App extends Component {
         return (
             <>
                 <Header currentTab={this.state.currentTab} onTabChange={this.handleTabChange}/>
-                <div id="app" className="container-fluid h-100">
+                <MainContent id="app" className="container-fluid h-100">
                     <div className="row h-100">
                         <SlideContainer style={slideStyle} className="col-md-6 h-100">
                             <ScheduleTable/>
@@ -94,7 +98,7 @@ class App extends Component {
                             <SelectorSetting currentTab={this.state.currentTab}/>
                         </div>
                     </div>
-                </div>
+                </MainContent>
             </>
         );
     }

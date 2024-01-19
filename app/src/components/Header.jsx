@@ -8,6 +8,7 @@ import logo from '../image/logo.png';
 // 自定義 Navbar 樣式
 const StyledNavbar = styled(Navbar)`
     background-color: #009e96; // 設置背景顏色
+    transition: top 0.3s; // 添加過渡效果
 `;
 
 const StyledNavLink = styled(Nav.Link)`
@@ -30,37 +31,21 @@ const StyledNavLink = styled(Nav.Link)`
         }
 
         &.active {
-            border-bottom: 2px solid black; // 在 Offcanvas 中選中時底部顯示黑色邊框
+            background-color: lightgray;
         }
     }
 
     display: flex;
     align-items: center; // 確保內容垂直居中
-
-    .nav-icon {
-        margin-right: 0.5rem; // 圖標與文字之間的間距
-    }
 `;
 
 class Header extends Component {
     state = {
-        showOffcanvas: false
+        showOffcanvas: false,
+        lastScrollY: 0,
+        showNavbar: true,
     };
 
-    /**
-     * 切換 Offcanvas 顯示狀態
-     */
-    handleToggleOffcanvas = () => {
-        this.setState({showOffcanvas: !this.state.showOffcanvas});
-    };
-
-    /**
-     * 點擊 Offcanvas 中的鏈接時，關閉 Offcanvas
-     * @param tab 鏈接標題
-     */
-    handleNavClick = (tab) => {
-        this.props.onTabChange(tab);
-    };
     navTabs = [
         {
             title: '所有課程',
@@ -84,11 +69,58 @@ class Header extends Component {
         },
     ];
 
+    /**
+     * 切換 Offcanvas 顯示狀態
+     */
+    handleToggleOffcanvas = () => {
+        this.setState({showOffcanvas: !this.state.showOffcanvas});
+    };
+
+    /**
+     * 點擊 Offcanvas 中的鏈接時，關閉 Offcanvas
+     * @param tab 鏈接標題
+     */
+    handleNavClick = (tab) => {
+        this.props.onTabChange(tab);
+    };
+
+    /**
+     * 註冊 scroll 事件
+     */
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+    }
+
+    /**
+     * 移除 scroll 事件
+     */
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    /**
+     * 註冊 scroll 事件
+     */
+    handleScroll = () => {
+        const { lastScrollY } = this.state;
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > lastScrollY) {
+            // 向下滾動
+            this.setState({ showNavbar: false });
+        } else {
+            // 向上滾動
+            this.setState({ showNavbar: true });
+        }
+
+        this.setState({ lastScrollY: currentScrollY });
+    };
+
     render() {
         const {currentTab} = this.props;
 
         return (
-            <StyledNavbar expand="md">
+            <StyledNavbar expand="md" style={{ top: this.state.showNavbar ? '0' : '-100%' }} fixed="top">
                 <Container fluid>
                     <Navbar.Brand href="#">
                         <img src={logo} height="30" className="d-inline-block align-top" alt="React Bootstrap logo"/>
@@ -106,14 +138,14 @@ class Header extends Component {
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title id="offcanvasNavbarLabel">切換設定區</Offcanvas.Title>
                         </Offcanvas.Header>
-                        <Offcanvas.Body>
-                            <Nav className="justify-content-end flex-grow-1 pe-3" activeKey={currentTab}>
-                                {this.navTabs.map((tab) => (
+                        <Offcanvas.Body className="p-0">
+                            <Nav className="justify-content-end flex-grow-1" activeKey={currentTab}>
+                                {this.navTabs.map((tab, index) => (
                                     <Nav.Item key={tab.title}>
                                         <StyledNavLink
                                             href={`#${tab.title.toLowerCase().replace(/\s+/g, '-')}`}
                                             onClick={() => this.handleNavClick(tab.title)}
-                                            className={tab.title === currentTab ? 'active' : ''}
+                                            className={tab.title === currentTab ? 'px-3 active' : 'px-3'}
                                         >
                                             {tab.icon}
                                             <span className="ms-2">{tab.title}</span>
