@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import Papa from 'papaparse';
 import {List, AutoSizer} from 'react-virtualized';
 import styled from 'styled-components';
@@ -7,8 +7,8 @@ const csvUrl = 'https://raw.githubusercontent.com/CelleryLin/selector_helper/mas
 
 // 添加基本樣式
 const CourseRow = styled.div`
+    font-size: 12px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #eee;
@@ -20,11 +20,26 @@ const CourseRow = styled.div`
 `;
 
 const CourseInfo = styled.div`
+    flex: 1;
+    text-align: left;
     margin-right: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: fade;
 
     &:last-child {
         margin-right: 0;
     }
+`;
+
+const Tag = styled.span`
+    background-color: #eef;
+    border: 1px solid #ddf;
+    border-radius: 4px;
+    padding: 2px 5px;
+    margin: 2px;
+    font-size: 10px;
+    white-space: nowrap;
 `;
 
 class CoursesList extends Component {
@@ -46,11 +61,42 @@ class CoursesList extends Component {
         const {courses} = this.state;
         const course = courses[index];
 
+        // 處理時間欄位，改成繁體中文
+        const days = {
+            'Monday': '一',
+            'Tuesday': '二',
+            'Wednesday': '三',
+            'Thursday': '四',
+            'Friday': '五',
+            'Saturday': '六',
+            'Sunday': '日'
+        };
+        const time = Object.keys(days)
+            .map(day => course[day] ? <Tag key={day}>{days[day]} {course[day]}</Tag> : null)
+            .filter(tag => tag !== null);
+
+        // 轉換必修選修欄位
+        const compulsoryElective = course['CompulsoryElective'] === 'C' ? '必修' : '選修';
+
+        // 處理可能有多個教授的情況
+        const teachers = course['Teacher'].split(',')
+            .map((teacher, index) => <Tag key={index}>{teacher.trim().replace('\'', '')}</Tag>);
+
+        // 處理可能有多個學程的情況
+        const programs = course['Programs'] ? course['Programs'].split(',')
+            .map(program => <Tag key={program}>{program.trim().replaceAll('\'', '')}</Tag>) : (<>無</>);
+
         return (
             <CourseRow key={key} style={style}>
-                <CourseInfo>{course['Name']}</CourseInfo>
-                <CourseInfo>{course['Teacher']}</CourseInfo>
-                {/* ... 其他課程信息 */}
+                <CourseInfo className="text-nowrap">{course['Name']}</CourseInfo>
+                <CourseInfo>{time}</CourseInfo>
+                <CourseInfo>{course['Class']}</CourseInfo>
+                <CourseInfo className="text-nowrap">{course['Department']}</CourseInfo>
+                <CourseInfo>{compulsoryElective}</CourseInfo>
+                <CourseInfo>{course['Credit']}</CourseInfo>
+                <CourseInfo>{teachers}</CourseInfo>
+                <CourseInfo>{programs}</CourseInfo>
+                <CourseInfo>{course['EMI'] === 1 ? '是' : '否'}</CourseInfo>
             </CourseRow>
         );
     };
@@ -59,7 +105,6 @@ class CoursesList extends Component {
         const {courses} = this.state;
 
         return (
-            // AutoSizer 會自動調整子組件的大小，RWD 的關鍵 (花我超久調整)
             <AutoSizer>
                 {({width, height}) => (
                     <List

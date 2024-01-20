@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import AllCourseList from "./AllCourse/AllCourseList";
 import {Card} from "react-bootstrap";
-import {announcementData} from "../../config";
 
 class AllCourse extends Component {
     render() {
