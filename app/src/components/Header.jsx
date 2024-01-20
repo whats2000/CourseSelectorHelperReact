@@ -3,7 +3,7 @@ import {Container, Nav, Navbar, Offcanvas} from "react-bootstrap";
 import {BookFill, Check2Square, JournalCheck, List, Megaphone, Search} from "react-bootstrap-icons";
 import styled from 'styled-components';
 
-import logo from '../image/logo.png';
+import logo from './logo.png';
 
 // 自定義 Navbar 樣式
 const StyledNavbar = styled(Navbar)`

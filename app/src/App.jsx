@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import ScheduleTable from "./components/ScheduleTable";
 import SelectorSetting from "./components/SelectorSetting";
 import styled from 'styled-components';
+import EntryNotification from "./components/EntryNotification";
 
 const MainContent = styled.main`
     margin-top: 68px;
@@ -82,6 +83,7 @@ class App extends Component {
         return (
             <>
                 <Header currentTab={this.state.currentTab} onTabChange={this.handleTabChange}/>
+                <EntryNotification/>
                 <MainContent id="app" className="container-fluid h-100">
                     <div className="row h-100">
                         <SlideContainer style={slideStyle} className="col-md-6 h-100">

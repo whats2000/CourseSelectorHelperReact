@@ -41,3 +41,10 @@ export const announcementData = {
         "Copyright © 2023 Cellery Lin and whats2000. All rights reserved."
     ],
 };
+
+export const entryNotificationConfig = {
+    version: announcementData.version,
+    description: "中山選課小助手迎來第三學期囉~ 感謝您使用這個系統，也獲得不錯的流量。您寶貴的意見我們都有收到，並會改善更新，感謝各位支持與回饋了！",
+    updates: announcementData.updates,
+    feedbackFormUrl: announcementData.feedbackFormUrl,
+};
