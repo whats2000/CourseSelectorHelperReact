@@ -1,11 +1,21 @@
-import {Component} from "react";
+import React, {Component} from "react";
+import AllCourseList from "./AllCourse/AllCourseList";
+import {Card} from "react-bootstrap";
+import {announcementData} from "../../config";
 
 class AllCourse extends Component {
     render() {
         return (
-            <>
-                <h1>所有課程</h1>
-            </>
+            <Card className="h-100 mb-3">
+                <Card.Header className="text-center">
+                    <Card.Title className="fw-bolder mb-0 p-2">
+                        所有課程
+                    </Card.Title>
+                </Card.Header>
+                <Card.Body className="h-100 min-vh-100">
+                    <AllCourseList/>
+                </Card.Body>
+            </Card>
         );
     }
 }

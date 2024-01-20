@@ -9,11 +9,6 @@ import {
 import styled from 'styled-components';
 import {announcementData} from "../../config";
 
-const StyledCard = styled(Card)`
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-`;
-
 const TextWithIcon = styled(Card.Text)`
     display: flex;
     align-items: center;
@@ -31,7 +26,7 @@ class Announcement extends Component {
 
     render() {
         return (
-            <StyledCard>
+            <Card className="h-100 mb-3">
                 <Card.Header className="text-center">
                     <Card.Title className="fw-bolder mb-0 p-2">
                         🙈這裡是中山大學選課小助手 {announcementData.version}
@@ -90,7 +85,7 @@ class Announcement extends Component {
                         })}
                     </Card.Text>
                 </Card.Footer>
-            </StyledCard>
+            </Card>
         );
     }
 }

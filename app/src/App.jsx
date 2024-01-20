@@ -11,7 +11,6 @@ const MainContent = styled.main`
 
 const SlideContainer = styled.div`
     transition: margin 0.5s;
-    height: 100%;
 `;
 
 const ToggleButton = styled.button`
@@ -84,17 +83,18 @@ class App extends Component {
             <>
                 <Header currentTab={this.state.currentTab} onTabChange={this.handleTabChange}/>
                 <EntryNotification/>
-                <MainContent id="app" className="container-fluid h-100">
-                    <div className="row h-100">
-                        <SlideContainer style={slideStyle} className="col-md-6 h-100">
+
+                <ToggleButton className="btn btn-secondary w-auto" onClick={this.toggleSchedule}>
+                    {isCollapsed ? '>' : '<'}
+                </ToggleButton>
+
+                <MainContent id="app" className="container-fluid">
+                    <div className="row d-flex flex-wrap">
+                        <SlideContainer style={slideStyle} className="col-md-6 d-flex flex-column">
                             <ScheduleTable/>
                         </SlideContainer>
 
-                        <ToggleButton className="btn btn-secondary w-auto" onClick={this.toggleSchedule}>
-                            {isCollapsed ? '>' : '<'}
-                        </ToggleButton>
-
-                        <div className="col-md h-100">
+                        <div className="col-md d-flex flex-column">
                             <SelectorSetting currentTab={this.state.currentTab}/>
                         </div>
                     </div>
