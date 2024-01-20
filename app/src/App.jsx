@@ -21,7 +21,7 @@ const ToggleButton = styled.button`
     transform: translateY(-50%);
     opacity: 0.5;
     border-radius: 0 0.375rem 0.375rem 0;
-    
+
     &:hover {
         opacity: 1;
     }
@@ -41,12 +41,10 @@ class App extends Component {
     };
 
     /**
-     * 調整視窗大小時，若視窗寬度大於 768px 則自動展開課表
+     * 調整視窗大小時，則自動展開課表
      */
     handleResize = () => {
-        if (window.innerWidth >= 768) {
-            this.setState({isCollapsed: false});
-        }
+        this.setState({isCollapsed: false});
     };
 
     /**

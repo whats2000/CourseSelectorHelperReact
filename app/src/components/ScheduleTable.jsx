@@ -62,7 +62,8 @@ class ScheduleTable extends React.Component {
                                 <span>{timeSlot.value}</span>
                             </TimeSlotCell>
                             {Array.from({length: this.setting.columns - 1}, (_, n) => (
-                                <td key={n} id={`${timeSlot.key}${n}`} className="rounded"></td>
+                                <td key={n} id={`${timeSlot.key}${n}`} className="rounded">
+                                </td>
                             ))}
                         </tr>
                     ))}

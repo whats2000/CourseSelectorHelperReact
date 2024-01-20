@@ -1,5 +1,4 @@
 import {Component} from "react";
-import {Container} from "react-bootstrap";
 import AllCourse from "./SelectorSetting/AllCourse";
 import RequiredCourse from "./SelectorSetting/RequiredCourse";
 import CourseDetective from "./SelectorSetting/CourseDetective";
