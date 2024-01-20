@@ -75,8 +75,8 @@ class App extends Component {
     render() {
         const {isCollapsed} = this.state;
         const slideStyle = {
-            marginLeft: isCollapsed ? (window.innerWidth >= 768 ? '-50%' : '0') : '0',
-            marginTop: isCollapsed ? (window.innerWidth < 768 ? '-600%' : '0') : '0'
+            marginLeft: isCollapsed ? (window.innerWidth >= 992 ? '-50%' : '0') : '0',
+            marginTop: isCollapsed ? (window.innerWidth < 992 ? '-600%' : '0') : '0'
         };
 
         return (
@@ -90,11 +90,11 @@ class App extends Component {
 
                 <MainContent id="app" className="container-fluid">
                     <div className="row d-flex flex-wrap">
-                        <SlideContainer style={slideStyle} className="col-md-6 d-flex flex-column">
+                        <SlideContainer style={slideStyle} className="col-lg-6 d-flex flex-column">
                             <ScheduleTable/>
                         </SlideContainer>
 
-                        <div className="col-md d-flex flex-column">
+                        <div className="col-lg d-flex flex-column">
                             <SelectorSetting currentTab={this.state.currentTab}/>
                         </div>
                     </div>

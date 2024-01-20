@@ -11,7 +11,7 @@ class AllCourse extends Component {
                         所有課程
                     </Card.Title>
                 </Card.Header>
-                <Card.Body className="h-100 min-vh-100">
+                <Card.Body className="h-100 min-vh-100 p-0">
                     <AllCourseList/>
                 </Card.Body>
             </Card>
