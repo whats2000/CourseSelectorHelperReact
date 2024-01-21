@@ -49,7 +49,7 @@ const StyledLink = styled.a`
     }
 `;
 
-class AllCourseListItem extends Component {
+class Item extends Component {
     render() {
         const {course} = this.props;
 
@@ -157,4 +157,4 @@ class AllCourseListItem extends Component {
     }
 }
 
-export default AllCourseListItem;
+export default Item;

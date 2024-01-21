@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {Virtuoso} from 'react-virtuoso';
-import AllCourseListItem from "./AllCourseListItem";
+import Item from "./Item";
 
 class CoursesList extends Component {
     renderItem = (index) => {
         const {courses} = this.props;
-        return <AllCourseListItem course={courses[index]}/>;
+        return <Item course={courses[index]}/>;
     }
 
     render() {
