@@ -41,27 +41,6 @@ class App extends Component {
     };
 
     /**
-     * 調整視窗大小時，則自動展開課表
-     */
-    handleResize = () => {
-        this.setState({isCollapsed: false});
-    };
-
-    /**
-     * 註冊 resize 事件
-     */
-    componentDidMount() {
-        window.addEventListener('resize', this.handleResize);
-    }
-
-    /**
-     * 移除 resize 事件
-     */
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.handleResize);
-    }
-
-    /**
      * 切換設定頁面
      */
     handleTabChange = tab => {
