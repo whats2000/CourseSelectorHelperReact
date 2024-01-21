@@ -13,6 +13,11 @@ const HeaderRow = styled.div`
     border-bottom: 2px solid #ddd;
     background-color: #f5f5f5;
     font-weight: bold;
+    
+    // Margin Right 15px if it is not mobile device touch screen
+    @media (any-pointer: fine) {
+        margin-right: 15px;
+    }
 `;
 
 const CourseRow = styled.div`
