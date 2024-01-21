@@ -4,6 +4,8 @@ import ScheduleTable from "./components/ScheduleTable";
 import SelectorSetting from "./components/SelectorSetting";
 import styled from 'styled-components';
 import EntryNotification from "./components/EntryNotification";
+import Papa from "papaparse";
+import {courseData} from "./config";
 
 const MainContent = styled.main`
     margin-top: 68px;
@@ -30,8 +32,22 @@ const ToggleButton = styled.button`
 class App extends Component {
     state = {
         isCollapsed: false,
-        currentTab: '公告'
+        currentTab: '公告',
+        courses: [],
     };
+
+    /**
+     * 取得最新課程資料
+     */
+    componentDidMount() {
+        fetch(courseData.latestSource)
+            .then(response => response.text())
+            .then(csvText => {
+                const results = Papa.parse(csvText, {header: true, skipEmptyLines: true});
+                this.setState({courses: results.data});
+            })
+            .catch(error => console.error('Error fetching and parsing data:', error));
+    }
 
     /**
      * 切換課表顯示狀態
@@ -74,7 +90,9 @@ class App extends Component {
                         </SlideContainer>
 
                         <div className="col-lg d-flex flex-column">
-                            <SelectorSetting currentTab={this.state.currentTab}/>
+                            <SelectorSetting currentTab={this.state.currentTab}
+                                             courses={this.state.courses}
+                            />
                         </div>
                     </div>
                 </MainContent>

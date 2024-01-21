@@ -16,7 +16,7 @@
     "react-bootstrap-icons": "^1.10.3",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "react-virtualized": "^9.22.5",
+    "react-virtuoso": "^4.6.2",
     "save": "^2.9.0",
     "styled-components": "^6.1.4",
     "web-vitals": "^2.1.4"

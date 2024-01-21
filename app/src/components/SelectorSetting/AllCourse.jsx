@@ -1,6 +1,14 @@
 import React, {Component} from "react";
 import AllCourseList from "./AllCourse/AllCourseList";
 import {Card} from "react-bootstrap";
+import AllCourseListHeader from "./AllCourse/AllCourseListHeader";
+import styled from "styled-components";
+
+const StyledCardBody = styled(Card.Body)`
+    height: 100%;
+    min-height: 75vh;
+    padding: 0;
+`;
 
 class AllCourse extends Component {
     render() {
@@ -11,9 +19,10 @@ class AllCourse extends Component {
                         所有課程
                     </Card.Title>
                 </Card.Header>
-                <Card.Body className="h-100 min-vh-100 p-0">
-                    <AllCourseList/>
-                </Card.Body>
+                <AllCourseListHeader/>
+                <StyledCardBody>
+                    <AllCourseList courses={this.props.courses}/>
+                </StyledCardBody>
             </Card>
         );
     }

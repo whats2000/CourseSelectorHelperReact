@@ -6,18 +6,18 @@ import Announcement from "./SelectorSetting/Announcement";
 import SelectedCourse from "./SelectorSetting/SelectedCourse";
 
 class SelectorSetting extends Component {
-    mapTabToComponent = {
-        '所有課程': <AllCourse/>,
-        '學期必修': <RequiredCourse/>,
-        '課程偵探': <CourseDetective/>,
-        '已選課程': <SelectedCourse/>,
-        '公告': <Announcement/>,
-    }
-
     render() {
+        const mapTabToComponent = {
+            '所有課程': <AllCourse courses={this.props.courses}/>,
+            '學期必修': <RequiredCourse/>,
+            '課程偵探': <CourseDetective/>,
+            '已選課程': <SelectedCourse/>,
+            '公告': <Announcement/>,
+        }
+
         return (
             <>
-                {this.mapTabToComponent[this.props.currentTab]??<h1>我很確 Tab 傳遞某處出錯，請回報</h1>}
+                {mapTabToComponent[this.props.currentTab]??<h1>我很確 Tab 傳遞某處出錯，請回報</h1>}
             </>
         )
     }

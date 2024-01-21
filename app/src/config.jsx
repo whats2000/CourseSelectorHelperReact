@@ -48,3 +48,7 @@ export const entryNotificationConfig = {
     updates: announcementData.updates,
     feedbackFormUrl: announcementData.feedbackFormUrl,
 };
+
+export const courseData = {
+    latestSource: "https://raw.githubusercontent.com/CelleryLin/selector_helper/master/all_classes/all_classes_1122_20240116.csv",
+}
