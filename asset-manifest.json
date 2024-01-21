@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/CourseSelectorHelperReact/static/css/main.924033c8.css",
-    "main.js": "/CourseSelectorHelperReact/static/js/main.b73374d1.js",
+    "main.css": "/CourseSelectorHelperReact/static/css/main.e35086e1.css",
+    "main.js": "/CourseSelectorHelperReact/static/js/main.091f14a0.js",
     "static/js/787.0f8d78ff.chunk.js": "/CourseSelectorHelperReact/static/js/787.0f8d78ff.chunk.js",
     "static/media/logo.png": "/CourseSelectorHelperReact/static/media/logo.23725ab80e5069b9ed54.png",
     "index.html": "/CourseSelectorHelperReact/index.html",
-    "main.924033c8.css.map": "/CourseSelectorHelperReact/static/css/main.924033c8.css.map",
-    "main.b73374d1.js.map": "/CourseSelectorHelperReact/static/js/main.b73374d1.js.map",
+    "main.e35086e1.css.map": "/CourseSelectorHelperReact/static/css/main.e35086e1.css.map",
+    "main.091f14a0.js.map": "/CourseSelectorHelperReact/static/js/main.091f14a0.js.map",
     "787.0f8d78ff.chunk.js.map": "/CourseSelectorHelperReact/static/js/787.0f8d78ff.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.924033c8.css",
-    "static/js/main.b73374d1.js"
+    "static/css/main.e35086e1.css",
+    "static/js/main.091f14a0.js"
   ]
 }
