@@ -9,7 +9,7 @@ const csvUrl = 'https://raw.githubusercontent.com/CelleryLin/selector_helper/mas
 const HeaderRow = styled.div`
     display: flex;
     align-items: center;
-    padding: 10px 30px 10px 10px;
+    padding: 10px;
     border-bottom: 2px solid #ddd;
     background-color: #f5f5f5;
     font-weight: bold;
@@ -31,7 +31,6 @@ const CourseRow = styled.div`
 const CourseInfo = styled.div`
     flex: 1;
     text-align: left;
-    margin-right: 15px;
     overflow: hidden;
     text-overflow: fade;
 
@@ -41,18 +40,17 @@ const CourseInfo = styled.div`
 `;
 
 const SmallCourseInfo = styled(CourseInfo)`
-    flex: 0.5;
+    flex: 0.4;
     text-align: center;
 `;
 
-const Tag = styled.span`
+const Tag = styled.div`
     background-color: #eef;
     border: 1px solid #ddf;
     border-radius: 4px;
     padding: 2px 5px;
     margin: 2px;
     font-size: 10px;
-    white-space: nowrap;
 `;
 
 const StyledLink = styled.a`
@@ -158,7 +156,7 @@ class CoursesList extends Component {
         // 處理必選修
         const compulsoryElective = (
             <Tag className={course['CompulsoryElective'] === '必' ? 'bg-danger text-white' : 'bg-transparent border-0'}>
-                {course['CompulsoryElective']}修
+                {course['CompulsoryElective']}
             </Tag>
         )
 
@@ -169,17 +167,42 @@ class CoursesList extends Component {
             </StyledLink>
         )
 
+        // 處理課程顏色
+        const classColor = {
+            '不分班': {
+                name: '不分',
+                color: 'bg-transparent border-0',
+            },
+            '全英班': {
+                name: '全英',
+                color: 'bg-danger text-white',
+            },
+            '甲班': {
+                name: '甲班',
+                color: 'bg-info text-white',
+            },
+            '乙班': {
+                name: '乙班',
+                color: 'bg-warning text-white',
+            },
+        }
+        const courseClass = (
+            <Tag className={classColor[course['Class']] ? classColor[course['Class']].color : 'bg-transparent border-0'}>
+                {classColor[course['Class']] ? classColor[course['Class']].name : '缺失'}
+            </Tag>
+        )
+
         return (
             <CourseRow key={key} style={style}>
                 <CourseInfo>{courseName}</CourseInfo>
-                <CourseInfo>{time}</CourseInfo>
-                <CourseInfo>{course['Class']}</CourseInfo>
-                <CourseInfo>{course['Department']}</CourseInfo>
+                <SmallCourseInfo>{time}</SmallCourseInfo>
+                <SmallCourseInfo>{course['Department']}</SmallCourseInfo>
                 <SmallCourseInfo>{compulsoryElective}</SmallCourseInfo>
                 <SmallCourseInfo>{credit}</SmallCourseInfo>
-                <CourseInfo>{teachers}</CourseInfo>
-                <CourseInfo>{programs}</CourseInfo>
                 <SmallCourseInfo>{emi}</SmallCourseInfo>
+                <SmallCourseInfo>{courseClass}</SmallCourseInfo>
+                <SmallCourseInfo>{teachers}</SmallCourseInfo>
+                <CourseInfo>{programs}</CourseInfo>
             </CourseRow>
         );
     };
@@ -188,17 +211,17 @@ class CoursesList extends Component {
         const {courses} = this.state;
 
         return (
-            <div style={{width: '100%', height: '100%'}}>
+            <div className="h-100 w-100">
                 <HeaderRow>
                     <CourseInfo>名稱</CourseInfo>
-                    <CourseInfo>時間</CourseInfo>
-                    <CourseInfo>班級</CourseInfo>
-                    <CourseInfo>系所</CourseInfo>
+                    <SmallCourseInfo>時間</SmallCourseInfo>
+                    <SmallCourseInfo>系所</SmallCourseInfo>
                     <SmallCourseInfo>必選</SmallCourseInfo>
                     <SmallCourseInfo>學分</SmallCourseInfo>
-                    <CourseInfo>教師</CourseInfo>
-                    <CourseInfo>學程</CourseInfo>
                     <SmallCourseInfo>英課</SmallCourseInfo>
+                    <SmallCourseInfo>班級</SmallCourseInfo>
+                    <SmallCourseInfo>教師</SmallCourseInfo>
+                    <CourseInfo>學程</CourseInfo>
                 </HeaderRow>
                 <AutoSizer>
                     {({width, height}) => (
