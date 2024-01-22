@@ -84,7 +84,10 @@ class Header extends Component {
      */
     handleNavClick = (tab) => {
         this.props.onTabChange(tab);
-        this.handleToggleOffcanvas();
+
+        if (this.state.showOffcanvas) {
+            this.setState({showOffcanvas: false});
+        }
     };
 
     /**
