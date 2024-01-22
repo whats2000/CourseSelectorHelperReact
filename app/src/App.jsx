@@ -34,6 +34,7 @@ class App extends Component {
         isCollapsed: false,
         currentTab: '公告',
         courses: [],
+        selectedCourses: new Set(),
     };
 
     /**
@@ -64,8 +65,25 @@ class App extends Component {
     }
 
     /**
+     * 處理課程選取
+     * @param course {Object} 課程資料
+     * @param isSelected {boolean} 是否選取
+     */
+    handleCourseSelect = (course, isSelected) => {
+        this.setState(prevState => {
+            const selectedCourses = new Set(prevState.selectedCourses);
+            if (isSelected) {
+                selectedCourses.add(course);
+            } else {
+                selectedCourses.delete(course);
+            }
+            return { selectedCourses };
+        });
+    };
+
+    /**
      * 渲染元件
-     * @returns {React.ReactNode}
+     * @returns {React.ReactNode} 元件
      */
     render() {
         const {isCollapsed} = this.state;
@@ -92,6 +110,8 @@ class App extends Component {
                         <div className="col-lg d-flex flex-column">
                             <SelectorSetting currentTab={this.state.currentTab}
                                              courses={this.state.courses}
+                                             selectedCourses={this.state.selectedCourses}
+                                             onCourseSelect={this.handleCourseSelect}
                             />
                         </div>
                     </div>

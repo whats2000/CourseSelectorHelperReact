@@ -8,7 +8,11 @@ import SelectedCourse from "./SelectorSetting/SelectedCourse";
 class SelectorSetting extends Component {
     render() {
         const mapTabToComponent = {
-            '所有課程': <AllCourse courses={this.props.courses}/>,
+            '所有課程': <AllCourse
+                courses={this.props.courses}
+                selectedCourses={this.props.selectedCourses}
+                onCourseSelect={this.props.onCourseSelect}
+            />,
             '學期必修': <RequiredCourse/>,
             '課程偵探': <CourseDetective/>,
             '已選課程': <SelectedCourse/>,
@@ -17,7 +21,7 @@ class SelectorSetting extends Component {
 
         return (
             <>
-                {mapTabToComponent[this.props.currentTab]??<h1>我很確 Tab 傳遞某處出錯，請回報</h1>}
+                {mapTabToComponent[this.props.currentTab] ?? <h1>我很確 Tab 傳遞某處出錯，請回報</h1>}
             </>
         )
     }

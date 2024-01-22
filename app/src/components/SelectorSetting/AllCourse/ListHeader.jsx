@@ -27,7 +27,10 @@ const CourseInfo = styled.div`
 
 const SmallCourseInfo = styled(CourseInfo)`
     flex: 0.4;
-    text-align: center;
+`;
+
+const TinyCourseInfo = styled(CourseInfo)`
+    flex: 0.25;
 `;
 
 class ListHeader extends Component {
@@ -35,6 +38,7 @@ class ListHeader extends Component {
         return (
             <>
                 <HeaderRow>
+                    <TinyCourseInfo>選</TinyCourseInfo>
                     <CourseInfo>名稱</CourseInfo>
                     <SmallCourseInfo>時間</SmallCourseInfo>
                     <SmallCourseInfo>系所</SmallCourseInfo>

@@ -10,7 +10,11 @@ class CoursesList extends Component {
      */
     renderItem = (index) => {
         const {courses} = this.props;
-        return <Item course={courses[index]}/>;
+        const isSelected = this.props.selectedCourses.has(courses[index]);
+        return <Item course={courses[index]}
+                     isSelected={isSelected}
+                     onCourseSelect={this.props.onCourseSelect}
+        />;
     }
 
     render() {

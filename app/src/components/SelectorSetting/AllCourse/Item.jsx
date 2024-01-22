@@ -1,5 +1,6 @@
 import {Component} from "react";
 import styled from "styled-components";
+import {Form} from "react-bootstrap";
 
 const CourseRow = styled.div`
     font-size: 12px;
@@ -27,7 +28,10 @@ const CourseInfo = styled.div`
 
 const SmallCourseInfo = styled(CourseInfo)`
     flex: 0.4;
-    text-align: center;
+`;
+
+const TinyCourseInfo = styled(CourseInfo)`
+    flex: 0.25;
 `;
 
 const Tag = styled.div`
@@ -50,6 +54,10 @@ const StyledLink = styled.a`
 `;
 
 class Item extends Component {
+    handleCourseSelect = () => {
+        this.props.onCourseSelect(this.props.course, !this.props.isSelected);
+    }
+
     render() {
         const {course} = this.props;
 
@@ -143,6 +151,13 @@ class Item extends Component {
 
         return (
             <CourseRow>
+                <TinyCourseInfo>
+                    <Form.Check
+                        id={course['Number']}
+                        aria-label="option 1"
+                                checked={this.props.isSelected}
+                                onChange={this.handleCourseSelect}/>
+                </TinyCourseInfo>
                 <CourseInfo>{courseName}</CourseInfo>
                 <SmallCourseInfo>{time}</SmallCourseInfo>
                 <SmallCourseInfo>{course['Department']}</SmallCourseInfo>

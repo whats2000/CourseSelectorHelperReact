@@ -1,8 +1,10 @@
-import React, {Component} from "react";
-import AllCourseList from "./AllCourse/List";
+import {Component} from "react";
 import {Card} from "react-bootstrap";
-import ListHeader from "./AllCourse/ListHeader";
 import styled from "styled-components";
+
+import AllCourseList from "./AllCourse/List";
+import ListHeader from "./AllCourse/ListHeader";
+import ListInformation from "./AllCourse/ListInformation";
 
 const StyledCardBody = styled(Card.Body)`
     height: 100%;
@@ -11,17 +13,43 @@ const StyledCardBody = styled(Card.Body)`
 `;
 
 class AllCourse extends Component {
+    state = {
+        filter: ''
+    };
+
+    handleFilterChange = (filter) => {
+        this.setState({filter});
+    };
+
+    getFilteredCourses = () => {
+        const {courses} = this.props;
+        const {filter} = this.state;
+
+        return filter
+            ? courses.filter(course => course.Name.toLowerCase().includes(filter.toLowerCase()))
+            : courses;
+    };
+
     render() {
+        const filteredCourses = this.getFilteredCourses();
+        const {selectedCourses, onCourseSelect} = this.props;
+
         return (
             <Card className="h-100 mb-3 pb-2">
                 <Card.Header className="text-center">
-                    <Card.Title className="fw-bolder mb-0 p-2">
-                        所有課程
-                    </Card.Title>
+                    <Card.Title className="fw-bolder mb-0 p-2">所有課程</Card.Title>
                 </Card.Header>
+                <ListInformation
+                    selectedCourses={selectedCourses}
+                    onFilterChange={this.handleFilterChange}
+                />
                 <ListHeader/>
                 <StyledCardBody>
-                    <AllCourseList courses={this.props.courses}/>
+                    <AllCourseList
+                        courses={filteredCourses}
+                        selectedCourses={selectedCourses}
+                        onCourseSelect={onCourseSelect}
+                    />
                 </StyledCardBody>
             </Card>
         );
