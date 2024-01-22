@@ -37,12 +37,12 @@ class ListInformation extends Component {
      * @param e {React.ChangeEvent<HTMLInputElement>} 事件
      */
     handleFilterChange = (e) => {
-        const {onFilterChange} = this.props;
-        onFilterChange(e.target.value);
+        const {onBasicFilterChange} = this.props;
+        onBasicFilterChange(e.target.value);
     };
 
     render() {
-        const {selectedCourses} = this.props;
+        const {courses, selectedCourses, basicFilter, advancedFilters, onAdvancedFilterChange} = this.props;
         const {totalCredits, totalHours} = this.calculateTotalCreditsAndHours(selectedCourses);
 
         return (
@@ -53,11 +53,15 @@ class ListInformation extends Component {
                             id="all-course-filter"
                             type="text"
                             placeholder="搜尋課程..."
+                            value={basicFilter ?? ""}
                             onChange={this.handleFilterChange}
                         />
                         <InputGroup.Text>{totalCredits} 學分</InputGroup.Text>
                         <InputGroup.Text>{totalHours} 小時</InputGroup.Text>
-                        <AdvancedFilter/>
+                        <AdvancedFilter courses={courses}
+                                        advancedFilters={advancedFilters}
+                                        onAdvancedFilterChange={onAdvancedFilterChange}
+                        />
                     </InputGroup>
                 </Card.Body>
             </>
