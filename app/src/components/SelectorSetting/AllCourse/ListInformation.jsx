@@ -1,19 +1,6 @@
 import React, {Component} from "react";
-import {Button, Card, Form, InputGroup} from "react-bootstrap";
-import {Filter} from "react-bootstrap-icons";
-import styled from "styled-components";
-
-const StyledButton = styled(Button)`
-    background-color: #009e96;
-    
-    &:hover {
-        background-color: #008e86;
-    }
-    
-    &:active {
-        background-color: #009e96;
-    }
-`;
+import {Card, Form, InputGroup} from "react-bootstrap";
+import AdvancedFilter from "./AdvancedFilter";
 
 class ListInformation extends Component {
     /**
@@ -65,14 +52,12 @@ class ListInformation extends Component {
                         <Form.Control
                             id="all-course-filter"
                             type="text"
-                            placeholder="搜索课程..."
+                            placeholder="搜尋課程..."
                             onChange={this.handleFilterChange}
                         />
                         <InputGroup.Text>{totalCredits} 學分</InputGroup.Text>
                         <InputGroup.Text>{totalHours} 小時</InputGroup.Text>
-                        <StyledButton variant="success">
-                            <Filter/>
-                        </StyledButton>
+                        <AdvancedFilter/>
                     </InputGroup>
                 </Card.Body>
             </>

@@ -26,7 +26,12 @@ class AllCourse extends Component {
         const {filter} = this.state;
 
         return filter
-            ? courses.filter(course => course.Name.toLowerCase().includes(filter.toLowerCase()))
+            ? courses.filter(course =>
+                course['Name'].toLowerCase().includes(filter.toLowerCase()) ||
+                course['Teacher'].toLowerCase().includes(filter.toLowerCase()) ||
+                course['Programs'].toLowerCase().includes(filter.toLowerCase()) ||
+                course['Number'].toLowerCase().includes(filter.toLowerCase()) ||
+                course['Department'].toLowerCase().includes(filter.toLowerCase()))
             : courses;
     };
 

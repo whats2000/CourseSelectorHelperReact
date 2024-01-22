@@ -153,7 +153,7 @@ class Item extends Component {
             <CourseRow>
                 <TinyCourseInfo>
                     <Form.Check
-                        id={course['Number']}
+                        id={`all-course-${course['Number']}`}
                         aria-label="option 1"
                                 checked={this.props.isSelected}
                                 onChange={this.handleCourseSelect}/>
