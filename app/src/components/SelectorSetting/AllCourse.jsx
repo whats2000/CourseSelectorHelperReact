@@ -108,14 +108,10 @@ class AllCourse extends Component {
      * @returns {Array} 過濾後的課程列表
      */
     applyAdvancedFilters = (courses, filters) => {
-        console.log(filters);
-
         return courses.filter(course => {
             for (let filterName in filters) {
                 const filter = filters[filterName];
                 const isInclude = filter.include === undefined ? true : filter.include;
-
-                if (!(filter.active ?? false)) continue;
 
                 // 如果是文字類型的篩選（如名稱、教師、學程）
                 if (filter.value) {
@@ -130,11 +126,9 @@ class AllCourse extends Component {
                     continue;
                 }
 
+                if (!(filter.active ?? false)) continue;
+
                 // 處理星期與節次的篩選
-                // 資料表保存的格式為：{Monday: 'A123', Tuesday: '', ...}
-                // 而篩選器星期的格式為：{Monday: true, Tuesday: false..., include: true}
-                // 而篩選器節次的格式為：{1: true, 2: false..., include: true}
-                // 先檢查是否存在星期的篩選條件，並記錄符合條件的星期
                 if (filterName === '星期') {
                     let daysMatched = Object.keys(filter).some(day => {
                         return filter[day] && course[day];
