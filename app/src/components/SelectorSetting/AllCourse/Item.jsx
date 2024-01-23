@@ -147,7 +147,7 @@ class Item extends Component {
         const courseClass = (
             <Tag
                 className={classColor[course['Class']] ? classColor[course['Class']].color : 'bg-transparent border-0'}>
-                {classColor[course['Class']] ? classColor[course['Class']].name : '缺失'}
+                {classColor[course['Class']] ? `${classColor[course['Class']].name}[${course['Grade']}]` : '缺失'}
             </Tag>
         )
 
