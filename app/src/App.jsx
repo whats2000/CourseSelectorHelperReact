@@ -45,7 +45,15 @@ class App extends Component {
             .then(response => response.text())
             .then(csvText => {
                 const results = Papa.parse(csvText, {header: true, skipEmptyLines: true});
-                this.setState({courses: results.data});
+                // 去除重複值
+                const uniqueResults = results.data.filter((course, index, self) =>
+                    index === self.findIndex(c => (
+                        c['Name'] === course['Name'] &&
+                        c['Number'] === course['Number'] &&
+                        c['Teacher'] === course['Teacher']
+                    ))
+                );
+                this.setState({courses: uniqueResults});
             })
             .catch(error => console.error('Error fetching and parsing data:', error));
     }

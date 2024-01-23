@@ -21,6 +21,7 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
 
     .dropdown-item {
         border: white 1px solid;
+
         &.active {
             color: white;
             background-color: #009e96;
@@ -67,6 +68,18 @@ const FilterInput = styled.div`
     flex: 1;
 `;
 
+const FilterSwitch = styled(Form.Check)`
+    .form-check-input:checked {
+        background-color: #009e96;
+        border-color: #009e96;
+    }
+
+    .form-check-input:focus {
+        border-color: #009e96;
+        box-shadow: 0 0 0 0.2rem rgba(0, 158, 150, 0.25);
+    }
+`;
+
 class AdvancedFilter extends Component {
     state = {
         show: false,
@@ -74,14 +87,25 @@ class AdvancedFilter extends Component {
             "名稱": {options: [], dropdown: false},
             "教師": {options: [], dropdown: false},
             "學程": {options: [], dropdown: false},
-            "節次": {options: ['A', '1', '2', '3', 'B', '4', '5', '6', '7', '8', '9', 'C', 'D', 'E', 'F'], dropdown: true},
-            "星期": {options: ['一', '二', '三', '四', '五', '六', '日'], dropdown: true},
-            "年級": {options: ['大一', '大二', '大三', '大四', '不分'], dropdown: true},
-            "班別": {options: ['甲班', '乙班', '全英', '不分'], dropdown: true},
+            "節次": {
+                options: ['A', '1', '2', '3', 'B', '4', '5', '6', '7', '8', '9', 'C', 'D', 'E', 'F'],
+                dropdown: true
+            },
+            "星期": {
+                options: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                optionDisplayName: ['一', '二', '三', '四', '五', '六', '日'],
+                dropdown: true
+            },
+            "年級": {
+                options: ['0', '1', '2', '3', '4'],
+                optionDisplayName: ['不分', '大一', '大二', '大三', '大四'],
+                dropdown: true
+            },
+            "班別": {options: ['甲班', '乙班', '全英班', '不分班'], dropdown: true},
             "系所": {options: [], dropdown: true},
-            "必修": {options: ['必修', '選修'], dropdown: true},
+            "必修": {options: ['必', '選'], optionDisplayName: ['必修', '選修'], dropdown: true},
             "學分": {options: [], dropdown: true},
-            "英課": {options: ['是', '否'], dropdown: true},
+            "英課": {options: ['1', '0'], optionDisplayName: ['是', '否'], dropdown: true},
         },
     };
 
@@ -111,7 +135,10 @@ class AdvancedFilter extends Component {
      */
     handleSelectAll = (filterName) => {
         // 創建一個新的選中狀態對象，將所有選項設為選中
-        const selected = {};
+        const selected = {
+            active: this.props.advancedFilters[filterName]?.active ?? false,
+            include: this.props.advancedFilters[filterName]?.include ?? true,
+        };
         this.state.filterOptions[filterName].options.forEach(option => {
             selected[option] = true;
         });
@@ -134,7 +161,10 @@ class AdvancedFilter extends Component {
         // 創建 advancedFilters 的副本並將對應篩選器的選中狀態清空
         const updatedAdvancedFilters = {
             ...this.props.advancedFilters,
-            [filterName]: {}
+            [filterName]: {
+                active: this.props.advancedFilters[filterName]?.active ?? false,
+                include: this.props.advancedFilters[filterName]?.include ?? true,
+            }
         };
 
         // 更新父組件的狀態
@@ -186,8 +216,8 @@ class AdvancedFilter extends Component {
         this.setState(prevState => ({
             filterOptions: {
                 ...prevState.filterOptions,
-                "系所": { ...prevState.filterOptions["系所"], options: updateFilterOptions["系所"] },
-                "學分": { ...prevState.filterOptions["學分"], options: updateFilterOptions["學分"] },
+                "系所": {...prevState.filterOptions["系所"], options: updateFilterOptions["系所"]},
+                "學分": {...prevState.filterOptions["學分"], options: updateFilterOptions["學分"]},
             }
         }));
     }
@@ -224,6 +254,23 @@ class AdvancedFilter extends Component {
         this.props.onAdvancedFilterChange(updatedAdvancedFilters);
     };
 
+    /**
+     * 處理篩選器啟用狀態變化
+     * @param filterName {string} 篩選器名稱
+     */
+    handleFilterActivationChange = (filterName) => {
+        // 創建 advancedFilters 的副本並更新相應的過濾器值，預設是關閉的
+        const updatedAdvancedFilters = {
+            ...this.props.advancedFilters,
+            [filterName]: {
+                ...this.props.advancedFilters[filterName],
+                active: !(this.props.advancedFilters[filterName]?.active ?? false)
+            }
+        };
+
+        // 更新父組件的狀態
+        this.props.onAdvancedFilterChange(updatedAdvancedFilters);
+    };
 
     renderFilterOption = (filterName, options, isDropdown = true) => {
         const selected = this.props.advancedFilters[filterName] || {};
@@ -235,6 +282,7 @@ class AdvancedFilter extends Component {
                 <FilterLabel>{filterName}</FilterLabel>
                 <FilterSelect>
                     <Form.Select
+                        id={`advanced-filter-include-${filterName}`}
                         onChange={e => this.handleFilterModeChange(filterName, e.target.value)}
                         value={include ? 'include' : 'exclude'}
                     >
@@ -246,21 +294,26 @@ class AdvancedFilter extends Component {
                     {isDropdown ? (
                         <Dropdown autoClose="outside">
                             <StyledDropdownToggle variant="success">
-                                選擇了 {Object.keys(selected).filter(option => selected[option]).length - (selected['include'] ? 1 : 0)} 項
-                            </StyledDropdownToggle>
+                                {!selected.active ? '未啟用' : '選擇了'} {Object.keys(selected).filter(key => key !== 'active' && key !== 'include' && selected[key]).length} 項
+                            < /StyledDropdownToggle>
                             <StyledDropdownMenu>
-                                <Dropdown.Item as="button" onClick={() => this.handleSelectAll(filterName)}>全選</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => this.handleDeselectAll(filterName)}>取消全選</Dropdown.Item>
+                                <Dropdown.Item as="button"
+                                               onClick={() => this.handleSelectAll(filterName)}>全選</Dropdown.Item>
+                                <Dropdown.Item as="button"
+                                               onClick={() => this.handleDeselectAll(filterName)}>取消全選</Dropdown.Item>
                                 <Dropdown.Divider/>
                                 {options.map((option, index) => (
-                                    <Dropdown.Item key={index} active={selected[option]} onClick={() => this.handleOptionSelect(filterName, option)}>
-                                        {option}
+                                    <Dropdown.Item key={index} active={selected[option]}
+                                                   onClick={() => this.handleOptionSelect(filterName, option)}>
+                                        {/** 如果有指定選項的顯示名稱，則顯示顯示名稱，否則顯示選項本身 */}
+                                        {this.state.filterOptions[filterName].optionDisplayName?.[index] ?? option}
                                     </Dropdown.Item>
                                 ))}
                             </StyledDropdownMenu>
                         </Dropdown>
                     ) : (
                         <Form.Control
+                            id={`advanced-filter-text-${filterName}`}
                             type="text"
                             placeholder={`搜索${filterName}...`}
                             value={textInput || ''}
@@ -268,6 +321,16 @@ class AdvancedFilter extends Component {
                         />
                     )}
                 </FilterInput>
+                {
+                    isDropdown && (
+                        <FilterSwitch
+                            id={`advanced-filter-enable-${filterName}`}
+                            type="switch"
+                            onChange={() => this.handleFilterActivationChange(filterName)}
+                            checked={this.props.advancedFilters[filterName]?.active ?? false}
+                        />
+                    )
+                }
             </FilterRow>
         );
     };

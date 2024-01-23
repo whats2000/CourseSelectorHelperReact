@@ -61,6 +61,8 @@ class Item extends Component {
     render() {
         const {course} = this.props;
 
+        if (!course) return null;
+
         // 處理時間欄位，改成繁體中文
         const days = {
             'Monday': '一',
