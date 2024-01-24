@@ -119,7 +119,7 @@ class App extends Component {
                 <MainContent id="app" className="container-fluid">
                     <div className="row d-flex flex-wrap">
                         <SlideContainer style={slideStyle} className="col-lg-6 d-flex flex-column">
-                            <ScheduleTable/>
+                            <ScheduleTable selectedCourses={selectedCourses}/>
                         </SlideContainer>
 
                         <div className="col-lg d-flex flex-column">

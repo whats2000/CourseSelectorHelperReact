@@ -1,26 +1,50 @@
-import React from 'react';
+import {Component} from 'react';
 import styled from 'styled-components';
+import {Col, Row} from "react-bootstrap";
 
 const StyledTable = styled.table`
     font-size: 10px;
+    width: 100%;
 `;
 
 const HeaderCell = styled.th`
-    border-radius: 10%;
     background-color: lightgray !important;
 `;
 
 const TimeSlotCell = styled.td`
-    width: 5%;
-    border-radius: 10%;
+    width: 4%;
     background-color: lightgrey !important;
 `;
 
-class ScheduleTable extends React.Component {
+const CourseCell = styled.td`
+    width: 12.5%;
+    padding: 2px !important;
+`;
+
+const CourseBlock = styled.div`
+    background-color: #dfdf9f;
+    border: 1px solid #bfbf7f;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    padding: 2px 4px;
+    font-size: 9px;
+    text-align: center;
+    width: 100%;
+    flex-grow: 1;
+`;
+
+
+class ScheduleTable extends Component {
     setting = {
         columns: 8, // Total columns
         weekday: [
-            '一', '二', '三', '四', '五', '六', '日'
+            {key: 'Monday', value: '一'},
+            {key: 'Tuesday', value: '二'},
+            {key: 'Wednesday', value: '三'},
+            {key: 'Thursday', value: '四'},
+            {key: 'Friday', value: '五'},
+            {key: 'Saturday', value: '六'},
+            {key: 'Sunday', value: '日'},
         ],
         timeSlots: [
             {key: 'A', value: '7:00\n~\n7:50'},
@@ -41,16 +65,57 @@ class ScheduleTable extends React.Component {
         ]
     }
 
+    /**
+     * 建立課表
+     * @returns {{}} 課表
+     */
+    createCourseTable = () => {
+        const {selectedCourses} = this.props;
+        const coursesTable = {};
+
+        this.setting.timeSlots.forEach(timeSlot => {
+            this.setting.weekday.forEach(weekday => {
+                coursesTable[`${weekday.key}-${timeSlot.key}`] = [];
+
+                Array.from(selectedCourses).forEach(course => {
+                    if (course[weekday.key] && course[weekday.key].includes(timeSlot.key)) {
+                        coursesTable[`${weekday.key}-${timeSlot.key}`].push(course);
+                    }
+                });
+            });
+        });
+
+        return coursesTable;
+    };
+
+    /**
+     * 產生課程方塊
+     * @param courses {Object[]} 課程資料
+     * @returns {JSX.Element[]} 課程方塊
+     */
+    generateCourseBlocks = (courses) => {
+        return courses.map(course => (
+            <CourseBlock key={course['Number']} className="align-self-stretch">
+                <Row>
+                    <Col className="fw-bolder">{course['Name']}</Col>
+                    <Col className="text-muted">{course['Number']}</Col>
+                </Row>
+            </CourseBlock>
+        ));
+    };
+
     render() {
+        const coursesTable = this.createCourseTable();
+
         return (
-            <div className="table-responsive">
+            <div className="table-responsive rounded-2">
                 <StyledTable
                     className="table table-bordered border-white border-5 rounded-5 table-secondary text-center">
                     <thead>
                     <tr>
                         <HeaderCell>期</HeaderCell>
-                        {this.setting.weekday.map((d, index) => (
-                            <HeaderCell key={index}>{d}</HeaderCell>
+                        {this.setting.weekday.map((weekday, index) => (
+                            <HeaderCell key={index}>{weekday.value}</HeaderCell>
                         ))}
                     </tr>
                     </thead>
@@ -61,9 +126,12 @@ class ScheduleTable extends React.Component {
                                 <span className="fw-bold d-block">{timeSlot.key}</span>
                                 <span>{timeSlot.value}</span>
                             </TimeSlotCell>
-                            {Array.from({length: this.setting.columns - 1}, (_, n) => (
-                                <td key={n} id={`${timeSlot.key}${n}`} className="rounded">
-                                </td>
+                            {this.setting.weekday.map((weekday, n) => (
+                                <CourseCell key={`${weekday.key}-${timeSlot.key}`}>
+                                    <div className="d-flex flex-column">
+                                        {this.generateCourseBlocks(coursesTable[`${weekday.key}-${timeSlot.key}`])}
+                                    </div>
+                                </CourseCell>
                             ))}
                         </tr>
                     ))}

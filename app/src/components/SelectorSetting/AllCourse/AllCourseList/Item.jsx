@@ -1,6 +1,7 @@
 import {Component} from "react";
 import styled from "styled-components";
 import {Form, OverlayTrigger, Popover, Stack} from "react-bootstrap";
+import popover from "bootstrap/js/src/popover";
 
 const CourseRow = styled.div`
     font-size: 12px;
@@ -53,10 +54,16 @@ const StyledLink = styled.a`
     }
 `;
 
+const StyledPopover = styled(Popover)`
+    &.popover {
+        max-width: 400px;
+    }
+`;
+
 class Item extends Component {
     state = {
         showPopover: false,
-        placement: window.innerWidth < 768 ? 'bottom' : 'left',
+        placement: window.innerWidth < 992 ? 'bottom' : 'left',
     };
 
     infoCells = {
@@ -229,9 +236,9 @@ class Item extends Component {
                         trigger={['hover', 'focus']}
                         placement={placement}
                         overlay={
-                            <Popover id={`pop-info-${course["Name"]}`}>
+                            <StyledPopover id={`pop-info-${course["Name"]}`}>
                                 {showPopover ? this.renderPopover() : <></>}
-                            </Popover>
+                            </StyledPopover>
                         }
                         onToggle={(show) => this.handleTogglePopover(show)}
                     >

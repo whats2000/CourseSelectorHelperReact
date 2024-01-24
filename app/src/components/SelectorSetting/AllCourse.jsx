@@ -46,7 +46,8 @@ class AllCourse extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.basicFilter !== prevState.basicFilter ||
             this.state.advancedFilters !== prevState.advancedFilters ||
-            this.state.displayConflictCourses !== prevState.displayConflictCourses) {
+            this.state.displayConflictCourses !== prevState.displayConflictCourses ||
+            this.props.selectedCourses !== prevProps.selectedCourses) {
             localStorage.setItem('basicFilter', this.state.basicFilter);
             localStorage.setItem('advancedFilters', JSON.stringify(this.state.advancedFilters));
 
