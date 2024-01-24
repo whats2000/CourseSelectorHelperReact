@@ -98,6 +98,8 @@ class ScheduleTable extends Component {
             <CourseBlock key={course['Number']} className="align-self-stretch">
                 <Row>
                     <Col className="fw-bolder">{course['Name']}</Col>
+                </Row>
+                <Row>
                     <Col className="text-muted">{course['Number']}</Col>
                 </Row>
             </CourseBlock>
