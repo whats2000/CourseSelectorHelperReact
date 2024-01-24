@@ -224,6 +224,11 @@ class AdvancedFilter extends Component {
     }
 
 
+    /**
+     * 處理篩選器模式變化
+     * @param filterName {string} 篩選器名稱
+     * @param mode {string} 篩選器模式
+     */
     handleFilterModeChange = (filterName, mode) => {
         const updatedAdvancedFilters = {
             ...this.props.advancedFilters,
@@ -273,6 +278,13 @@ class AdvancedFilter extends Component {
         this.props.onAdvancedFilterChange(updatedAdvancedFilters);
     };
 
+    /**
+     * 渲染篩選器選項
+     * @param filterName {string} 篩選器名稱
+     * @param options {Array} 選項列表
+     * @param isDropdown {boolean} 是否為下拉選單
+     * @returns {React.ReactNode} 篩選器選項
+     */
     renderFilterOption = (filterName, options, isDropdown = true) => {
         const selected = this.props.advancedFilters[filterName] || {};
         const textInput = this.props.advancedFilters[filterName]?.value || '';

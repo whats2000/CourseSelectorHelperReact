@@ -67,28 +67,48 @@ class Item extends Component {
         "備註": "Context",
     }
 
+    /**
+     * 處理畫面尺寸變化
+     */
     handleResize = () => {
         const newPlacement = window.innerWidth < 768 ? 'bottom' : 'left';
         this.setState({placement: newPlacement});
     };
 
+    /**
+     * 註冊畫面尺寸變化事件
+     */
     componentDidMount() {
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
     }
 
+    /**
+     * 取消註冊畫面尺寸變化事件
+     */
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
     }
 
+    /**
+     * 處理課程選取
+     */
     handleCourseSelect = () => {
         this.props.onCourseSelect(this.props.course, !this.props.isSelected);
     }
 
+    /**
+     * 處理彈出視窗顯示
+     * @param show
+     */
     handleTogglePopover = (show) => {
         this.setState({showPopover: show});
     };
 
+    /**
+     * 渲染彈出視窗
+     * @returns {JSX.Element}
+     */
     renderPopover = () => {
         const {course} = this.props;
         return (

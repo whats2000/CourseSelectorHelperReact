@@ -36,10 +36,6 @@ class EntryNotification extends Component {
         show: false,
     };
 
-    renderList(items) {
-        return items.map((item, index) => <li key={index}>{item}</li>);
-    }
-
     componentDidMount() {
         const announcementSeen = localStorage.getItem('entryNotificationSeen');
         const versionSeen = localStorage.getItem('entryNotificationVersion');
@@ -49,10 +45,26 @@ class EntryNotification extends Component {
         }
     }
 
+    /**
+     * 渲染列表
+     * @param items {string[]} 列表項目
+     * @returns {JSX.Element[]} 列表元素
+     */
+    renderList(items) {
+        return items.map((item, index) => <li key={index}>{item}</li>);
+    }
+
+    /**
+     * 關閉 Modal
+     */
     handleClose = () => {
         this.setState({show: false});
     };
 
+    /**
+     * 處理「不再顯示」的事件
+     * @param event {Event} 事件
+     */
     handleDontShowAgain = (event) => {
         const {checked} = event.target;
         localStorage.setItem('entryNotificationSeen', checked ? 'true' : 'false');

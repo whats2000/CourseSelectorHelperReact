@@ -20,6 +20,11 @@ const TextWithIcon = styled(Card.Text)`
 `;
 
 class Announcement extends Component {
+    /**
+     * 渲染列表
+     * @param {string[]} items 列表項目
+     * @returns {JSX.Element[]} 列表元素
+     */
     renderList(items) {
         return items.map((item, index) => <li key={index}>{item}</li>);
     }

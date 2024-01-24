@@ -68,10 +68,16 @@ class ListInformation extends Component {
         onBasicFilterChange(e.target.value);
     };
 
+    /**
+     * 處理顯示已選課程的事件
+     */
     handleShowSelectedCourses = () => {
         this.props.toggleDisplayConflictCourses();
     }
 
+    /**
+     * 處理僅顯示已選課程的事件
+     */
     handleToggleOnlySelected = () => {
         this.props.toggleOnlySelected();
     }
