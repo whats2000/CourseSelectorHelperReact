@@ -1,6 +1,6 @@
 import {Component} from "react";
 import styled from "styled-components";
-import {Form} from "react-bootstrap";
+import {Form, OverlayTrigger, Popover, Stack} from "react-bootstrap";
 
 const CourseRow = styled.div`
     font-size: 12px;
@@ -54,12 +54,63 @@ const StyledLink = styled.a`
 `;
 
 class Item extends Component {
+    state = {
+        showPopover: false,
+        placement: window.innerWidth < 768 ? 'bottom' : 'left',
+    };
+
+    infoCells = {
+        "名額": "Restrict",
+        "點選": "Select",
+        "選上": "Selected",
+        "餘額": "Remaining",
+        "備註": "Context",
+    }
+
+    handleResize = () => {
+        const newPlacement = window.innerWidth < 768 ? 'bottom' : 'left';
+        this.setState({placement: newPlacement});
+    };
+
+    componentDidMount() {
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+    }
+
     handleCourseSelect = () => {
         this.props.onCourseSelect(this.props.course, !this.props.isSelected);
     }
 
+    handleTogglePopover = (show) => {
+        this.setState({showPopover: show});
+    };
+
+    renderPopover = () => {
+        const {course} = this.props;
+        return (
+            <>
+                <Popover.Header as="h3">{course.Name}</Popover.Header>
+                <Popover.Body>
+                    <Stack direction="horizontal" gap={1}>
+                        {Object.entries(this.infoCells).map(([displayName, courseKey]) => (
+                            <Stack key={displayName} className="bg-body-secondary p-1 rounded-2 text-center">
+                                <div className="fw-bolder">{displayName}</div>
+                                <div>{course[courseKey]}</div>
+                            </Stack>
+                        ))}
+                    </Stack>
+                </Popover.Body>
+            </>
+        );
+    }
+
     render() {
         const {course, isConflict, isSelected} = this.props;
+        const {showPopover, placement} = this.state;
 
         if (!course) return null;
 
@@ -154,11 +205,22 @@ class Item extends Component {
         return (
             <CourseRow className={isConflict && !isSelected ? 'bg-warning-subtle' : ''}>
                 <TinyCourseInfo>
-                    <Form.Check
-                        id={`all-course-${course['Number']}`}
-                        aria-label="option 1"
-                                checked={this.props.isSelected}
-                                onChange={this.handleCourseSelect}/>
+                    <OverlayTrigger
+                        trigger={['hover', 'focus']}
+                        placement={placement}
+                        overlay={
+                            <Popover id={`pop-info-${course["Name"]}`}>
+                                {showPopover ? this.renderPopover() : <></>}
+                            </Popover>
+                        }
+                        onToggle={(show) => this.handleTogglePopover(show)}
+                    >
+                        <Form.Check
+                            id={`all-course-${course['Number']}`}
+                            aria-label="option 1"
+                            checked={this.props.isSelected}
+                            onChange={this.handleCourseSelect}/>
+                    </OverlayTrigger>
                 </TinyCourseInfo>
                 <CourseInfo>{courseName}</CourseInfo>
                 <SmallCourseInfo>{time}</SmallCourseInfo>
