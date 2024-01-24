@@ -59,7 +59,7 @@ class Item extends Component {
     }
 
     render() {
-        const {course} = this.props;
+        const {course, isConflict, isSelected} = this.props;
 
         if (!course) return null;
 
@@ -152,7 +152,7 @@ class Item extends Component {
         )
 
         return (
-            <CourseRow>
+            <CourseRow className={isConflict && !isSelected ? 'bg-warning-subtle' : ''}>
                 <TinyCourseInfo>
                     <Form.Check
                         id={`all-course-${course['Number']}`}

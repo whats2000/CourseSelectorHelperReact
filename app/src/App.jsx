@@ -90,11 +90,18 @@ class App extends Component {
     };
 
     /**
+     * 處理清除所有已選課程的事件
+     */
+    handleClearAllSelectedCourses = () => {
+        this.setState({selectedCourses: new Set()});
+    }
+
+    /**
      * 渲染元件
      * @returns {React.ReactNode} 元件
      */
     render() {
-        const {isCollapsed} = this.state;
+        const {isCollapsed, currentTab, courses, selectedCourses} = this.state;
         const slideStyle = {
             marginLeft: isCollapsed ? (window.innerWidth >= 992 ? '-50%' : '0') : '0',
             marginTop: isCollapsed ? (window.innerWidth < 992 ? '-600%' : '0') : '0'
@@ -116,10 +123,11 @@ class App extends Component {
                         </SlideContainer>
 
                         <div className="col-lg d-flex flex-column">
-                            <SelectorSetting currentTab={this.state.currentTab}
-                                             courses={this.state.courses}
-                                             selectedCourses={this.state.selectedCourses}
+                            <SelectorSetting currentTab={currentTab}
+                                             courses={courses}
+                                             selectedCourses={selectedCourses}
                                              onCourseSelect={this.handleCourseSelect}
+                                             onClearAllSelectedCourses={this.handleClearAllSelectedCourses}
                             />
                         </div>
                     </div>

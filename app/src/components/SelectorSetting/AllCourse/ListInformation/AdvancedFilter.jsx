@@ -2,16 +2,17 @@ import React, {Component} from 'react';
 import {Offcanvas, Form, Dropdown, Button} from 'react-bootstrap';
 import {Filter} from 'react-bootstrap-icons';
 import styled from 'styled-components';
+import {websiteColor} from "../../../../config";
 
 const StyledButton = styled(Button)`
-    background-color: #009e96;
+    background-color: ${websiteColor.mainColor};
 
     &:hover {
-        background-color: #008e86;
+        background-color: ${websiteColor.mainDarkerColor};
     }
 
     &:active {
-        background-color: #009e96;
+        background-color: ${websiteColor.mainColor};
     }
 `;
 
@@ -24,25 +25,25 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
 
         &.active {
             color: white;
-            background-color: #009e96;
+            background-color: ${websiteColor.mainColor};
         }
 
         &:active {
             color: white;
-            background-color: #009e96;
+            background-color: ${websiteColor.mainColor};
         }
     }
 `;
 
 const StyledDropdownToggle = styled(Dropdown.Toggle)`
-    background-color: #009e96;
+    background-color: ${websiteColor.mainColor};
 
     &:hover {
-        background-color: #008e86;
+        background-color: ${websiteColor.mainDarkerColor};
     }
 
     &:active {
-        background-color: #009e96;
+        background-color: ${websiteColor.mainColor};
     }
 `;
 
@@ -70,13 +71,13 @@ const FilterInput = styled.div`
 
 const FilterSwitch = styled(Form.Check)`
     .form-check-input:checked {
-        background-color: #009e96;
-        border-color: #009e96;
+        background-color: ${websiteColor.mainColor};
+        border-color: ${websiteColor.mainColor};
     }
 
     .form-check-input:focus {
-        border-color: #009e96;
-        box-shadow: 0 0 0 0.2rem rgba(0, 158, 150, 0.25);
+        border-color: ${websiteColor.mainColor};
+        box-shadow: 0 0 0 0.2rem ${websiteColor.boxShadowColor};
     }
 `;
 

@@ -52,3 +52,9 @@ export const entryNotificationConfig = {
 export const courseData = {
     latestSource: "https://raw.githubusercontent.com/CelleryLin/selector_helper/master/all_classes/all_classes_1122_20240116.csv",
 }
+
+export const websiteColor = {
+    mainColor: "#009e96",
+    mainDarkerColor: "#008e86",
+    boxShadowColor: "rgba(0, 158, 150, 0.25)",
+};

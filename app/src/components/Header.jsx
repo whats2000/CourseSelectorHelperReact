@@ -2,12 +2,13 @@ import React, {Component} from "react";
 import {Container, Nav, Navbar, Offcanvas} from "react-bootstrap";
 import {BookFill, Check2Square, JournalCheck, List, Megaphone, Search} from "react-bootstrap-icons";
 import styled from 'styled-components';
+import {websiteColor} from "../config";
 
 import logo from './logo.png';
 
 // 自定義 Navbar 樣式
 const StyledNavbar = styled(Navbar)`
-    background-color: #009e96; // 設置背景顏色
+    background-color: ${websiteColor.mainColor};
     transition: top 0.3s; // 添加過渡效果
 `;
 

@@ -3,6 +3,7 @@ import {Modal, Button, Form, Card} from 'react-bootstrap';
 import {entryNotificationConfig} from '../config';
 import {Megaphone, FileEarmarkText, ArrowUpCircle} from "react-bootstrap-icons";
 import styled from "styled-components";
+import {websiteColor} from "../config";
 
 const TextWithIcon = styled(Card.Text)`
     display: flex;
@@ -16,12 +17,12 @@ const TextWithIcon = styled(Card.Text)`
 `;
 
 const FillFormButton = styled(Button)`
-    background-color: #009e96;
-    border-color: #009e96;
+    background-color: ${websiteColor.mainColor};
+    border-color: ${websiteColor.mainColor};
 
     &:hover, &:focus {
-        background-color: #008a81;
-        border-color: #008a81;
+        background-color: ${websiteColor.mainDarkerColor};
+        border-color: ${websiteColor.mainDarkerColor};
     }
 
     a {

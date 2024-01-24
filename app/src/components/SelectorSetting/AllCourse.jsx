@@ -1,14 +1,14 @@
 import {Component} from "react";
-import {Card} from "react-bootstrap";
+import {Card, Col} from "react-bootstrap";
 import styled from "styled-components";
 
-import AllCourseList from "./AllCourse/List";
+import CoursesList from "./AllCourse/CoursesList";
 import ListHeader from "./AllCourse/ListHeader";
 import ListInformation from "./AllCourse/ListInformation";
 
 const StyledCardBody = styled(Card.Body)`
     height: 100%;
-    min-height: 75vh;
+    min-height: 65vh;
     padding: 0;
 `;
 
@@ -16,6 +16,8 @@ class AllCourse extends Component {
     state = {
         basicFilter: '',
         advancedFilters: {},
+        displaySelectedOnly: false,
+        displayConflictCourses: true,
         filteredCourses: this.props.courses,
     };
 
@@ -42,7 +44,9 @@ class AllCourse extends Component {
     ]
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.basicFilter !== prevState.basicFilter || this.state.advancedFilters !== prevState.advancedFilters) {
+        if (this.state.basicFilter !== prevState.basicFilter ||
+            this.state.advancedFilters !== prevState.advancedFilters ||
+            this.state.displayConflictCourses !== prevState.displayConflictCourses) {
             localStorage.setItem('basicFilter', this.state.basicFilter);
             localStorage.setItem('advancedFilters', JSON.stringify(this.state.advancedFilters));
 
@@ -87,7 +91,7 @@ class AllCourse extends Component {
      */
     getFilteredCourses = () => {
         const {courses} = this.props;
-        const {basicFilter} = this.state;
+        const {basicFilter, displayConflictCourses, advancedFilters} = this.state;
 
         let filteredCourses = basicFilter
             ? courses.filter(course =>
@@ -98,7 +102,14 @@ class AllCourse extends Component {
                 course['Department'].toLowerCase().includes(basicFilter.toLowerCase()))
             : courses;
 
-        return this.applyAdvancedFilters(filteredCourses, this.state.advancedFilters);
+        filteredCourses = this.applyAdvancedFilters(filteredCourses, advancedFilters);
+
+        // 如果不顯示衝突課程，進行過濾
+        if (!displayConflictCourses) {
+            filteredCourses = this.filterOutConflictCourses(filteredCourses);
+        }
+
+        return filteredCourses;
     };
 
     /**
@@ -183,31 +194,105 @@ class AllCourse extends Component {
         });
     };
 
+    /**
+     * 過濾掉時間衝突的課程
+     * @param courses {Array} 課程列表
+     * @returns {Array} 經過時間衝突過濾的課程列表
+     */
+    filterOutConflictCourses = (courses) => {
+        const { selectedCourses } = this.props;
+        return courses.filter(course => {
+            // 如果課程已被選擇，則不進行衝突檢查，直接保留
+            if (selectedCourses.has(course)) {
+                return true;
+            }
+            // 否則，檢查是否有時間衝突
+            return !this.detectTimeConflict(course, selectedCourses);
+        });
+    };
+
+
+    /**
+     * 檢測時間衝突
+     * @param course {Object} 要檢測的課程
+     * @param selectedCourses {Set} 已選擇的課程集合
+     * @returns {boolean} 如果衝突，返回 true
+     */
+    detectTimeConflict = (course, selectedCourses) => {
+        for (let selectedCourse of selectedCourses) {
+            if (this.isConflict(course, selectedCourse)) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    /**
+     * 判斷兩個課程是否衝突
+     * @param course1 {Object} 第一個課程
+     * @param course2 {Object} 第二個課程
+     * @returns {boolean} 如果衝突，返回 true
+     */
+    isConflict = (course1, course2) => {
+        for (let day of this.courseDayName) {
+            if (course1[day] && course2[day]) {
+                const time1 = course1[day].split('');
+                const time2 = course2[day].split('');
+                if (time1.some(t => time2.includes(t))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    /**
+     * 切換只顯示已選課程
+     */
+    toggleOnlySelected = () => {
+        this.setState({displaySelectedOnly: !this.state.displaySelectedOnly});
+    }
+
+    /**
+     * 切換是否顯示衝堂課程
+     */
+    toggleDisplayConflictCourses = () => {
+        this.setState({displayConflictCourses: !this.state.displayConflictCourses});
+    }
 
     render() {
-        const {courses, selectedCourses, onCourseSelect} = this.props;
-        const {filteredCourses, basicFilter, advancedFilters} = this.state;
+        const {courses, selectedCourses, onCourseSelect, onClearAllSelectedCourses} = this.props;
+        const {filteredCourses, basicFilter, advancedFilters, displaySelectedOnly, displayConflictCourses} = this.state;
 
         return (
             <Card className="h-100 mb-3 pb-2">
                 <Card.Header className="text-center">
                     <Card.Title className="fw-bolder mb-0 p-2">所有課程</Card.Title>
-                    <Card.Subtitle className="mb-0 p-2">共篩選 {filteredCourses.length} 門課程</Card.Subtitle>
+                    <Card.Subtitle className="mb-0 p-2">
+                            <Col>共篩選 {filteredCourses.length} 門課程，已選 {selectedCourses.size} 門課程</Col>
+                    </Card.Subtitle>
                 </Card.Header>
                 <ListInformation
                     courses={courses}
                     selectedCourses={selectedCourses}
+                    onClearAllSelectedCourses={onClearAllSelectedCourses}
                     basicFilter={basicFilter}
                     onBasicFilterChange={this.handleBasicFilterChange}
                     advancedFilters={advancedFilters}
                     onAdvancedFilterChange={this.handleAdvancedFilterChange}
+                    displaySelectedOnly={displaySelectedOnly}
+                    toggleOnlySelected={this.toggleOnlySelected}
+                    displayConflictCourses={displayConflictCourses}
+                    toggleDisplayConflictCourses={this.toggleDisplayConflictCourses}
                 />
                 <ListHeader/>
                 <StyledCardBody>
-                    <AllCourseList
-                        courses={filteredCourses}
+                    <CoursesList
+                        courses={displaySelectedOnly ? Array.from(selectedCourses) : filteredCourses}
                         selectedCourses={selectedCourses}
                         onCourseSelect={onCourseSelect}
+                        displayConflictCourses={displayConflictCourses}
+                        detectTimeConflict={this.detectTimeConflict}
                     />
                 </StyledCardBody>
             </Card>
