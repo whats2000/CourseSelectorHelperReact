@@ -78,7 +78,7 @@ class Item extends Component {
      * 處理畫面尺寸變化
      */
     handleResize = () => {
-        const newPlacement = window.innerWidth < 768 ? 'bottom' : 'left';
+        const newPlacement = window.innerWidth < 992 ? 'bottom' : 'left';
         this.setState({placement: newPlacement});
     };
 
