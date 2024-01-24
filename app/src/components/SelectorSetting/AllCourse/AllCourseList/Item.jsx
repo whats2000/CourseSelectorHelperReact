@@ -113,7 +113,7 @@ class Item extends Component {
         const {course} = this.props;
         return (
             <>
-                <Popover.Header as="h3">{course.Name}</Popover.Header>
+                <Popover.Header as="h3"><span className="fw-bolder">{course['Name']}</span> {course['Number']}</Popover.Header>
                 <Popover.Body>
                     <Stack direction="horizontal" gap={1}>
                         {Object.entries(this.infoCells).map(([displayName, courseKey]) => (
