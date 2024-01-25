@@ -20,7 +20,12 @@ class CoursesList extends Component {
             onCourseHover,
             hoveredCourseId
         } = this.props;
+
         const course = courses[index];
+
+        // 如果課程不存在，則不渲染該課程，動態篩選時可能會發生
+        if (!course) return null;
+
         const isSelected = selectedCourses.has(course);
         const isHovered = hoveredCourseId === course['Number'];
         let isConflict = false;
