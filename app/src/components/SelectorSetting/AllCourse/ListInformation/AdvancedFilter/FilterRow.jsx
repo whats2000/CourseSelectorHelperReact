@@ -260,6 +260,7 @@ class FilterRow extends Component {
                                                onClick={() => this.handleDeselectAll(filterName)}>取消全選</Dropdown.Item>
                                 <Form.Control
                                     autoFocus
+                                    id={`dropdown-search-${filterName}`}
                                     className="mx-3 ps-0 w-auto shadow-none border-0 border-bottom rounded-0"
                                     placeholder={`搜尋${filterName}...`}
                                     onChange={this.handleSearchChange}
