@@ -364,10 +364,10 @@ class AdvancedFilter extends Component {
                     backdrop={false}
                 >
                     <Offcanvas.Header closeButton>
-                        <Offcanvas.Title>進階篩選</Offcanvas.Title>
+                        <Offcanvas.Title className="fw-bolder">進階篩選</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
-                        <FilterRow>
+                        <FilterRow className="text-muted fst-italic">
                             可以用空格分隔多個關鍵字，空格是「且」的意思，逗號是「或」的意思
                         </FilterRow>
                         {
