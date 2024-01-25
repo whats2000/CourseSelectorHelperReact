@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import styled from 'styled-components';
-import {websiteColor} from "../config";
+import CourseBlock from "./ScheduleTable/CourseBlock";
 
 const StyledTableContainer = styled.div`
     border-radius: 0.375rem;
@@ -25,25 +25,6 @@ const TimeSlotCell = styled.th`
 const CourseCell = styled.td`
     width: 12.5%;
     padding: 2px !important;
-`;
-
-const CourseBlock = styled.div`
-    background-color: ${websiteColor.mainLighterColor};
-    border: 1px solid ${websiteColor.mainColor};
-    border-radius: 4px;
-    margin-bottom: 4px;
-    padding: 2px 4px;
-    font-size: 9px;
-    text-align: center;
-    
-    &.hover {
-        background-color: ${websiteColor.mainColor};
-        color: white;
-    }
-    
-    &:last-child {
-        margin-bottom: 0;
-    }
 `;
 
 class ScheduleTable extends Component {
@@ -100,24 +81,8 @@ class ScheduleTable extends Component {
         return coursesTable;
     };
 
-    /**
-     * 產生課程方塊
-     * @param courses {Object[]} 課程資料
-     * @returns {JSX.Element[]} 課程方塊
-     */
-    generateCourseBlocks = (courses) => {
-        return courses.map(course => (
-            <CourseBlock key={course['Number']}
-                         onMouseEnter={() => this.props.onCourseHover(course['Number'])}
-                         onMouseLeave={() => this.props.onCourseHover(null)}
-                         className={this.props.hoveredCourseId === course['Number'] ? 'hover' : ''}>
-                <span className="d-block fw-bold">{course['Name']}</span>
-                <span>{course['Room']}</span>
-            </CourseBlock>
-        ));
-    };
-
     render() {
+        const {hoveredCourseId, onCourseHover} = this.props;
         const coursesTable = this.createCourseTable();
 
         return (
@@ -141,7 +106,15 @@ class ScheduleTable extends Component {
                             </TimeSlotCell>
                             {this.setting.weekday.map((weekday, n) => (
                                 <CourseCell key={`${weekday.key}-${timeSlot.key}`}>
-                                    {this.generateCourseBlocks(coursesTable[`${weekday.key}-${timeSlot.key}`])}
+                                    {
+                                        coursesTable[`${weekday.key}-${timeSlot.key}`].map((course, i) =>
+                                            <CourseBlock key={i}
+                                                         course={course}
+                                                         hoveredCourseId={hoveredCourseId}
+                                                         onCourseHover={onCourseHover}
+                                            />
+                                        )
+                                    }
                                 </CourseCell>
                             ))}
                         </tr>
