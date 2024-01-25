@@ -1,13 +1,13 @@
 import {Component} from "react";
-import {Card, Col} from "react-bootstrap";
-import styled from "styled-components";
+import {Card} from "react-bootstrap";
+// import styled from "styled-components";
 import ListInformation from "./RequiredCourse/ListInformation";
 
-const StyledCardBody = styled(Card.Body)`
-    height: 100%;
-    min-height: 65vh;
-    padding: 0;
-`;
+// const StyledCardBody = styled(Card.Body)`
+//     height: 100%;
+//     min-height: 65vh;
+//     padding: 0;
+// `;
 
 class RequiredCourse extends Component {
     render() {
