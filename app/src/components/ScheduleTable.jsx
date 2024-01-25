@@ -13,11 +13,13 @@ const StyledTable = styled.table`
 
 const HeaderCell = styled.th`
     font-weight: normal;
+    padding: 2px !important;
     background-color: lightgray !important;
 `;
 
 const TimeSlotCell = styled.th`
     width: 4%;
+    padding: 2px !important;
     font-weight: normal;
     background-color: lightgray !important;
 `;
