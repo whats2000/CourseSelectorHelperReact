@@ -328,7 +328,7 @@ class AdvancedFilter extends Component {
                         <Form.Control
                             id={`advanced-filter-text-${filterName}`}
                             type="text"
-                            placeholder={`搜索${filterName}...`}
+                            placeholder={`搜尋${filterName}...`}
                             value={textInput || ''}
                             onChange={e => this.handleTextFilterChange(filterName, e.target.value)}
                         />
@@ -367,6 +367,9 @@ class AdvancedFilter extends Component {
                         <Offcanvas.Title>進階篩選</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
+                        <FilterRow>
+                            可以用空格分隔多個關鍵字，空格是「且」的意思，逗號是「或」的意思
+                        </FilterRow>
                         {
                             Object.keys(filterOptions).map((filterName, index) => (
                                 <div key={index}>

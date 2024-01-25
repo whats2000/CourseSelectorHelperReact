@@ -91,21 +91,29 @@ class AllCourse extends Component {
      * @returns {Array} 過濾後的課程列表
      */
     getFilteredCourses = () => {
-        const {courses} = this.props;
-        const {basicFilter, displayConflictCourses, advancedFilters} = this.state;
+        const { courses } = this.props;
+        const { basicFilter, displayConflictCourses, advancedFilters } = this.state;
 
-        let filteredCourses = basicFilter
-            ? courses.filter(course =>
-                course['Name'].toLowerCase().includes(basicFilter.toLowerCase()) ||
-                course['Teacher'].toLowerCase().includes(basicFilter.toLowerCase()) ||
-                course['Programs'].toLowerCase().includes(basicFilter.toLowerCase()) ||
-                course['Number'].toLowerCase().includes(basicFilter.toLowerCase()) ||
-                course['Department'].toLowerCase().includes(basicFilter.toLowerCase()))
-            : courses;
+        let filteredCourses = courses;
+
+        // 如果有基本篩選字串，則過濾掉不包含該字串的課程
+        if (basicFilter) {
+            const filterKeywords = basicFilter.toLowerCase().split(/\s+/);
+
+            filteredCourses = filteredCourses.filter(course =>
+                filterKeywords.every(keyword =>
+                    course['Name'].toLowerCase().includes(keyword) ||
+                    course['Teacher'].toLowerCase().includes(keyword) ||
+                    course['Programs'].toLowerCase().includes(keyword) ||
+                    course['Number'].toLowerCase().includes(keyword) ||
+                    course['Department'].toLowerCase().includes(keyword)
+                )
+            );
+        }
 
         filteredCourses = this.applyAdvancedFilters(filteredCourses, advancedFilters);
 
-        // 如果不顯示衝突課程，進行過濾
+        // 如果不顯示衝堂課程，則過濾掉衝堂課程
         if (!displayConflictCourses) {
             filteredCourses = this.filterOutConflictCourses(filteredCourses);
         }
@@ -152,9 +160,17 @@ class AllCourse extends Component {
      */
     applyTextFilter = (course, filterName, filter) => {
         const courseValue = course[this.courseDataNameMap[filterName]]?.toLowerCase();
-        const filterValue = filter.value.toLowerCase();
-        return (filter.include === undefined ? true : filter.include) ? courseValue.includes(filterValue) :
-            !courseValue.includes(filterValue);
+        const isInclude = filter.include === undefined ? true : filter.include;
+        // 使用逗號或空格分割每個組
+        const filterGroups = filter.value.toLowerCase().split(/[，,]/);
+
+        return filterGroups.some(group => {
+            // 使用空格分割每個關鍵字
+            const keywords = group.trim().split(/\s+/);
+            return keywords.every(keyword =>
+                isInclude ? courseValue.includes(keyword) : !courseValue.includes(keyword)
+            );
+        });
     };
 
     /**

@@ -102,7 +102,7 @@ class ListInformation extends Component {
                         <Form.Control
                             id="all-course-filter"
                             type="text"
-                            placeholder="搜尋課程..."
+                            placeholder="關鍵字 (空格分隔)..."
                             value={basicFilter ?? ""}
                             onChange={this.handleFilterChange}
                         />
