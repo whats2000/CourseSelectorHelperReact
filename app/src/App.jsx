@@ -54,7 +54,17 @@ class App extends Component {
                             c['Teacher'] === course['Teacher']
                         ))
                 );
-                this.setState({courses: uniqueResults});
+                this.setState({courses: uniqueResults}, () => {
+                    // 載入已選課程
+                    const savedSelectedCoursesNumbers = localStorage.getItem('selectedCoursesNumbers');
+                    if (savedSelectedCoursesNumbers) {
+                        const selectedCourseNumbers = new Set(JSON.parse(savedSelectedCoursesNumbers));
+                        const selectedCourses = new Set(
+                            this.state.courses.filter(course => selectedCourseNumbers.has(course['Number']))
+                        );
+                        this.setState({selectedCourses});
+                    }
+                });
             })
             .catch(error => console.error('Error fetching and parsing data:', error));
     }
@@ -86,6 +96,9 @@ class App extends Component {
             } else {
                 selectedCourses.delete(course);
             }
+
+            localStorage.setItem('selectedCoursesNumbers', JSON.stringify(Array.from(selectedCourses).map(c => c['Number'])));
+
             return {selectedCourses};
         });
     };
@@ -94,6 +107,8 @@ class App extends Component {
      * 處理清除所有已選課程的事件
      */
     handleClearAllSelectedCourses = () => {
+        localStorage.removeItem('selectedCoursesNumbers');
+
         this.setState({selectedCourses: new Set()});
     }
 
