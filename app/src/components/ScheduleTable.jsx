@@ -31,6 +31,10 @@ const CourseBlock = styled.div`
     text-align: center;
     width: 100%;
     flex-grow: 1;
+    
+    &:last-child {
+        margin-bottom: 0;
+    }
 `;
 
 
