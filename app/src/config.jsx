@@ -56,5 +56,6 @@ export const courseData = {
 export const websiteColor = {
     mainColor: "#009e96",
     mainDarkerColor: "#008e86",
+    mainLighterColor: "#b2e2df",
     boxShadowColor: "rgba(0, 158, 150, 0.25)",
 };

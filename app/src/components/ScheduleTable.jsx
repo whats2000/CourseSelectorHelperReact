@@ -1,6 +1,10 @@
 import {Component} from 'react';
 import styled from 'styled-components';
-import {Col, Row} from "react-bootstrap";
+import {websiteColor} from "../config";
+
+const StyledTableContainer = styled.div`
+    border-radius: 0.375rem;
+`;
 
 const StyledTable = styled.table`
     font-size: 10px;
@@ -8,12 +12,14 @@ const StyledTable = styled.table`
 `;
 
 const HeaderCell = styled.th`
+    font-weight: normal;
     background-color: lightgray !important;
 `;
 
-const TimeSlotCell = styled.td`
+const TimeSlotCell = styled.th`
     width: 4%;
-    background-color: lightgrey !important;
+    font-weight: normal;
+    background-color: lightgray !important;
 `;
 
 const CourseCell = styled.td`
@@ -22,21 +28,23 @@ const CourseCell = styled.td`
 `;
 
 const CourseBlock = styled.div`
-    background-color: #dfdf9f;
-    border: 1px solid #bfbf7f;
+    background-color: ${websiteColor.mainLighterColor};
+    border: 1px solid ${websiteColor.mainColor};
     border-radius: 4px;
     margin-bottom: 4px;
     padding: 2px 4px;
     font-size: 9px;
     text-align: center;
-    width: 100%;
-    flex-grow: 1;
+    
+    &.hover {
+        background-color: ${websiteColor.mainColor};
+        color: white;
+    }
     
     &:last-child {
         margin-bottom: 0;
     }
 `;
-
 
 class ScheduleTable extends Component {
     setting = {
@@ -99,13 +107,12 @@ class ScheduleTable extends Component {
      */
     generateCourseBlocks = (courses) => {
         return courses.map(course => (
-            <CourseBlock key={course['Number']} className="align-self-stretch">
-                <Row>
-                    <Col className="fw-bolder">{course['Name']}</Col>
-                </Row>
-                <Row>
-                    <Col className="text-muted">{course['Number']}</Col>
-                </Row>
+            <CourseBlock key={course['Number']}
+                         onMouseEnter={() => this.props.onCourseHover(course['Number'])}
+                         onMouseLeave={() => this.props.onCourseHover(null)}
+                         className={this.props.hoveredCourseId === course['Number'] ? 'hover' : ''}>
+                <span className="d-block fw-bold">{course['Name']}</span>
+                <span>{course['Room']}</span>
             </CourseBlock>
         ));
     };
@@ -114,9 +121,9 @@ class ScheduleTable extends Component {
         const coursesTable = this.createCourseTable();
 
         return (
-            <div className="table-responsive rounded-2">
+            <StyledTableContainer className="table-responsive">
                 <StyledTable
-                    className="table table-bordered border-white border-5 rounded-5 table-secondary text-center">
+                    className="table table-bordered border-white border-5 table-secondary text-center">
                     <thead>
                     <tr>
                         <HeaderCell>期</HeaderCell>
@@ -129,21 +136,19 @@ class ScheduleTable extends Component {
                     {this.setting.timeSlots.map((timeSlot, index) => (
                         <tr key={index}>
                             <TimeSlotCell>
-                                <span className="fw-bold d-block">{timeSlot.key}</span>
+                                <span className="d-block fw-bold">{timeSlot.key}</span>
                                 <span>{timeSlot.value}</span>
                             </TimeSlotCell>
                             {this.setting.weekday.map((weekday, n) => (
                                 <CourseCell key={`${weekday.key}-${timeSlot.key}`}>
-                                    <div className="d-flex flex-column">
-                                        {this.generateCourseBlocks(coursesTable[`${weekday.key}-${timeSlot.key}`])}
-                                    </div>
+                                    {this.generateCourseBlocks(coursesTable[`${weekday.key}-${timeSlot.key}`])}
                                 </CourseCell>
                             ))}
                         </tr>
                     ))}
                     </tbody>
                 </StyledTable>
-            </div>
+            </StyledTableContainer>
         );
     }
 }

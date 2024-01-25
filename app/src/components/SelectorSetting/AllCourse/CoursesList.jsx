@@ -10,9 +10,19 @@ class CoursesList extends Component {
      * @returns {JSX.Element}
      */
     renderItem = (index) => {
-        const { courses, displaySelectedOnly, selectedCourses, displayConflictCourses, detectTimeConflict } = this.props;
+        const {
+            courses,
+            displaySelectedOnly,
+            selectedCourses,
+            displayConflictCourses,
+            detectTimeConflict,
+            onCourseSelect,
+            onCourseHover,
+            hoveredCourseId
+        } = this.props;
         const course = courses[index];
         const isSelected = selectedCourses.has(course);
+        const isHovered = hoveredCourseId === course['Number'];
         let isConflict = false;
 
         // 如果設定為僅顯示已選擇的課程，且當前課程未被選擇，則不渲染該課程
@@ -31,7 +41,9 @@ class CoursesList extends Component {
                 course={course}
                 isSelected={isSelected}
                 isConflict={isConflict}
-                onCourseSelect={this.props.onCourseSelect}
+                isHovered={isHovered}
+                onCourseSelect={onCourseSelect}
+                onCourseHover={onCourseHover}
             />
         );
     }

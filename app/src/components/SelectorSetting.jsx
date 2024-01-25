@@ -7,14 +7,16 @@ import SelectedCourse from "./SelectorSetting/SelectedCourse";
 
 class SelectorSetting extends Component {
     render() {
-        const {currentTab, courses, selectedCourses, onCourseSelect, onClearAllSelectedCourses} = this.props;
+        const {currentTab, courses, selectedCourses, onCourseSelect, onClearAllSelectedCourses, onCourseHover, hoveredCourseId} = this.props;
 
         const mapTabToComponent = {
             '所有課程': <AllCourse
                 courses={courses}
                 selectedCourses={selectedCourses}
+                hoveredCourseId={hoveredCourseId}
                 onCourseSelect={onCourseSelect}
                 onClearAllSelectedCourses={onClearAllSelectedCourses}
+                onCourseHover={onCourseHover}
             />,
             '學期必修': <RequiredCourse/>,
             '課程偵探': <CourseDetective/>,

@@ -293,7 +293,7 @@ class AllCourse extends Component {
     }
 
     render() {
-        const {courses, selectedCourses, onCourseSelect, onClearAllSelectedCourses} = this.props;
+        const {courses, selectedCourses, onCourseSelect, onClearAllSelectedCourses, onCourseHover, hoveredCourseId} = this.props;
         const {filteredCourses, basicFilter, advancedFilters, displaySelectedOnly, displayConflictCourses} = this.state;
 
         return (
@@ -322,9 +322,11 @@ class AllCourse extends Component {
                     <CoursesList
                         courses={displaySelectedOnly ? Array.from(selectedCourses) : filteredCourses}
                         selectedCourses={selectedCourses}
-                        onCourseSelect={onCourseSelect}
                         displayConflictCourses={displayConflictCourses}
                         detectTimeConflict={this.detectTimeConflict}
+                        hoveredCourseId={hoveredCourseId}
+                        onCourseSelect={onCourseSelect}
+                        onCourseHover={onCourseHover}
                     />
                 </StyledCardBody>
             </Card>

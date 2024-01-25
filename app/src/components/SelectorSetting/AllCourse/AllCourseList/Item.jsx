@@ -1,7 +1,6 @@
 import {Component} from "react";
 import styled from "styled-components";
 import {Form, OverlayTrigger, Popover, Stack} from "react-bootstrap";
-import popover from "bootstrap/js/src/popover";
 
 const CourseRow = styled.div`
     font-size: 12px;
@@ -136,7 +135,7 @@ class Item extends Component {
     }
 
     render() {
-        const {course, isConflict, isSelected} = this.props;
+        const {course, isConflict, isSelected, isHovered, onCourseHover} = this.props;
         const {showPopover, placement} = this.state;
 
         if (!course) return null;
@@ -230,7 +229,10 @@ class Item extends Component {
         )
 
         return (
-            <CourseRow className={isConflict && !isSelected ? 'bg-warning-subtle' : ''}>
+            <CourseRow className={isConflict && !isSelected ? 'bg-warning-subtle' : isHovered ? 'bg-success-subtle' : ''}
+                       onMouseEnter={() => onCourseHover(course['Number'])}
+                       onMouseLeave={() => onCourseHover(null)}
+            >
                 <TinyCourseInfo>
                     <OverlayTrigger
                         trigger={['hover', 'focus']}

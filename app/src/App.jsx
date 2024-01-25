@@ -35,6 +35,7 @@ class App extends Component {
         currentTab: '公告',
         courses: [],
         selectedCourses: new Set(),
+        hoveredCourseId: null,
     };
 
     /**
@@ -47,11 +48,11 @@ class App extends Component {
                 const results = Papa.parse(csvText, {header: true, skipEmptyLines: true});
                 // 去除重複值
                 const uniqueResults = results.data.filter((course, index, self) =>
-                    index === self.findIndex(c => (
-                        c['Name'] === course['Name'] &&
-                        c['Number'] === course['Number'] &&
-                        c['Teacher'] === course['Teacher']
-                    ))
+                        index === self.findIndex(c => (
+                            c['Name'] === course['Name'] &&
+                            c['Number'] === course['Number'] &&
+                            c['Teacher'] === course['Teacher']
+                        ))
                 );
                 this.setState({courses: uniqueResults});
             })
@@ -85,7 +86,7 @@ class App extends Component {
             } else {
                 selectedCourses.delete(course);
             }
-            return { selectedCourses };
+            return {selectedCourses};
         });
     };
 
@@ -97,11 +98,19 @@ class App extends Component {
     }
 
     /**
+     * 處理課程滑鼠移入
+     * @param courseId {string} 課程編號
+     */
+    handleCourseHover = (courseId) => {
+        this.setState({hoveredCourseId: courseId});
+    };
+
+    /**
      * 渲染元件
      * @returns {React.ReactNode} 元件
      */
     render() {
-        const {isCollapsed, currentTab, courses, selectedCourses} = this.state;
+        const {isCollapsed, currentTab, courses, selectedCourses, hoveredCourseId} = this.state;
         const slideStyle = {
             marginLeft: isCollapsed ? (window.innerWidth >= 992 ? '-50%' : '0') : '0',
             marginTop: isCollapsed ? (window.innerWidth < 992 ? '-600%' : '0') : '0'
@@ -119,15 +128,20 @@ class App extends Component {
                 <MainContent id="app" className="container-fluid">
                     <div className="row d-flex flex-wrap">
                         <SlideContainer style={slideStyle} className="col-lg-6 d-flex flex-column">
-                            <ScheduleTable selectedCourses={selectedCourses}/>
+                            <ScheduleTable selectedCourses={selectedCourses}
+                                           hoveredCourseId={hoveredCourseId}
+                                           onCourseHover={this.handleCourseHover}
+                            />
                         </SlideContainer>
 
                         <div className="col-lg d-flex flex-column">
                             <SelectorSetting currentTab={currentTab}
                                              courses={courses}
                                              selectedCourses={selectedCourses}
+                                             hoveredCourseId={hoveredCourseId}
                                              onCourseSelect={this.handleCourseSelect}
                                              onClearAllSelectedCourses={this.handleClearAllSelectedCourses}
+                                             onCourseHover={this.handleCourseHover}
                             />
                         </div>
                     </div>
