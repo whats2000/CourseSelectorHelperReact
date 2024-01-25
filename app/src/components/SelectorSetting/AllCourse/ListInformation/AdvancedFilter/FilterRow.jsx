@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {websiteColor} from "../../../../../config";
 
 const StyledDropdownMenu = styled(Dropdown.Menu)`
-    max-height: 200px;
+    max-height: 350px;
     overflow-y: auto;
 
     .dropdown-item {
@@ -69,6 +69,43 @@ const FilterSwitch = styled(Form.Check)`
 `;
 
 class FilterRow extends Component {
+    state = {
+        searchValue: '',
+    };
+
+    /**
+     * 計算篩選器選項
+     * @param e {InputEvent} 輸入事件
+     */
+    handleSearchChange = (e) => {
+        this.setState({searchValue: e.target.value.toLowerCase()});
+    };
+
+    /**
+     * 生成篩選器選項
+     * @returns {string[]} 篩選器選項
+     */
+    generateFilteredOptions = () => {
+        const {searchValue} = this.state;
+        const {filterName, filterOptions} = this.props;
+
+        // 檢查是否有設定顯示名稱
+        const hasDisplayName = filterOptions[filterName].optionDisplayName && filterOptions[filterName].optionDisplayName.length > 0;
+
+        // 根據是否有顯示名稱來過濾選項
+        return filterOptions[filterName].options.filter((option, index) => {
+            // 如果有顯示名稱，則先將顯示名稱轉換為小寫並與輸入值比較
+            if (hasDisplayName) {
+                const displayName = filterOptions[filterName].optionDisplayName[index].toLowerCase();
+
+                return displayName.startsWith(searchValue.toLowerCase());
+            }
+            // 如果沒有顯示名稱，則直接比較選項值
+            return option.toLowerCase().startsWith(searchValue.toLowerCase());
+        });
+    };
+
+
     /**
      * 處理篩選器模式變化
      * @param filterName {string} 篩選器名稱
@@ -188,7 +225,10 @@ class FilterRow extends Component {
     };
 
     render() {
-        const {filterOptions, filterName, options, isDropdown, advancedFilters} = this.props;
+        const {searchValue} = this.state;
+        const {filterOptions, filterName, isDropdown, advancedFilters, filterNameToDisplayName} = this.props;
+
+        const filteredOptions = this.generateFilteredOptions();
 
         const selected = advancedFilters[filterName] || {};
         const textInput = advancedFilters[filterName]?.value || '';
@@ -218,14 +258,23 @@ class FilterRow extends Component {
                                                onClick={() => this.handleSelectAll(filterName)}>全選</Dropdown.Item>
                                 <Dropdown.Item as="button"
                                                onClick={() => this.handleDeselectAll(filterName)}>取消全選</Dropdown.Item>
+                                <Form.Control
+                                    autoFocus
+                                    className="mx-3 ps-0 w-auto shadow-none border-0 border-bottom rounded-0"
+                                    placeholder={`搜尋${filterName}...`}
+                                    onChange={this.handleSearchChange}
+                                    value={searchValue}
+                                />
                                 <Dropdown.Divider/>
-                                {options.map((option, index) => (
-                                    <Dropdown.Item key={index} active={selected[option]}
-                                                   onClick={() => this.handleOptionSelect(filterName, option)}>
-                                        {/** 如果有指定選項的顯示名稱，則顯示顯示名稱，否則顯示選項本身 */}
-                                        {filterOptions[filterName].optionDisplayName?.[index] ?? option}
-                                    </Dropdown.Item>
-                                ))}
+                                {filteredOptions.length > 0 ? (
+                                    filteredOptions.map((option, index) => (
+                                        <Dropdown.Item key={index} active={selected[option]}
+                                                       onClick={() => this.handleOptionSelect(filterName, option)}>
+                                            {filterNameToDisplayName(filterName, option) ?? option}
+                                        </Dropdown.Item>
+                                    ))) : (
+                                    <Dropdown.Item disabled>沒有符合的項目</Dropdown.Item>
+                                )}
                             </StyledDropdownMenu>
                         </Dropdown>
                     ) : (

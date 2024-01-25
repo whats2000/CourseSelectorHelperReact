@@ -73,6 +73,28 @@ class AdvancedFilter extends Component {
     handleShow = () => this.setState({show: !this.state.show});
 
     /**
+     * 篩選器選項名稱轉換成顯示名稱
+     * @param filterName {String} 篩選器名稱
+     * @param optionName {String} 選項名稱
+     */
+    filterNameToDisplayName = (filterName, optionName) => {
+        const filter = this.state.filterOptions[filterName];
+
+        // 檢查是否有 displayName 映射
+        if (filter && filter.optionDisplayName) {
+            // 找到選項名稱在 options 中的索引
+            const index = filter.options.indexOf(optionName);
+            // 如果找到對應的索引且該索引在 optionDisplayName 中有對應的值，則返回該顯示名稱
+            if (index !== -1 && filter.optionDisplayName[index]) {
+                return filter.optionDisplayName[index];
+            }
+        }
+        // 如果沒有找到對應的顯示名稱，或者沒有 displayName 映射，則直接返回選項名稱
+        return optionName;
+    }
+
+
+    /**
      * 計算篩選選項
      * @param courses {Array} 課程列表
      */
@@ -129,10 +151,10 @@ class AdvancedFilter extends Component {
                                 <FilterRow key={index}
                                            filterOptions={filterOptions}
                                            filterName={filterName}
-                                           options={filterOptions[filterName].options}
                                            isDropdown={filterOptions[filterName].dropdown}
                                            advancedFilters={advancedFilters}
                                            onAdvancedFilterChange={onAdvancedFilterChange}
+                                           filterNameToDisplayName={this.filterNameToDisplayName}
                                 />
                             ))
                         }
