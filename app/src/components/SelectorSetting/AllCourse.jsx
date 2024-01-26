@@ -21,28 +21,6 @@ class AllCourse extends Component {
         filteredCourses: this.props.courses,
     };
 
-    courseDataNameMap = {
-        "名稱": "Name",
-        "教師": "Teacher",
-        "學程": "Programs",
-        "年級": "Grade",
-        "班別": "Class",
-        "系所": "Department",
-        "必修": "CompulsoryElective",
-        "學分": "Credit",
-        "英課": "EMI",
-    }
-
-    courseDayName = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-    ]
-
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.basicFilter !== prevState.basicFilter ||
             this.state.advancedFilters !== prevState.advancedFilters ||
@@ -159,7 +137,7 @@ class AllCourse extends Component {
      * @returns {boolean} 如果匹配，返回 true
      */
     applyTextFilter = (course, filterName, filter) => {
-        const courseValue = course[this.courseDataNameMap[filterName]]?.toLowerCase();
+        const courseValue = course[this.props.courseDataNameMap[filterName]]?.toLowerCase();
         const isInclude = filter.include === undefined ? true : filter.include;
         // 使用逗號或空格分割每個組
         const filterGroups = filter.value.toLowerCase().split(/[，,]/);
@@ -186,7 +164,7 @@ class AllCourse extends Component {
 
         if (filterName === '星期') {
             // 檢查是否有任何一天匹配
-            const daysMatched = this.courseDayName.some(day => {
+            const daysMatched = this.props.courseDayName.some(day => {
                 return filter[day] && course[day];
             });
             return isInclude ? daysMatched : !daysMatched;
@@ -195,7 +173,7 @@ class AllCourse extends Component {
         if (filterName === '節次') {
             // 檢查是否有任何一節匹配
             let periodsMatched = false;
-            this.courseDayName.forEach(day => {
+            this.props.courseDayName.forEach(day => {
                 if (course[day]) {
                     periodsMatched = periodsMatched || course[day].split('').some(period => {
                         return filter[period];
@@ -217,7 +195,7 @@ class AllCourse extends Component {
      * @returns {boolean} 如果匹配，返回 true
      */
     applyOptionFilter = (course, filterName, filter) => {
-        const courseValue = course[this.courseDataNameMap[filterName]]?.toString();
+        const courseValue = course[this.props.courseDataNameMap[filterName]]?.toString();
         let matched = Object.keys(filter).some(option => {
             if (option === 'active' || option === 'include') return false;
             return filter[option] && courseValue === option;
@@ -239,43 +217,8 @@ class AllCourse extends Component {
                 return true;
             }
             // 否則，檢查是否有時間衝突
-            return !this.detectTimeConflict(course, selectedCourses);
+            return !this.props.detectTimeConflict(course, selectedCourses);
         });
-    };
-
-
-    /**
-     * 檢測時間衝突
-     * @param course {Object} 要檢測的課程
-     * @param selectedCourses {Set} 已選擇的課程集合
-     * @returns {boolean} 如果衝突，返回 true
-     */
-    detectTimeConflict = (course, selectedCourses) => {
-        for (let selectedCourse of selectedCourses) {
-            if (this.isConflict(course, selectedCourse)) {
-                return true;
-            }
-        }
-        return false;
-    };
-
-    /**
-     * 判斷兩個課程是否衝突
-     * @param course1 {Object} 第一個課程
-     * @param course2 {Object} 第二個課程
-     * @returns {boolean} 如果衝突，返回 true
-     */
-    isConflict = (course1, course2) => {
-        for (let day of this.courseDayName) {
-            if (course1[day] && course2[day]) {
-                const time1 = course1[day].split('');
-                const time2 = course2[day].split('');
-                if (time1.some(t => time2.includes(t))) {
-                    return true;
-                }
-            }
-        }
-        return false;
     };
 
     /**
@@ -300,9 +243,16 @@ class AllCourse extends Component {
             onClearAllSelectedCourses,
             onCourseHover,
             hoveredCourseId,
-            isCollapsed
+            isCollapsed,
+            detectTimeConflict,
         } = this.props;
-        const {filteredCourses, basicFilter, advancedFilters, displaySelectedOnly, displayConflictCourses} = this.state;
+        const {
+            filteredCourses,
+            basicFilter,
+            advancedFilters,
+            displaySelectedOnly,
+            displayConflictCourses
+        } = this.state;
 
         return (
             <Card className="h-100 mb-3 pb-2">
@@ -332,7 +282,7 @@ class AllCourse extends Component {
                         courses={displaySelectedOnly ? Array.from(selectedCourses) : filteredCourses}
                         selectedCourses={selectedCourses}
                         displayConflictCourses={displayConflictCourses}
-                        detectTimeConflict={this.detectTimeConflict}
+                        detectTimeConflict={detectTimeConflict}
                         hoveredCourseId={hoveredCourseId}
                         onCourseSelect={onCourseSelect}
                         onCourseHover={onCourseHover}
