@@ -29,6 +29,25 @@ class SelectorSetting extends Component {
     ]
 
     /**
+     * 計算總學分與總時數
+     * @param selectedCourses {Set: Object} 已選課程的 Set
+     * @returns {{totalCredits: number, totalHours: number}} 總學分與總時數
+     */
+    calculateTotalCreditsAndHours = (selectedCourses) => {
+        let totalCredits = 0;
+        let totalHours = 0;
+
+        selectedCourses.forEach(course => {
+            totalCredits += parseFloat(course['Credit'] ?? "0.0");
+            this.courseDayName.forEach(day => {
+                totalHours += course[day]?.length ?? 0;
+            });
+        });
+
+        return {totalCredits, totalHours};
+    };
+
+    /**
      * 檢測時間衝突
      * @param course {Object} 要檢測的課程
      * @param selectedCourses {Set} 已選擇的課程集合
@@ -84,6 +103,7 @@ class SelectorSetting extends Component {
                 onClearAllSelectedCourses={onClearAllSelectedCourses}
                 onCourseHover={onCourseHover}
                 detectTimeConflict={this.detectTimeConflict}
+                calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
                 courseDataNameMap={this.courseDataNameMap}
                 courseDayName={this.courseDayName}
             />,
@@ -96,6 +116,7 @@ class SelectorSetting extends Component {
                 onClearAllSelectedCourses={onClearAllSelectedCourses}
                 onCourseHover={onCourseHover}
                 detectTimeConflict={this.detectTimeConflict}
+                calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
                 courseDataNameMap={this.courseDataNameMap}
             />,
             '課程偵探': <CourseDetective/>,

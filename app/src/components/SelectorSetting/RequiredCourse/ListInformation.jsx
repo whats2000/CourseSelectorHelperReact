@@ -1,13 +1,19 @@
 import React, {Component} from "react";
-import {Card, Button, DropdownButton, Dropdown} from "react-bootstrap";
+import {Card, Button, Form, InputGroup} from "react-bootstrap";
 import styled from "styled-components";
 import {websiteColor} from "../../../config";
 
-const StyledDropdown = styled(DropdownButton)`
+const StyledSelect = styled(Form.Select)`
     margin-right: 10px;
+    width: auto;
+
+    &:last-child {
+        margin-right: 0;
+    }
 `;
 
 const StyledButton = styled(Button)`
+    margin-left: auto;
     background-color: ${websiteColor.mainColor};
     border-color: ${websiteColor.mainColor};
 
@@ -21,25 +27,22 @@ const ButtonsRow = styled.div`
     display: flex;
     justify-content: start;
     align-items: center;
-    margin-bottom: 10px;
 `;
 
 class ListInformation extends Component {
-    // 假設的篩選條件數據
     departments = ["系所1", "系所2", "系所3"];
     classes = ["班級1", "班級2", "班級3"];
     grades = ["年級1", "年級2", "年級3"];
 
-    // 各種篩選條件的事件處理函數
-    handleSelectDepartment = (value) => {
+    handleSelectDepartment = (e) => {
         // 處理選擇系所
     };
 
-    handleSelectClass = (value) => {
+    handleSelectClass = (e) => {
         // 處理選擇班級
     };
 
-    handleSelectGrade = (value) => {
+    handleSelectGrade = (e) => {
         // 處理選擇年級
     };
 
@@ -52,28 +55,41 @@ class ListInformation extends Component {
     };
 
     render() {
+        const {
+            selectedCourses,
+            calculateTotalCreditsAndHours,
+        } = this.props;
+        const {totalCredits, totalHours} = calculateTotalCreditsAndHours(selectedCourses);
+
         return (
             <Card.Body>
-                <ButtonsRow>
-                    <StyledDropdown title="系所" onSelect={this.handleSelectDepartment}>
+                <ButtonsRow className="mb-2">
+                    <StyledSelect className="w-100" onChange={this.handleSelectDepartment}>
+                        <option value="">選擇系所</option>
                         {this.departments.map((dept, index) => (
-                            <Dropdown.Item key={index} eventKey={dept}>{dept}</Dropdown.Item>
+                            <option key={index} value={dept}>{dept}</option>
                         ))}
-                    </StyledDropdown>
-                    <StyledDropdown title="班級" onSelect={this.handleSelectClass}>
+                    </StyledSelect>
+                    <StyledSelect onChange={this.handleSelectClass}>
+                        <option value="">選擇班級</option>
                         {this.classes.map((cls, index) => (
-                            <Dropdown.Item key={index} eventKey={cls}>{cls}</Dropdown.Item>
+                            <option key={index} value={cls}>{cls}</option>
                         ))}
-                    </StyledDropdown>
-                    <StyledDropdown title="年級" onSelect={this.handleSelectGrade}>
+                    </StyledSelect>
+                    <StyledSelect onChange={this.handleSelectGrade}>
+                        <option value="">選擇年級</option>
                         {this.grades.map((grade, index) => (
-                            <Dropdown.Item key={index} eventKey={grade}>{grade}</Dropdown.Item>
+                            <option key={index} value={grade}>{grade}</option>
                         ))}
-                    </StyledDropdown>
+                    </StyledSelect>
                 </ButtonsRow>
                 <ButtonsRow>
-                    <StyledButton onClick={this.handleSelectAll}>全部填入</StyledButton>
-                    <StyledButton onClick={this.handleDeselectAll}>全部取消</StyledButton>
+                    <InputGroup className="w-auto">
+                        <InputGroup.Text>{totalCredits} 學分</InputGroup.Text>
+                        <InputGroup.Text>{totalHours} 小時</InputGroup.Text>
+                    </InputGroup>
+                    <StyledButton variant="success" onClick={this.handleSelectAll}>全部填入</StyledButton>
+                    <Button variant="danger" className="ms-2" onClick={this.handleDeselectAll}>全部取消</Button>
                 </ButtonsRow>
             </Card.Body>
         );

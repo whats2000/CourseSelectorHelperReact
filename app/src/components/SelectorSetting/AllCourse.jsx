@@ -245,6 +245,7 @@ class AllCourse extends Component {
             hoveredCourseId,
             isCollapsed,
             detectTimeConflict,
+            calculateTotalCreditsAndHours,
         } = this.props;
         const {
             filteredCourses,
@@ -274,6 +275,7 @@ class AllCourse extends Component {
                     toggleOnlySelected={this.toggleOnlySelected}
                     displayConflictCourses={displayConflictCourses}
                     toggleDisplayConflictCourses={this.toggleDisplayConflictCourses}
+                    calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
                 />
                 <ListHeader/>
                 <StyledCardBody>
