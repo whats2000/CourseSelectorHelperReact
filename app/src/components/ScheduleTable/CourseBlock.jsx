@@ -82,9 +82,15 @@ class CourseBlock extends Component {
                                style={courseBlockStyle}
             >
                 <span className="d-block fw-bold">{course['Name']}</span>
+                {isHover && (
+                    <>
+                        <span className="d-block">{course['Number']}</span>
+                        <span className="d-block">{course['Teacher']}</span>
+                    </>
+                )}
                 <span>{course['Room']}</span>
                 <DeleteButton onClickCapture={this.handleDeleteCourse}>
-                    <Trash3 size={10}/>
+                <Trash3 size={10}/>
                 </DeleteButton>
             </StyledCourseBlock>
         );
