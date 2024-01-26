@@ -144,6 +144,7 @@ class App extends Component {
                     <div className="row d-flex flex-wrap">
                         <SlideContainer style={slideStyle} className="col-lg-6 d-flex flex-column">
                             <ScheduleTable selectedCourses={selectedCourses}
+                                           handleCourseSelect={this.handleCourseSelect}
                                            hoveredCourseId={hoveredCourseId}
                                            onCourseHover={this.handleCourseHover}
                             />

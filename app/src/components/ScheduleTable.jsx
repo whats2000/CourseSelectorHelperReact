@@ -84,7 +84,7 @@ class ScheduleTable extends Component {
     };
 
     render() {
-        const {hoveredCourseId, onCourseHover} = this.props;
+        const {hoveredCourseId, onCourseHover, handleCourseSelect} = this.props;
         const coursesTable = this.createCourseTable();
 
         return (
@@ -112,6 +112,7 @@ class ScheduleTable extends Component {
                                         coursesTable[`${weekday.key}-${timeSlot.key}`].map((course, i) =>
                                             <CourseBlock key={i}
                                                          course={course}
+                                                         handleCourseSelect={handleCourseSelect}
                                                          hoveredCourseId={hoveredCourseId}
                                                          onCourseHover={onCourseHover}
                                             />

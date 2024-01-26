@@ -1,8 +1,26 @@
 import {Component} from "react";
+import {Trash3} from "react-bootstrap-icons";
 import styled from "styled-components";
 import {websiteColor} from "../../config";
 
+const DeleteButton = styled.div`
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 15px;
+    height: 15px;
+    background-color: ${websiteColor.mainLighterColor};
+    color: ${websiteColor.mainColor};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    visibility: hidden;
+`;
+
 const StyledCourseBlock = styled.div`
+    position: relative;
     border-radius: 4px;
     margin-bottom: 4px;
     padding: 2px 4px;
@@ -12,10 +30,21 @@ const StyledCourseBlock = styled.div`
     &:last-child {
         margin-bottom: 0;
     }
+
+    &:hover ${DeleteButton} {
+        visibility: visible;
+    }
 `;
 
 
 class CourseBlock extends Component {
+    /**
+     * 處理刪除課程的函數
+     */
+    handleDeleteCourse = () => {
+        const {course, handleCourseSelect} = this.props;
+        handleCourseSelect(course, false); // 調用父組件的函數來刪除課程
+    };
 
     /**
      * 產生一個顏色，並且保持其亮度
@@ -54,6 +83,9 @@ class CourseBlock extends Component {
             >
                 <span className="d-block fw-bold">{course['Name']}</span>
                 <span>{course['Room']}</span>
+                <DeleteButton onClickCapture={this.handleDeleteCourse}>
+                    <Trash3 size={10}/>
+                </DeleteButton>
             </StyledCourseBlock>
         );
     }
