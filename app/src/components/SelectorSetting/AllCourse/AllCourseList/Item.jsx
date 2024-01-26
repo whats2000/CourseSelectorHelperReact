@@ -135,7 +135,7 @@ class Item extends Component {
     }
 
     render() {
-        const {course, isConflict, isSelected, isHovered, onCourseHover} = this.props;
+        const {course, isConflict, isSelected, isHovered, onCourseHover, isCollapsed} = this.props;
         const {showPopover, placement} = this.state;
 
         if (!course) return null;
@@ -236,7 +236,7 @@ class Item extends Component {
                 <TinyCourseInfo>
                     <OverlayTrigger
                         trigger={['hover', 'focus']}
-                        placement={placement}
+                        placement={isCollapsed ? 'bottom' : placement}
                         overlay={
                             <StyledPopover id={`pop-info-${course["Name"]}`}>
                                 {showPopover ? this.renderPopover() : <></>}

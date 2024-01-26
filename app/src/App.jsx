@@ -143,21 +143,24 @@ class App extends Component {
                 <MainContent id="app" className="container-fluid">
                     <div className="row d-flex flex-wrap">
                         <SlideContainer style={slideStyle} className="col-lg-6 d-flex flex-column">
-                            <ScheduleTable selectedCourses={selectedCourses}
-                                           handleCourseSelect={this.handleCourseSelect}
-                                           hoveredCourseId={hoveredCourseId}
-                                           onCourseHover={this.handleCourseHover}
+                            <ScheduleTable
+                                selectedCourses={selectedCourses}
+                                handleCourseSelect={this.handleCourseSelect}
+                                hoveredCourseId={hoveredCourseId}
+                                onCourseHover={this.handleCourseHover}
                             />
                         </SlideContainer>
 
                         <div className="col-lg d-flex flex-column">
-                            <SelectorSetting currentTab={currentTab}
-                                             courses={courses}
-                                             selectedCourses={selectedCourses}
-                                             hoveredCourseId={hoveredCourseId}
-                                             onCourseSelect={this.handleCourseSelect}
-                                             onClearAllSelectedCourses={this.handleClearAllSelectedCourses}
-                                             onCourseHover={this.handleCourseHover}
+                            <SelectorSetting
+                                isCollapsed={isCollapsed}
+                                currentTab={currentTab}
+                                courses={courses}
+                                selectedCourses={selectedCourses}
+                                hoveredCourseId={hoveredCourseId}
+                                onCourseSelect={this.handleCourseSelect}
+                                onClearAllSelectedCourses={this.handleClearAllSelectedCourses}
+                                onCourseHover={this.handleCourseHover}
                             />
                         </div>
                     </div>

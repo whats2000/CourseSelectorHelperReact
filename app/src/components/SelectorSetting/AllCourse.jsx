@@ -91,8 +91,8 @@ class AllCourse extends Component {
      * @returns {Array} 過濾後的課程列表
      */
     getFilteredCourses = () => {
-        const { courses } = this.props;
-        const { basicFilter, displayConflictCourses, advancedFilters } = this.state;
+        const {courses} = this.props;
+        const {basicFilter, displayConflictCourses, advancedFilters} = this.state;
 
         let filteredCourses = courses;
 
@@ -293,7 +293,15 @@ class AllCourse extends Component {
     }
 
     render() {
-        const {courses, selectedCourses, onCourseSelect, onClearAllSelectedCourses, onCourseHover, hoveredCourseId} = this.props;
+        const {
+            courses,
+            selectedCourses,
+            onCourseSelect,
+            onClearAllSelectedCourses,
+            onCourseHover,
+            hoveredCourseId,
+            isCollapsed
+        } = this.props;
         const {filteredCourses, basicFilter, advancedFilters, displaySelectedOnly, displayConflictCourses} = this.state;
 
         return (
@@ -320,6 +328,7 @@ class AllCourse extends Component {
                 <ListHeader/>
                 <StyledCardBody>
                     <CoursesList
+                        isCollapsed={isCollapsed}
                         courses={displaySelectedOnly ? Array.from(selectedCourses) : filteredCourses}
                         selectedCourses={selectedCourses}
                         displayConflictCourses={displayConflictCourses}

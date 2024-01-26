@@ -18,7 +18,8 @@ class CoursesList extends Component {
             detectTimeConflict,
             onCourseSelect,
             onCourseHover,
-            hoveredCourseId
+            hoveredCourseId,
+            isCollapsed
         } = this.props;
 
         const course = courses[index];
@@ -43,6 +44,7 @@ class CoursesList extends Component {
         // 渲染課程項目
         return (
             <Item
+                isCollapsed={isCollapsed}
                 course={course}
                 isSelected={isSelected}
                 isConflict={isConflict}
