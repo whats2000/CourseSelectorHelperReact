@@ -41,6 +41,7 @@ class RequiredCourse extends Component {
             onCourseHover,
             detectTimeConflict,
             calculateTotalCreditsAndHours,
+            filterOptions,
         } = this.props;
         const {
             requiredCourseFilters,
@@ -56,6 +57,7 @@ class RequiredCourse extends Component {
                     </Card.Subtitle>
                 </Card.Header>
                 <ListInformation
+                    filterOptions={filterOptions}
                     selectedCourses={selectedCourses}
                     requiredCourseFilters={requiredCourseFilters}
                     calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}

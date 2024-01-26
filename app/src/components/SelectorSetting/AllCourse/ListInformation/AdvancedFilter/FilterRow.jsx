@@ -226,7 +226,7 @@ class FilterRow extends Component {
 
     render() {
         const {searchValue} = this.state;
-        const {filterOptions, filterName, isDropdown, advancedFilters, filterNameToDisplayName} = this.props;
+        const {filterName, isDropdown, advancedFilters, filterNameToDisplayName} = this.props;
 
         const filteredOptions = this.generateFilteredOptions();
 

@@ -79,7 +79,7 @@ class AdvancedFilter extends Component {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <StyledFilterRow className="text-muted fst-italic">
-                            可以用空格分隔多個關鍵字，空格是「且」的意思，逗號是「或」的意思
+                            可以用空格分隔多個關鍵字，空格是「且」的意思，逗號是「或」的意思，系所篩選包含通識與博雅喔!
                         </StyledFilterRow>
                         {
                             Object.keys(filterOptions).map((filterName, index) => (

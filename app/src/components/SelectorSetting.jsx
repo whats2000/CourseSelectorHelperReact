@@ -183,6 +183,7 @@ class SelectorSetting extends Component {
                 onCourseSelect={onCourseSelect}
                 onClearAllSelectedCourses={onClearAllSelectedCourses}
                 onCourseHover={onCourseHover}
+                filterOptions={filterOptions}
                 detectTimeConflict={this.detectTimeConflict}
                 calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
                 courseDataNameMap={this.courseDataNameMap}
