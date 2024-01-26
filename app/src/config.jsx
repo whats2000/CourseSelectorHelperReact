@@ -50,7 +50,7 @@ export const entryNotificationConfig = {
 };
 
 export const courseData = {
-    latestSource: "https://raw.githubusercontent.com/CelleryLin/selector_helper/master/all_classes/all_classes_1122_20240116.csv",
+    latestSource: "https://raw.githubusercontent.com/CelleryLin/selector_helper/master/all_classes/all_classes_1122_20240126.csv",
 }
 
 export const websiteColor = {
