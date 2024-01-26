@@ -242,6 +242,7 @@ class AllCourse extends Component {
             onCourseSelect,
             onClearAllSelectedCourses,
             onCourseHover,
+            filterOptions,
             hoveredCourseId,
             isCollapsed,
             detectTimeConflict,
@@ -276,6 +277,7 @@ class AllCourse extends Component {
                     displayConflictCourses={displayConflictCourses}
                     toggleDisplayConflictCourses={this.toggleDisplayConflictCourses}
                     calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
+                    filterOptions={filterOptions}
                 />
                 <ListHeader/>
                 <StyledCardBody>

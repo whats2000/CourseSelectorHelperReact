@@ -64,6 +64,7 @@ class ListInformation extends Component {
             displaySelectedOnly,
             displayConflictCourses,
             calculateTotalCreditsAndHours,
+            filterOptions,
         } = this.props;
         const {totalCredits, totalHours} = calculateTotalCreditsAndHours(selectedCourses);
 
@@ -83,6 +84,7 @@ class ListInformation extends Component {
                         <AdvancedFilter courses={courses}
                                         advancedFilters={advancedFilters}
                                         onAdvancedFilterChange={onAdvancedFilterChange}
+                                        filterOptions={filterOptions}
                         />
                     </InputGroup>
 
