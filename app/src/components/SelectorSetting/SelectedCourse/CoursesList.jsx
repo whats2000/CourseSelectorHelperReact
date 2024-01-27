@@ -33,8 +33,7 @@ class CoursesList extends Component {
         if (!course) return null;
 
         const isHovered = hoveredCourseId === course['Number'];
-
-        const isSelected = addedSelectedCourses.has(course);
+        const isSelected = addedSelectedCourses.has(course['Number']);
 
         // 渲染課程項目
         return (

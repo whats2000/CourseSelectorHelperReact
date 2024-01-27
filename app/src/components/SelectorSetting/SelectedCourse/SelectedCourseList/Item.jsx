@@ -219,8 +219,14 @@ class Item extends Component {
                 <SmallCourseInfo>{time}</SmallCourseInfo>
                 <TinyCourseInfo>{emi}</TinyCourseInfo>
                 <SmallCourseInfo>
-                    <Form.Control size="sm" type="number" min={0} max={100} value={courseWeight}
-                                  onChange={this.handleCourseWeightChange}/>
+                    <Form.Control
+                        id={`course-weight-${course['Number']}`}
+                        size="sm"
+                        type="number"
+                        min={0}
+                        max={100}
+                        value={courseWeight}
+                        onChange={this.handleCourseWeightChange}/>
                 </SmallCourseInfo>
             </CourseRow>
         );

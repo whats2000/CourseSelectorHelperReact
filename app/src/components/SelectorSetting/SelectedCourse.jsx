@@ -1,9 +1,9 @@
 import {Component} from "react";
 import {Card, Col} from "react-bootstrap";
 import ListInformation from "./SelectedCourse/ListInformation";
-import Header from "./SelectedCourse/SelectedCourseList/Header";
 import styled from "styled-components";
 import CoursesList from "./SelectedCourse/CoursesList";
+import ExportModal from "./SelectedCourse/ExportModal";
 
 const StyledCardBody = styled(Card.Body)`
     height: 100%;
@@ -15,6 +15,24 @@ class SelectedCourse extends Component {
     state = {
         addedSelectedCourses: new Set(),
         courseWeight: {},
+        showExportModal: false,
+        exportStateMessage: "",
+        generatedCode: '',
+    }
+
+    componentDidMount() {
+        const savedAddedSelectedCourses = localStorage.getItem('addedSelectedCourses');
+        const savedCourseWeight = localStorage.getItem('courseWeight');
+
+        if (savedAddedSelectedCourses) {
+            const addedSelectedCourses = new Set(JSON.parse(savedAddedSelectedCourses));
+            this.setState({addedSelectedCourses});
+        }
+
+        if (savedCourseWeight) {
+            const courseWeight = JSON.parse(savedCourseWeight);
+            this.setState({courseWeight});
+        }
     }
 
     /**
@@ -26,11 +44,11 @@ class SelectedCourse extends Component {
         this.setState(prevState => {
             const addedSelectedCourses = new Set(prevState.addedSelectedCourses);
             if (isSelected) {
-                addedSelectedCourses.add(course);
+                addedSelectedCourses.add(course['Number']);
             } else {
-                addedSelectedCourses.delete(course);
+                addedSelectedCourses.delete(course['Number']);
             }
-
+            localStorage.setItem('addedSelectedCourses', JSON.stringify(Array.from(addedSelectedCourses)));
             return {addedSelectedCourses};
         });
     }
@@ -47,7 +65,7 @@ class SelectedCourse extends Component {
         this.setState(prevState => {
             const courseWeight = {...prevState.courseWeight};
             courseWeight[course['Number']] = weightNumber;
-
+            localStorage.setItem('courseWeight', JSON.stringify(courseWeight));
             return {courseWeight};
         });
     }
@@ -56,7 +74,7 @@ class SelectedCourse extends Component {
      * 處理匯出加選課程的函數
      */
     handleExportAddedSelectedCourses = () => {
-        const { addedSelectedCourses, courseWeight } = this.state;
+        const {addedSelectedCourses, courseWeight} = this.state;
 
         // 創建一個包含課程信息的數據結構
         const exportData = Array.from(addedSelectedCourses).map(course => ({
@@ -67,21 +85,32 @@ class SelectedCourse extends Component {
         }));
 
         // 生成JS代碼
-        const genCode = `
-        let exportClass = ${JSON.stringify(exportData)};
-        exportClass.forEach((ec, i) => {
-            const inputs = document.querySelectorAll('input');
-            inputs[2*i].value = ec['id'];
-            inputs[2*i+1].value = ec['value'];
-            document.querySelectorAll('select')[i].value = ec['isSel'];
-        });`;
-
+        const genCode = `const exportClass = ${JSON.stringify(exportData)};
+exportClass.forEach((ec, i) => {
+    const inputs = document.querySelectorAll('input');
+    inputs[2*i].value = ec['id'];
+    inputs[2*i+1].value = ec['value'];
+    document.querySelectorAll('select')[i].value = ec['isSel'];
+});`;
 
         // 複製代碼到剪貼板
-        navigator.clipboard.writeText(genCode).then(r => console.log('複製成功')).catch(e => console.error('複製失敗'));
-
-        // Todo: 展示複製成功的提示modal
-    }
+        navigator.clipboard.writeText(genCode)
+            .then(() => {
+                this.setState({
+                    showExportModal: true,
+                    exportStateMessage: <p>成功匯處 <span
+                        className="text-danger">{exportData.length}</span> 個課程，腳本已複製到剪貼板</p>,
+                    generatedCode: genCode
+                }); // 更新状态以显示模态框和信息
+            })
+            .catch(() => {
+                this.setState({
+                    showExportModal: true,
+                    exportStateMessage: <p>複製失敗，請手動複製以下腳本程式</p>,
+                    generatedCode: genCode
+                });
+            });
+    };
 
     /**
      * 匯入已選課程
@@ -89,6 +118,13 @@ class SelectedCourse extends Component {
     importSelectedCourses = () => {
 
     }
+
+    /**
+     * 顯示匯出modal
+     */
+    closeExportModal = () => {
+        this.setState({showExportModal: false});
+    };
 
     render() {
         const {
@@ -102,6 +138,9 @@ class SelectedCourse extends Component {
         const {
             addedSelectedCourses,
             courseWeight,
+            showExportModal,
+            exportStateMessage,
+            generatedCode,
         } = this.state;
 
         return (
@@ -136,6 +175,12 @@ class SelectedCourse extends Component {
                         onCourseWeightChange={this.handleCourseWeightChange}
                     />
                 </StyledCardBody>
+                <ExportModal
+                    show={showExportModal}
+                    exportStateMessage={exportStateMessage}
+                    code={generatedCode}
+                    onHide={this.closeExportModal}
+                />
             </Card>
         );
     }
