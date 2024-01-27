@@ -35,12 +35,10 @@ class Header extends Component {
             <>
                 <HeaderRow>
                     <TinyCourseInfo>加選</TinyCourseInfo>
-                    <CourseInfo>名稱</CourseInfo>
-                    <SmallCourseInfo>時間</SmallCourseInfo>
+                    <CourseInfo>名稱/課號</CourseInfo>
                     <SmallCourseInfo>系所</SmallCourseInfo>
-                    <SmallCourseInfo>英課</SmallCourseInfo>
-                    <SmallCourseInfo>班級</SmallCourseInfo>
-                    <SmallCourseInfo>課號</SmallCourseInfo>
+                    <SmallCourseInfo>時間</SmallCourseInfo>
+                    <TinyCourseInfo>英課</TinyCourseInfo>
                     <SmallCourseInfo>志願/點數</SmallCourseInfo>
                 </HeaderRow>
             </>

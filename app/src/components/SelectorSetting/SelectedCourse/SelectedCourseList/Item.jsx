@@ -168,32 +168,6 @@ class Item extends Component {
             </StyledLink>
         )
 
-        // 處理課程顏色
-        const classColor = {
-            '不分班': {
-                name: '不分',
-                color: 'bg-transparent border-0',
-            },
-            '全英班': {
-                name: '全英',
-                color: 'bg-danger text-white',
-            },
-            '甲班': {
-                name: '甲班',
-                color: 'bg-info text-white',
-            },
-            '乙班': {
-                name: '乙班',
-                color: 'bg-warning text-white',
-            },
-        }
-        const courseClass = (
-            <Tag
-                className={classColor[course['Class']] ? classColor[course['Class']].color : 'bg-transparent border-0'}>
-                {classColor[course['Class']] ? `${classColor[course['Class']].name}[${course['Grade']}]` : '缺失'}
-            </Tag>
-        )
-
         const courseNumber = course['Number'];
 
         return (
@@ -219,12 +193,10 @@ class Item extends Component {
                             onChange={this.handleCourseSelect}/>
                     </OverlayTrigger>
                 </TinyCourseInfo>
-                <CourseInfo>{courseName}</CourseInfo>
-                <SmallCourseInfo>{time}</SmallCourseInfo>
+                <CourseInfo>{courseName} ({courseNumber})</CourseInfo>
                 <SmallCourseInfo>{course['Department']}</SmallCourseInfo>
-                <SmallCourseInfo>{emi}</SmallCourseInfo>
-                <SmallCourseInfo>{courseClass}</SmallCourseInfo>
-                <SmallCourseInfo>{courseNumber}</SmallCourseInfo>
+                <SmallCourseInfo>{time}</SmallCourseInfo>
+                <TinyCourseInfo>{emi}</TinyCourseInfo>
                 <SmallCourseInfo>
                     <Form.Control  size="sm" type="text"/>
                 </SmallCourseInfo>
