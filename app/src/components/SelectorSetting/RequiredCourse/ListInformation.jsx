@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, Button, Form, InputGroup, Dropdown} from "react-bootstrap";
+import {Card, Button, Form, InputGroup} from "react-bootstrap";
 import styled from "styled-components";
 import {websiteColor} from "../../../config";
 
