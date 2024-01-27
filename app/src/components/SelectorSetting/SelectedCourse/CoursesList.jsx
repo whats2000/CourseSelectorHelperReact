@@ -19,7 +19,11 @@ class CoursesList extends Component {
             courses,
             onCourseHover,
             hoveredCourseId,
-            isCollapsed
+            isCollapsed,
+            addedSelectedCourses,
+            onCourseSelect,
+            courseWeight,
+            onCourseWeightChange,
         } = this.props;
 
         // 調整索引以符合原始數據
@@ -30,15 +34,20 @@ class CoursesList extends Component {
 
         const isHovered = hoveredCourseId === course['Number'];
 
+        const isSelected = addedSelectedCourses.has(course);
+
         // 渲染課程項目
         return (
             <Item
                 isCollapsed={isCollapsed}
                 course={course}
-                isSelected={false}
+                isSelected={isSelected}
                 isConflict={false}
                 isHovered={isHovered}
                 onCourseHover={onCourseHover}
+                onCourseSelect={onCourseSelect}
+                courseWeight={courseWeight[course['Number']] || 0}
+                onCourseWeightChange={onCourseWeightChange}
             />
         );
     }

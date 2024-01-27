@@ -100,7 +100,7 @@ class Item extends Component {
      * 處理課程選取
      */
     handleCourseSelect = () => {
-
+        this.props.onCourseSelect(this.props.course, !this.props.isSelected);
     }
 
     /**
@@ -112,6 +112,14 @@ class Item extends Component {
     };
 
     /**
+     * 處理課程權重變化
+     * @param event
+     */
+    handleCourseWeightChange = (event) => {
+        this.props.onCourseWeightChange(this.props.course, event.target.value);
+    }
+
+    /**
      * 渲染彈出視窗
      * @returns {JSX.Element}
      */
@@ -119,7 +127,8 @@ class Item extends Component {
         const {course} = this.props;
         return (
             <>
-                <Popover.Header as="h3"><span className="fw-bolder">{course['Name']}</span> {course['Number']}</Popover.Header>
+                <Popover.Header as="h3"><span className="fw-bolder">{course['Name']}</span> {course['Number']}
+                </Popover.Header>
                 <Popover.Body>
                     <Stack direction="horizontal" gap={1}>
                         {Object.entries(this.infoCells).map(([displayName, courseKey]) => (
@@ -135,8 +144,19 @@ class Item extends Component {
     }
 
     render() {
-        const {course, isConflict, isSelected, isHovered, onCourseHover, isCollapsed} = this.props;
-        const {showPopover, placement} = this.state;
+        const {
+            course,
+            isConflict,
+            isSelected,
+            isHovered,
+            onCourseHover,
+            isCollapsed,
+            courseWeight,
+        } = this.props;
+        const {
+            showPopover,
+            placement
+        } = this.state;
 
         if (!course) return null;
 
@@ -171,9 +191,10 @@ class Item extends Component {
         const courseNumber = course['Number'];
 
         return (
-            <CourseRow className={isConflict && !isSelected ? 'bg-warning-subtle' : isHovered ? 'bg-success-subtle' : ''}
-                       onMouseEnter={() => onCourseHover(course['Number'])}
-                       onMouseLeave={() => onCourseHover(null)}
+            <CourseRow
+                className={isConflict && !isSelected ? 'bg-warning-subtle' : isHovered ? 'bg-success-subtle' : ''}
+                onMouseEnter={() => onCourseHover(course['Number'])}
+                onMouseLeave={() => onCourseHover(null)}
             >
                 <TinyCourseInfo>
                     <OverlayTrigger
@@ -198,7 +219,8 @@ class Item extends Component {
                 <SmallCourseInfo>{time}</SmallCourseInfo>
                 <TinyCourseInfo>{emi}</TinyCourseInfo>
                 <SmallCourseInfo>
-                    <Form.Control  size="sm" type="text"/>
+                    <Form.Control size="sm" type="number" min={0} max={100} value={courseWeight}
+                                  onChange={this.handleCourseWeightChange}/>
                 </SmallCourseInfo>
             </CourseRow>
         );

@@ -23,18 +23,36 @@ const ButtonsRow = styled.div`
 `;
 
 class ListInformation extends  Component {
+    /**
+     * 匯入已選課程
+     */
     importSelectedCourses = () => {
+        this.props.onImportCourses();
     }
 
+    /**
+     * 匯出已選課程
+     */
     exportSelectedCourses = () => {
+        this.props.onExportCourses();
     }
 
+    /**
+     * 選取所有課程
+     */
     selectAllCourses = () => {
-
+        this.props.selectedCourses.forEach(course => {
+            this.props.onCourseSelect(course, true);
+        });
     }
 
+    /**
+     * 取消所有課程的選取
+     */
     deselectAllCourses = () => {
-
+        this.props.selectedCourses.forEach(course => {
+            this.props.onCourseSelect(course, false);
+        });
     }
 
     render() {
