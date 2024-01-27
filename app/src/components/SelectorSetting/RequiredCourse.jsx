@@ -3,6 +3,7 @@ import {Card, Col} from "react-bootstrap";
 import styled from "styled-components";
 import ListInformation from "./RequiredCourse/ListInformation";
 import CoursesList from "./AllCourse/CoursesList";
+import ListHeader from "./AllCourse/ListHeader";
 
 const StyledCardBody = styled(Card.Body)`
     height: 100%;
@@ -92,6 +93,7 @@ class RequiredCourse extends Component {
                     requiredCourseFilters={requiredCourseFilters}
                     calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
                 />
+                <ListHeader/>
                 <StyledCardBody>
                     <CoursesList
                         isCollapsed={isCollapsed}
