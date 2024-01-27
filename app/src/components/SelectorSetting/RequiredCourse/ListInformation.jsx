@@ -42,12 +42,22 @@ class ListInformation extends Component {
         this.props.onRequiredCourseFilterChange({"Class": e.target.value});
     };
 
+    /**
+     * 處理全部填入
+     */
     handleSelectAll = () => {
-        // 處理全部選擇
+        this.props.filteredCourses.forEach(course => {
+            this.props.onCourseSelect(course, true);
+        });
     };
 
+    /**
+     * 處理全部取消
+     */
     handleDeselectAll = () => {
-        // 處理全部取消
+        this.props.filteredCourses.forEach(course => {
+            this.props.onCourseSelect(course, false);
+        });
     };
 
     render() {

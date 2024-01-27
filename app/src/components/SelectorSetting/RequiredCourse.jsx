@@ -85,7 +85,8 @@ class RequiredCourse extends Component {
                 </Card.Header>
                 <ListInformation
                     filterOptions={filterOptions}
-                    courses={filteredCourses}
+                    filteredCourses={filteredCourses}
+                    onCourseSelect={onCourseSelect}
                     onRequiredCourseFilterChange={this.handleRequiredCourseFilterChange}
                     selectedCourses={selectedCourses}
                     requiredCourseFilters={requiredCourseFilters}
