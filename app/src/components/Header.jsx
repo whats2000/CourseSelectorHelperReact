@@ -63,7 +63,7 @@ class Header extends Component {
             icon: <Search/>
         },
         {
-            title: '已選課程',
+            title: '已選匯出',
             icon: <Check2Square/>
         },
         {

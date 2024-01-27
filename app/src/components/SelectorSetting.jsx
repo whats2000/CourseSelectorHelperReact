@@ -189,7 +189,7 @@ class SelectorSetting extends Component {
                 courseDataNameMap={this.courseDataNameMap}
             />,
             '課程偵探': <CourseDetective/>,
-            '已選課程': <SelectedCourse/>,
+            '已選匯出': <SelectedCourse/>,
             '公告': <Announcement/>,
         }
 
