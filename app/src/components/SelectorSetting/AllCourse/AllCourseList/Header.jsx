@@ -33,7 +33,7 @@ const TinyCourseInfo = styled(CourseInfo)`
     flex: 0.25;
 `;
 
-class ListHeader extends Component {
+class Header extends Component {
     render() {
         return (
             <>
@@ -53,4 +53,4 @@ class ListHeader extends Component {
         );
     }
 }
-export default ListHeader;
+export default Header;

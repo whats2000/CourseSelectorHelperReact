@@ -189,6 +189,9 @@ class SelectorSetting extends Component {
             />,
             '課程偵探': <CourseDetective/>,
             '已選匯出': <SelectedCourse
+                isCollapsed={isCollapsed}
+                hoveredCourseId={hoveredCourseId}
+                onCourseHover={onCourseHover}
                 selectedCourses={selectedCourses}
                 calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
                 onClearAllSelectedCourses={onClearAllSelectedCourses}

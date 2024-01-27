@@ -3,7 +3,6 @@ import {Card, Col} from "react-bootstrap";
 import styled from "styled-components";
 import ListInformation from "./RequiredCourse/ListInformation";
 import CoursesList from "./AllCourse/CoursesList";
-import ListHeader from "./AllCourse/ListHeader";
 
 const StyledCardBody = styled(Card.Body)`
     height: 100%;
@@ -20,7 +19,7 @@ class RequiredCourse extends Component {
     componentDidMount() {
         const savedFilters = localStorage.getItem('requiredCourseFilters');
         if (savedFilters) {
-            this.setState({ requiredCourseFilters: JSON.parse(savedFilters) }, this.applyFilters);
+            this.setState({requiredCourseFilters: JSON.parse(savedFilters)}, this.applyFilters);
         }
     }
 
@@ -37,7 +36,7 @@ class RequiredCourse extends Component {
      */
     handleRequiredCourseFilterChange = (requiredFilters) => {
         this.setState(prevState => ({
-            requiredCourseFilters: { ...prevState.requiredCourseFilters, ...requiredFilters }
+            requiredCourseFilters: {...prevState.requiredCourseFilters, ...requiredFilters}
         }));
     }
 
@@ -46,8 +45,8 @@ class RequiredCourse extends Component {
      * 應用篩選器
      */
     applyFilters = () => {
-        const { courses } = this.props;
-        const { requiredCourseFilters } = this.state;
+        const {courses} = this.props;
+        const {requiredCourseFilters} = this.state;
 
         const filteredCourses = courses.filter(course => {
             // 逐一檢查篩選條件，返回符合所有條件的課程
@@ -57,7 +56,7 @@ class RequiredCourse extends Component {
             });
         });
 
-        this.setState({ filteredCourses });
+        this.setState({filteredCourses});
     }
 
     render() {
@@ -93,7 +92,6 @@ class RequiredCourse extends Component {
                     requiredCourseFilters={requiredCourseFilters}
                     calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
                 />
-                <ListHeader/>
                 <StyledCardBody>
                     <CoursesList
                         isCollapsed={isCollapsed}

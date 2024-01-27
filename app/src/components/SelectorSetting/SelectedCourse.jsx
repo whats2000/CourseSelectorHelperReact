@@ -1,6 +1,15 @@
 import {Component} from "react";
 import {Card, Col} from "react-bootstrap";
 import ListInformation from "./SelectedCourse/ListInformation";
+import Header from "./SelectedCourse/SelectedCourseList/Header";
+import styled from "styled-components";
+import CoursesList from "./SelectedCourse/CoursesList";
+
+const StyledCardBody = styled(Card.Body)`
+    height: 100%;
+    min-height: 65vh;
+    padding: 0;
+`;
 
 class SelectedCourse extends Component {
     render() {
@@ -8,6 +17,9 @@ class SelectedCourse extends Component {
             selectedCourses,
             calculateTotalCreditsAndHours,
             onClearAllSelectedCourses,
+            isCollapsed,
+            hoveredCourseId,
+            onCourseHover,
         } = this.props;
 
         return (
@@ -25,6 +37,16 @@ class SelectedCourse extends Component {
                         calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
                         onClearAllSelectedCourses={onClearAllSelectedCourses}
                     />
+                    <StyledCardBody>
+                        <CoursesList
+                            courses={Array.from(selectedCourses.values())}
+                            isCollapsed={isCollapsed}
+                            hoveredCourseId={hoveredCourseId}
+                            onCourseHover={onCourseHover}
+                            selectedCourses={selectedCourses}
+                            displayConflictCourses={true}
+                        />
+                    </StyledCardBody>
                 </Card>
             </>
         );
