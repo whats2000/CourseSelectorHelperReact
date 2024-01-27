@@ -40,7 +40,6 @@ class RequiredCourse extends Component {
         }));
     }
 
-
     /**
      * 應用篩選器
      */
@@ -52,7 +51,7 @@ class RequiredCourse extends Component {
             // 逐一檢查篩選條件，返回符合所有條件的課程
             return Object.entries(requiredCourseFilters).every(([key, value]) => {
                 if (!value) return true; // 如果篩選條件為空，則不應用該條件
-                return course[key] === value;
+                return course[key] === value && course['CompulsoryElective'] === "必";
             });
         });
 
