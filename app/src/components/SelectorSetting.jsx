@@ -166,8 +166,7 @@ class SelectorSetting extends Component {
                 courses={courses}
                 selectedCourses={selectedCourses}
                 hoveredCourseId={hoveredCourseId}
-                onCourseSelect={onCourseSelect}
-                onClearAllSelectedCourses={onClearAllSelectedCourses}
+                onCourseSelect={onCourseSelect}c
                 onCourseHover={onCourseHover}
                 filterOptions={filterOptions}
                 detectTimeConflict={this.detectTimeConflict}
@@ -189,7 +188,11 @@ class SelectorSetting extends Component {
                 courseDataNameMap={this.courseDataNameMap}
             />,
             '課程偵探': <CourseDetective/>,
-            '已選匯出': <SelectedCourse/>,
+            '已選匯出': <SelectedCourse
+                selectedCourses={selectedCourses}
+                calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
+                onClearAllSelectedCourses={onClearAllSelectedCourses}
+            />,
             '公告': <Announcement/>,
         }
 
