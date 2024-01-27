@@ -16,12 +16,18 @@ class RequiredCourse extends Component {
         filteredCourses: this.props.courses,
     };
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
+    componentDidMount() {
+        const savedFilters = localStorage.getItem('requiredCourseFilters');
+        if (savedFilters) {
+            this.setState({ requiredCourseFilters: JSON.parse(savedFilters) }, this.applyFilters);
+        }
     }
 
-    componentDidMount() {
-
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.requiredCourseFilters !== prevState.requiredCourseFilters) {
+            this.applyFilters();
+            localStorage.setItem('requiredCourseFilters', JSON.stringify(this.state.requiredCourseFilters));
+        }
     }
 
     /**
@@ -29,7 +35,28 @@ class RequiredCourse extends Component {
      * @param requiredFilters {object} 必修篩選器
      */
     handleRequiredCourseFilterChange = (requiredFilters) => {
-        this.setState({requiredCourseFilters: requiredFilters});
+        this.setState(prevState => ({
+            requiredCourseFilters: { ...prevState.requiredCourseFilters, ...requiredFilters }
+        }));
+    }
+
+
+    /**
+     * 應用篩選器
+     */
+    applyFilters = () => {
+        const { courses } = this.props;
+        const { requiredCourseFilters } = this.state;
+
+        const filteredCourses = courses.filter(course => {
+            // 逐一檢查篩選條件，返回符合所有條件的課程
+            return Object.entries(requiredCourseFilters).every(([key, value]) => {
+                if (!value) return true; // 如果篩選條件為空，則不應用該條件
+                return course[key] === value;
+            });
+        });
+
+        this.setState({ filteredCourses });
     }
 
     render() {
@@ -58,6 +85,8 @@ class RequiredCourse extends Component {
                 </Card.Header>
                 <ListInformation
                     filterOptions={filterOptions}
+                    courses={filteredCourses}
+                    onRequiredCourseFilterChange={this.handleRequiredCourseFilterChange}
                     selectedCourses={selectedCourses}
                     requiredCourseFilters={requiredCourseFilters}
                     calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}

@@ -31,15 +31,15 @@ const ButtonsRow = styled.div`
 
 class ListInformation extends Component {
     handleSelectDepartment = (e) => {
-        // 處理選擇系所
-    };
-
-    handleSelectClass = (e) => {
-        // 處理選擇班級
+        this.props.onRequiredCourseFilterChange({"Department": e.target.value});
     };
 
     handleSelectGrade = (e) => {
-        // 處理選擇年級
+        this.props.onRequiredCourseFilterChange({"Grade": e.target.value});
+    };
+
+    handleSelectClass = (e) => {
+        this.props.onRequiredCourseFilterChange({"Class": e.target.value});
     };
 
     handleSelectAll = () => {
@@ -55,6 +55,7 @@ class ListInformation extends Component {
             selectedCourses,
             calculateTotalCreditsAndHours,
             filterOptions,
+            requiredCourseFilters,
         } = this.props;
         const {totalCredits, totalHours} = calculateTotalCreditsAndHours(selectedCourses);
 
@@ -64,26 +65,32 @@ class ListInformation extends Component {
                     <StyledSelect
                         id="required-course-department"
                         className="w-100"
-                        onChange={this.handleSelectDepartment}>
+                        onChange={this.handleSelectDepartment}
+                        value={requiredCourseFilters['Department']}
+                    >
                         <option value="">選擇系所</option>
                         {filterOptions['系所'].options.map((option, index) => (
                             <option key={index} value={option}>{option}</option>
                         ))}
                     </StyledSelect>
                     <StyledSelect
-                        id="required-course-class"
-                        onChange={this.handleSelectClass}>
-                        <option value="">選擇班級 (全)</option>
-                        {filterOptions['班別'].options.map((option, index) => (
-                            <option key={index} value={option}>{option}</option>
-                        ))}
-                    </StyledSelect>
-                    <StyledSelect
                         id="required-course-grade"
-                        onChange={this.handleSelectGrade}>
+                        onChange={this.handleSelectGrade}
+                        value={requiredCourseFilters['Grade']}
+                    >
                         <option value="">選擇年級 (全)</option>
                         {filterOptions['年級'].options.map((option, index) => (
                             <option key={index} value={option}>{filterOptions['年級'].optionDisplayName[index]}</option>
+                        ))}
+                    </StyledSelect>
+                    <StyledSelect
+                        id="required-course-class"
+                        onChange={this.handleSelectClass}
+                        value={requiredCourseFilters['Class']}
+                    >
+                        <option value="">選擇班級 (全)</option>
+                        {filterOptions['班別'].options.map((option, index) => (
+                            <option key={index} value={option}>{option}</option>
                         ))}
                     </StyledSelect>
                 </ButtonsRow>
