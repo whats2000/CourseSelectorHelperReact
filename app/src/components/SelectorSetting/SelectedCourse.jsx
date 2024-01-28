@@ -113,7 +113,7 @@ class SelectedCourse extends Component {
             };
         });
 
-        // 生成JS代碼
+        // 生成 javascript 腳本
         const genCode =
             `const frame = document.getElementById('main');
 const doc = frame.contentDocument || frame.contentWindow.document;
@@ -131,7 +131,6 @@ try {
 }
 `;
 
-        // 複製代碼到剪貼板
         navigator.clipboard.writeText(genCode)
             .then(() => {
                 this.setState({
@@ -139,7 +138,7 @@ try {
                     exportStateMessage: <p>成功匯處 <span
                         className="text-danger">{exportData.length}</span> 個課程，腳本已複製到剪貼板</p>,
                     generatedCode: genCode
-                }); // 更新状态以显示模态框和信息
+                });
             })
             .catch(() => {
                 this.setState({
