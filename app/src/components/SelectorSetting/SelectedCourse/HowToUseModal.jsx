@@ -22,7 +22,30 @@ class HowToUseModal extends Component {
     state = {
         currentPage: 1,
         totalPages: howToUseExportCode.length,
+        loadedImages: {},
     };
+
+    componentDidMount() {
+        this.preloadImages();
+    }
+
+    /**
+     * 預先載入圖片
+     */
+    preloadImages = () => {
+        howToUseExportCode.forEach((item, index) => {
+            const img = new Image();
+            img.onload = () => {
+                this.setState(prevState => ({
+                    loadedImages: {
+                        ...prevState.loadedImages,
+                        [index]: item.image
+                    }
+                }));
+            };
+            img.src = item.image;
+        });
+    }
 
     /**
      * 前往下一個頁面
@@ -48,8 +71,9 @@ class HowToUseModal extends Component {
     };
 
     render() {
-        const {currentPage, totalPages} = this.state;
+        const {currentPage, totalPages, loadedImages} = this.state;
         const {show, onHide} = this.props;
+        const currentImage = loadedImages[currentPage - 1];
 
         return (
             <Modal show={show} onHide={onHide} centered={true}>
@@ -57,7 +81,7 @@ class HowToUseModal extends Component {
                     <Modal.Title className="fw-bolder">如何使用</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <img src={howToUseExportCode[currentPage - 1].image} alt="如何使用" className="w-100 mb-2"/>
+                    {currentImage && <img src={currentImage} alt={`使用教學圖${currentPage}`} className="w-100 mb-2"/>}
                     <p>{howToUseExportCode[currentPage - 1].description}</p>
                 </Modal.Body>
                 <Modal.Footer>
