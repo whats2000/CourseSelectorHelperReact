@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 import styled from "styled-components";
 import {websiteColor, howToUseExportCode} from "../../../config";
+import {LazyLoadImage} from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const InfoButton = styled(Button)`
     background-color: ${websiteColor.mainColor};
@@ -18,34 +20,30 @@ const InfoButton = styled(Button)`
     }
 `;
 
+const ImageContainer = styled.div`
+    width: 100%;
+    position: relative;
+
+    &:before {
+        content: '';
+        display: block;
+        padding-top: 75%;
+    }
+
+    .image-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+`;
+
 class HowToUseModal extends Component {
     state = {
         currentPage: 1,
         totalPages: howToUseExportCode.length,
-        loadedImages: {},
     };
-
-    componentDidMount() {
-        this.preloadImages();
-    }
-
-    /**
-     * 預先載入圖片
-     */
-    preloadImages = () => {
-        howToUseExportCode.forEach((item, index) => {
-            const img = new Image();
-            img.onload = () => {
-                this.setState(prevState => ({
-                    loadedImages: {
-                        ...prevState.loadedImages,
-                        [index]: item.image
-                    }
-                }));
-            };
-            img.src = item.image;
-        });
-    }
 
     /**
      * 前往下一個頁面
@@ -71,9 +69,9 @@ class HowToUseModal extends Component {
     };
 
     render() {
-        const {currentPage, totalPages, loadedImages} = this.state;
+        const {currentPage, totalPages} = this.state;
         const {show, onHide} = this.props;
-        const currentImage = loadedImages[currentPage - 1];
+        const currentImage = howToUseExportCode[currentPage - 1].image;
 
         return (
             <Modal show={show} onHide={onHide} centered={true}>
@@ -81,7 +79,16 @@ class HowToUseModal extends Component {
                     <Modal.Title className="fw-bolder">如何使用</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {currentImage && <img src={currentImage} alt={`使用教學圖${currentPage}`} className="w-100 mb-2"/>}
+                    <ImageContainer className="mb-2">
+                        <div className="image-content">
+                            <LazyLoadImage
+                                alt={`使用教學圖${currentPage}`}
+                                src={currentImage}
+                                effect="blur"
+                                className="w-100 h-100"
+                            />
+                        </div>
+                    </ImageContainer>
                     <p>{howToUseExportCode[currentPage - 1].description}</p>
                 </Modal.Body>
                 <Modal.Footer>
