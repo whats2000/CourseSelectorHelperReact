@@ -74,24 +74,38 @@ class SelectedCourse extends Component {
      * 處理匯出加選課程的函數
      */
     handleExportAddedSelectedCourses = () => {
+        const {selectedCourses} = this.props;
         const {addedSelectedCourses, courseWeight} = this.state;
 
         // 創建一個包含課程信息的數據結構
-        const exportData = Array.from(addedSelectedCourses).map(course => ({
-            id: course['Number'],
-            name: course['Name'],
-            value: courseWeight[course['Number']] || 0,
-            isSel: '+'
-        }));
+        const exportData = Array.from(addedSelectedCourses).map(courseNumber => {
+            const course = Array.from(selectedCourses).find(c => c['Number'] === courseNumber);
+            return {
+                id: course['Number'],
+                name: course['Name'],
+                value: courseWeight[course['Number']] || 0,
+                isSel: '+'
+            };
+        });
 
         // 生成JS代碼
-        const genCode = `const exportClass = ${JSON.stringify(exportData)};
-exportClass.forEach((ec, i) => {
-    const inputs = document.querySelectorAll('input');
-    inputs[2*i].value = ec['id'];
-    inputs[2*i+1].value = ec['value'];
-    document.querySelectorAll('select')[i].value = ec['isSel'];
-});`;
+        const genCode =
+`const frame = document.getElementById('main');
+const doc = frame.contentDocument || frame.contentWindow.document;
+const exportClass = ${JSON.stringify(exportData)};
+try {
+    exportClass.forEach((ec, i) => {
+        const inputs = doc.querySelectorAll('input');
+        inputs[2*i].value = ec['id'];
+        inputs[2*i+1].value = ec['value'];
+        doc.querySelectorAll('select')[i].value = ec['isSel'];
+    });
+    console.log('自動填寫: 完成');
+} catch (e) {
+    console.error('自動填寫: 失敗: ' + e);
+}
+`;
+
 
         // 複製代碼到剪貼板
         navigator.clipboard.writeText(genCode)
