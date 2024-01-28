@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/CourseSelectorHelperReact/static/css/main.e35086e1.css",
-    "main.js": "/CourseSelectorHelperReact/static/js/main.a8757f61.js",
+    "main.css": "/CourseSelectorHelperReact/static/css/main.f2d791a2.css",
+    "main.js": "/CourseSelectorHelperReact/static/js/main.5f310f8d.js",
     "static/js/787.0f8d78ff.chunk.js": "/CourseSelectorHelperReact/static/js/787.0f8d78ff.chunk.js",
     "static/media/ExportCourse7.png": "/CourseSelectorHelperReact/static/media/ExportCourse7.88d29b00de8ea4e6f6e0.png",
     "static/media/ExportCourse5.png": "/CourseSelectorHelperReact/static/media/ExportCourse5.ba0f05d5b58c58e7b133.png",
@@ -12,12 +12,12 @@
     "static/media/ExportCourse1.png": "/CourseSelectorHelperReact/static/media/ExportCourse1.1538de91005f6b10b871.png",
     "static/media/logo.png": "/CourseSelectorHelperReact/static/media/logo.23725ab80e5069b9ed54.png",
     "index.html": "/CourseSelectorHelperReact/index.html",
-    "main.e35086e1.css.map": "/CourseSelectorHelperReact/static/css/main.e35086e1.css.map",
-    "main.a8757f61.js.map": "/CourseSelectorHelperReact/static/js/main.a8757f61.js.map",
+    "main.f2d791a2.css.map": "/CourseSelectorHelperReact/static/css/main.f2d791a2.css.map",
+    "main.5f310f8d.js.map": "/CourseSelectorHelperReact/static/js/main.5f310f8d.js.map",
     "787.0f8d78ff.chunk.js.map": "/CourseSelectorHelperReact/static/js/787.0f8d78ff.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e35086e1.css",
-    "static/js/main.a8757f61.js"
+    "static/css/main.f2d791a2.css",
+    "static/js/main.5f310f8d.js"
   ]
 }
