@@ -166,7 +166,8 @@ class SelectorSetting extends Component {
                 courses={courses}
                 selectedCourses={selectedCourses}
                 hoveredCourseId={hoveredCourseId}
-                onCourseSelect={onCourseSelect}c
+                onCourseSelect={onCourseSelect}
+                onClearAllSelectedCourses={onClearAllSelectedCourses}
                 onCourseHover={onCourseHover}
                 filterOptions={filterOptions}
                 detectTimeConflict={this.detectTimeConflict}
@@ -190,7 +191,9 @@ class SelectorSetting extends Component {
             '課程偵探': <CourseDetective/>,
             '已選匯出': <SelectedCourse
                 isCollapsed={isCollapsed}
+                courses={courses}
                 hoveredCourseId={hoveredCourseId}
+                onCourseSelect={onCourseSelect}
                 onCourseHover={onCourseHover}
                 selectedCourses={selectedCourses}
                 calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}

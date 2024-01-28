@@ -5,6 +5,7 @@ import styled from "styled-components";
 import CoursesList from "./SelectedCourse/CoursesList";
 import ExportModal from "./SelectedCourse/ExportModal";
 import HowToUseModal from "./SelectedCourse/HowToUseModal";
+import ImportModal from "./SelectedCourse/ImportModal";
 
 const StyledCardBody = styled(Card.Body)`
     height: 100%;
@@ -17,6 +18,7 @@ class SelectedCourse extends Component {
         addedSelectedCourses: new Set(),
         courseWeight: {},
         showExportModal: false,
+        showImportModal: false,
         showHowToUseModal: false,
         exportStateMessage: "",
         generatedCode: '',
@@ -150,10 +152,28 @@ try {
     };
 
     /**
-     * 匯入已選課程
+     * 處理匯入課程的程式碼，並轉換為課程列表物件
+     * @param code {string} 匯入課程的程式碼
+     * @returns {boolean} 是否成功匯入
      */
-    importSelectedCourses = () => {
+    handleImportCode = (code) => {
+        const {courses, onCourseSelect} = this.props;
 
+        try {
+            // 解析 JSON 字符串
+            const importCourseJson = JSON.parse(code);
+            const importCourses = courses.filter(course => importCourseJson.some(ec => ec['id'] === course['Number']));
+            importCourses.forEach(course => {
+                const importCourse = importCourseJson.find(ec => ec['id'] === course['Number']);
+                onCourseSelect(course, true);
+                this.handleCourseWeightChange(course, importCourse['value']);
+            });
+
+            return true; // 返回成功指示
+        } catch (e) {
+            console.error('解析錯誤: ' + e);
+            return false; // 返回失敗指示
+        }
     }
 
     /**
@@ -162,6 +182,20 @@ try {
     closeExportModal = () => {
         this.setState({showExportModal: false});
     };
+
+    /**
+     * 顯示匯入 modal
+     */
+    openImportModal = () => {
+        this.setState({showImportModal: true});
+    }
+
+    /**
+     * 關閉匯入 modal
+     */
+    closeImportModal = () => {
+        this.setState({showImportModal: false});
+    }
 
     /**
      * 顯示如何使用 modal
@@ -190,6 +224,7 @@ try {
             addedSelectedCourses,
             courseWeight,
             showExportModal,
+            showImportModal,
             showHowToUseModal,
             exportStateMessage,
             generatedCode,
@@ -212,7 +247,7 @@ try {
                     onClearAllSelectedCourses={onClearAllSelectedCourses}
                     onCourseSelect={this.handleCourseAddedSelect}
                     onExportCourses={this.handleExportAddedSelectedCourses}
-                    onImportCourses={this.importSelectedCourses}
+                    onImportCourses={this.openImportModal}
                     onShowHowToUseModal={this.openHowToUseModal}
                 />
                 <StyledCardBody>
@@ -235,6 +270,11 @@ try {
                     code={generatedCode}
                     onHide={this.closeExportModal}
                     onShowHowToUseModal={this.openHowToUseModal}
+                />
+                <ImportModal
+                    show={showImportModal}
+                    onHide={this.closeImportModal}
+                    onImportCodeSubmit={this.handleImportCode}
                 />
                 <HowToUseModal
                     show={showHowToUseModal}
