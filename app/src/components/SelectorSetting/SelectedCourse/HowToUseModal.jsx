@@ -57,7 +57,7 @@ class HowToUseModal extends Component {
                     <Modal.Title className="fw-bolder">如何使用</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <img src={howToUseExportCode[currentPage - 1].image} alt="如何使用" className="w-100"/>
+                    <img src={howToUseExportCode[currentPage - 1].image} alt="如何使用" className="w-100 mb-2"/>
                     <p>{howToUseExportCode[currentPage - 1].description}</p>
                 </Modal.Body>
                 <Modal.Footer>

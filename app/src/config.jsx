@@ -1,3 +1,11 @@
+import exportCourse1 from "./images/ExportCourse1.png";
+import exportCourse2 from "./images/ExportCourse2.png";
+import exportCourse3 from "./images/ExportCourse3.png";
+import exportCourse4 from "./images/ExportCourse4.png";
+import exportCourse5 from "./images/ExportCourse5.png";
+import exportCourse6 from "./images/ExportCourse6.png";
+import exportCourse7 from "./images/ExportCourse7.png";
+
 export const announcementData = {
     version: "v5.0.0 dev",
     latestSemester: "112下",
@@ -55,31 +63,31 @@ export const courseData = {
 
 export const howToUseExportCode = [
     {
-        image: `${announcementData.githubUrl}/blob/main/images/ExportCourse1.png`,
+        image: exportCourse1,
         description: "選擇欲加選課程，並填入點數或志願 (請依照學校的規定勾選及填寫點數或志願，此以初選一配點為例)",
     },
     {
-        image: `${announcementData.githubUrl}/blob/main/images/ExportCourse2.png`,
+        image: exportCourse2,
         description: "點選匯出課程。",
     },
     {
-        image: `${announcementData.githubUrl}/blob/main/images/ExportCourse3.png`,
+        image: exportCourse3,
         description: "腳本一般會自動複製到剪貼簿，若沒有請手動複製。",
     },
     {
-        image: `${announcementData.githubUrl}/blob/main/images/ExportCourse4.png`,
+        image: exportCourse4,
         description: "進入選課系統，點選課 (這邊以初選一作範例)",
     },
     {
-        image: `${announcementData.githubUrl}/blob/main/images/ExportCourse5.png`,
+        image: exportCourse5,
         description: "右鍵點選空白處，選擇檢查。或是按下 F12。",
     },
     {
-        image: `${announcementData.githubUrl}/blob/main/images/ExportCourse6.png`,
+        image: exportCourse6,
         description: "點選 Console。貼上剛剛複製的腳本，按下 Enter。",
     },
     {
-        image: `${announcementData.githubUrl}/blob/main/images/ExportCourse7.png`,
+        image: exportCourse7,
         description: "完成！",
     },
 ]

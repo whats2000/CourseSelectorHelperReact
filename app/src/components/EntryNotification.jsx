@@ -94,6 +94,7 @@ class EntryNotification extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Form.Check
+                        id="dont-show-again"
                         type="checkbox"
                         label="不再顯示"
                         onChange={this.handleDontShowAgain}
