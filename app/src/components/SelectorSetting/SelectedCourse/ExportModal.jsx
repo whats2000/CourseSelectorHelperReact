@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal, Button, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {Modal, Button} from 'react-bootstrap';
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {dracula} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
@@ -39,7 +39,7 @@ class ExportModal extends Component {
     }
 
     render() {
-        const {show, onHide, exportStateMessage, code} = this.props;
+        const {show, onHide, exportStateMessage, code, onShowHowToUseModal} = this.props;
         const {isCopied} = this.state;
 
         return (
@@ -67,7 +67,7 @@ class ExportModal extends Component {
                     <Button variant="secondary" onClick={onHide}>
                         關閉
                     </Button>
-                    <InfoButton variant="success">
+                    <InfoButton variant="success" onClick={onShowHowToUseModal}>
                         使用說明
                     </InfoButton>
                 </Modal.Footer>

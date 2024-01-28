@@ -53,6 +53,37 @@ export const courseData = {
     latestSource: "https://raw.githubusercontent.com/CelleryLin/selector_helper/master/all_classes/all_classes_1122_20240126.csv",
 }
 
+export const howToUseExportCode = [
+    {
+        image: "",
+        description: "選擇欲加選課程，並填入點數或志願 (請依照學校的規定勾選及填寫點數或志願，此以初選一配點為例)",
+    },
+    {
+        image: "",
+        description: "點選匯出課程。",
+    },
+    {
+        image: "",
+        description: "腳本一般會自動複製到剪貼簿，若沒有請手動複製。",
+    },
+    {
+        image: "",
+        description: "進入選課系統，點選課 (這邊以初選一作範例)",
+    },
+    {
+        image: "",
+        description: "右鍵點選空白處，選擇檢查。或是按下 F12。",
+    },
+    {
+        image: "",
+        description: "點選 Console。貼上剛剛複製的腳本，按下 Enter。",
+    },
+    {
+        image: "",
+        description: "完成！",
+    },
+]
+
 export const websiteColor = {
     mainColor: "#009e96",
     mainDarkerColor: "#008e86",

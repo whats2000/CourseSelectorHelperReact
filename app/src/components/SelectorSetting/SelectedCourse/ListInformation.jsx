@@ -24,20 +24,6 @@ const ButtonsRow = styled.div`
 
 class ListInformation extends  Component {
     /**
-     * 匯入已選課程
-     */
-    importSelectedCourses = () => {
-        this.props.onImportCourses();
-    }
-
-    /**
-     * 匯出已選課程
-     */
-    exportSelectedCourses = () => {
-        this.props.onExportCourses();
-    }
-
-    /**
      * 選取所有課程
      */
     selectAllCourses = () => {
@@ -58,9 +44,15 @@ class ListInformation extends  Component {
     render() {
         const {
             selectedCourses,
+            addedSelectedCourses,
             calculateTotalCreditsAndHours,
+            onImportCourses,
+            onExportCourses,
+            onShowHowToUseModal,
         } = this.props;
-        const {totalCredits, totalHours} = calculateTotalCreditsAndHours(selectedCourses);
+
+        const addedCourses = Array.from(selectedCourses).filter(course => addedSelectedCourses.has(course['Number']));
+        const {totalCredits, totalHours} = calculateTotalCreditsAndHours(addedCourses);
 
         return (
             <Card.Body>
@@ -69,15 +61,15 @@ class ListInformation extends  Component {
                         <InputGroup.Text>{totalCredits} 學分</InputGroup.Text>
                         <InputGroup.Text>{totalHours} 小時</InputGroup.Text>
                     </InputGroup>
-                    <StyledButton className="ms-auto" variant="success">
+                    <StyledButton className="ms-auto" variant="success" onClick={onShowHowToUseModal}>
                         <InfoCircle/><span className="ms-3">使用說明</span>
                     </StyledButton>
                 </ButtonsRow>
                 <ButtonsRow>
-                    <StyledButton variant="success" onClick={this.importSelectedCourses}>
+                    <StyledButton variant="success" onClick={onImportCourses}>
                         <BoxArrowInRight/><span className="ms-1">匯入</span>
                     </StyledButton>
-                    <StyledButton className="ms-2" variant="success" onClick={this.exportSelectedCourses}>
+                    <StyledButton className="ms-2" variant="success" onClick={onExportCourses}>
                         <BoxArrowRight/><span className="ms-1">匯出</span>
                     </StyledButton>
                     <StyledButton className="ms-auto" variant="success" onClick={this.selectAllCourses}>全選</StyledButton>

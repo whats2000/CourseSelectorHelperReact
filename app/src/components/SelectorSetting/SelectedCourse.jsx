@@ -4,6 +4,7 @@ import ListInformation from "./SelectedCourse/ListInformation";
 import styled from "styled-components";
 import CoursesList from "./SelectedCourse/CoursesList";
 import ExportModal from "./SelectedCourse/ExportModal";
+import HowToUseModal from "./SelectedCourse/HowToUseModal";
 
 const StyledCardBody = styled(Card.Body)`
     height: 100%;
@@ -16,6 +17,7 @@ class SelectedCourse extends Component {
         addedSelectedCourses: new Set(),
         courseWeight: {},
         showExportModal: false,
+        showHowToUseModal: false,
         exportStateMessage: "",
         generatedCode: '',
     }
@@ -26,7 +28,9 @@ class SelectedCourse extends Component {
 
         if (savedAddedSelectedCourses) {
             const addedSelectedCourses = new Set(JSON.parse(savedAddedSelectedCourses));
-            this.setState({addedSelectedCourses});
+            this.setState({addedSelectedCourses}, () => {
+                this.syncAddedSelectedCourses();
+            });
         }
 
         if (savedCourseWeight) {
@@ -34,6 +38,27 @@ class SelectedCourse extends Component {
             this.setState({courseWeight});
         }
     }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.selectedCourses !== this.props.selectedCourses) {
+            this.syncAddedSelectedCourses();
+        }
+    }
+
+    /**
+     * 同步加選課程，當已選課程發生變化時
+     */
+    syncAddedSelectedCourses = () => {
+        const {selectedCourses} = this.props;
+        const selectedCourseNumbers = new Set(Array.from(selectedCourses).map(course => course['Number']));
+
+        this.setState(prevState => {
+            const addedSelectedCourses = new Set([...prevState.addedSelectedCourses].filter(courseNumber => selectedCourseNumbers.has(courseNumber)));
+            localStorage.setItem('addedSelectedCourses', JSON.stringify(Array.from(addedSelectedCourses)));
+            return {addedSelectedCourses};
+        });
+    }
+
 
     /**
      * 處理加選課程的函數
@@ -90,7 +115,7 @@ class SelectedCourse extends Component {
 
         // 生成JS代碼
         const genCode =
-`const frame = document.getElementById('main');
+            `const frame = document.getElementById('main');
 const doc = frame.contentDocument || frame.contentWindow.document;
 const exportClass = ${JSON.stringify(exportData)};
 try {
@@ -105,7 +130,6 @@ try {
     console.error('自動填寫: 失敗: ' + e);
 }
 `;
-
 
         // 複製代碼到剪貼板
         navigator.clipboard.writeText(genCode)
@@ -134,11 +158,25 @@ try {
     }
 
     /**
-     * 顯示匯出modal
+     * 關閉匯出 modal
      */
     closeExportModal = () => {
         this.setState({showExportModal: false});
     };
+
+    /**
+     * 顯示如何使用 modal
+     */
+    openHowToUseModal = () => {
+        this.setState({showHowToUseModal: true});
+    }
+
+    /**
+     * 關閉如何使用 modal
+     */
+    closeHowToUseModal = () => {
+        this.setState({showHowToUseModal: false});
+    }
 
     render() {
         const {
@@ -153,6 +191,7 @@ try {
             addedSelectedCourses,
             courseWeight,
             showExportModal,
+            showHowToUseModal,
             exportStateMessage,
             generatedCode,
         } = this.state;
@@ -169,11 +208,13 @@ try {
                 </Card.Header>
                 <ListInformation
                     selectedCourses={selectedCourses}
+                    addedSelectedCourses={addedSelectedCourses}
                     calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
                     onClearAllSelectedCourses={onClearAllSelectedCourses}
                     onCourseSelect={this.handleCourseAddedSelect}
                     onExportCourses={this.handleExportAddedSelectedCourses}
                     onImportCourses={this.importSelectedCourses}
+                    onShowHowToUseModal={this.openHowToUseModal}
                 />
                 <StyledCardBody>
                     <CoursesList
@@ -194,6 +235,11 @@ try {
                     exportStateMessage={exportStateMessage}
                     code={generatedCode}
                     onHide={this.closeExportModal}
+                    onShowHowToUseModal={this.openHowToUseModal}
+                />
+                <HowToUseModal
+                    show={showHowToUseModal}
+                    onHide={this.closeHowToUseModal}
                 />
             </Card>
         );
