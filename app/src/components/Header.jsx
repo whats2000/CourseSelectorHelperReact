@@ -68,6 +68,9 @@ const StyledNavDropdown = styled(NavDropdown)`
         padding-right: 0 !important;
         padding-left: 0 !important;
     }
+    
+    display: flex;
+    align-items: center; // 確保內容垂直居中
 `;
 
 class Header extends Component {
@@ -181,6 +184,21 @@ class Header extends Component {
                             <Offcanvas.Title id="offcanvasNavbarLabel">切換設定區</Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body className="p-0">
+                            <Nav className="justify-content-start flex-grow-1" activeKey={currentTab}>
+                                <StyledNavDropdown
+                                    title={(<><ClockHistory/><span
+                                        className="ms-2">{currentVersionDisplay}</span></>) || '找尋資料中...'}
+                                    id="nav-dropdown-course-history"
+                                    align="end"
+                                    className="px-3 float-start"
+                                >
+                                    {availableCourseHistoryData.map((data, index) => (
+                                        <NavDropdown.Item key={index} onClick={() => switchVersion(data)}>
+                                            {convertVersion(data.name)}
+                                        </NavDropdown.Item>
+                                    ))}
+                                </StyledNavDropdown>
+                            </Nav>
                             <Nav className="justify-content-end flex-grow-1" activeKey={currentTab}>
                                 {this.navTabs.map((tab) => (
                                     <Nav.Item key={tab.title}>
@@ -194,20 +212,6 @@ class Header extends Component {
                                         </StyledNavLink>
                                     </Nav.Item>
                                 ))}
-
-                                <StyledNavDropdown
-                                    title={(<><ClockHistory/><span
-                                        className="ms-2">{currentVersionDisplay}</span></>) || '找尋資料中...'}
-                                    id="nav-dropdown-course-history"
-                                    align="end"
-                                    className="px-3"
-                                >
-                                    {availableCourseHistoryData.map((data, index) => (
-                                        <NavDropdown.Item key={index} onClick={() => switchVersion(data)}>
-                                            {convertVersion(data.name)}
-                                        </NavDropdown.Item>
-                                    ))}
-                                </StyledNavDropdown>
                             </Nav>
                         </Offcanvas.Body>
                     </Navbar.Offcanvas>
