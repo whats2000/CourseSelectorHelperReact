@@ -36,37 +36,73 @@ class App extends Component {
         courses: [],
         selectedCourses: new Set(),
         hoveredCourseId: null,
+        currentCourseHistoryData: null,
+        availableCourseHistoryData: [],
     };
 
-    /**
-     * 取得最新課程資料
-     */
     componentDidMount() {
-        fetch(courseData.latestSource)
+        fetch(courseData.targetAPI)
+            .then(response => response.json())
+            .then(files => {
+                if (files && files.length) {
+                    // Filter out the .csv files and get their download URLs
+                    const csvFiles = files
+                        .filter(file => file.name.endsWith('.csv'))
+                        .map(file => ({ name: file.name, url: file.download_url }));
+
+                    // Save all the CSV file names and URLs
+                    this.setState({ availableCourseHistoryData: csvFiles });
+
+                    // Sort to find the latest file and get its download URL
+                    const latestFile = csvFiles.sort((a, b) => b.name.localeCompare(a.name))[0];
+
+                    if (latestFile) {
+                        return fetch(latestFile.url);
+                    } else {
+                        throw new Error('沒有找到課程資料。');
+                    }
+                } else {
+                    throw new Error('抓取課程資料失敗。');
+                }
+            })
             .then(response => response.text())
             .then(csvText => {
+                // Parse the CSV content
                 const results = Papa.parse(csvText, {header: true, skipEmptyLines: true});
-                // 去除重複值
-                const uniqueResults = results.data.filter((course, index, self) =>
-                        index === self.findIndex(c => (
-                            c['Name'] === course['Name'] &&
-                            c['Number'] === course['Number'] &&
-                            c['Teacher'] === course['Teacher']
-                        ))
-                );
-                this.setState({courses: uniqueResults}, () => {
-                    // 載入已選課程
-                    const savedSelectedCoursesNumbers = localStorage.getItem('selectedCoursesNumbers');
-                    if (savedSelectedCoursesNumbers) {
-                        const selectedCourseNumbers = new Set(JSON.parse(savedSelectedCoursesNumbers));
-                        const selectedCourses = new Set(
-                            this.state.courses.filter(course => selectedCourseNumbers.has(course['Number']))
-                        );
-                        this.setState({selectedCourses});
-                    }
-                });
+                const uniqueResults = this.filterUniqueCourses(results.data);
+
+                this.setState({courses: uniqueResults}, this.loadSelectedCourses);
             })
-            .catch(error => console.error('Error fetching and parsing data:', error));
+            .catch(error => console.error('轉換課程資料失敗：', error));
+    }
+
+    /**
+     * 過濾重複的課程
+     * @param courses {Array<Object>} 課程資料
+     * @returns {Array<Object>} 過濾後的課程資料
+     */
+    filterUniqueCourses = (courses) => {
+        return courses.filter((course, index, self) =>
+                index === self.findIndex(c => (
+                    c['Name'] === course['Name'] &&
+                    c['Number'] === course['Number'] &&
+                    c['Teacher'] === course['Teacher']
+                ))
+        );
+    }
+
+    /**
+     * 載入已選課程
+     */
+    loadSelectedCourses = () => {
+        const savedSelectedCoursesNumbers = localStorage.getItem('selectedCoursesNumbers');
+        if (savedSelectedCoursesNumbers) {
+            const selectedCourseNumbers = new Set(JSON.parse(savedSelectedCoursesNumbers));
+            const selectedCourses = new Set(
+                this.state.courses.filter(course => selectedCourseNumbers.has(course['Number']))
+            );
+            this.setState({selectedCourses});
+        }
     }
 
     /**

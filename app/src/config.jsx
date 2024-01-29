@@ -58,7 +58,7 @@ export const entryNotificationConfig = {
 };
 
 export const courseData = {
-    latestSource: "https://raw.githubusercontent.com/CelleryLin/selector_helper/master/all_classes/all_classes_1122_20240127.csv",
+    targetAPI: "https://api.github.com/repos/CelleryLin/selector_helper/contents/all_classes",
 }
 
 export const howToUseExportCode = [
