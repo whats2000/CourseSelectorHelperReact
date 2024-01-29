@@ -3,7 +3,6 @@ import {Card, Col} from "react-bootstrap";
 import styled from "styled-components";
 
 import CoursesList from "./AllCourse/CoursesList";
-import Header from "./AllCourse/AllCourseList/Header";
 import ListInformation from "./AllCourse/ListInformation";
 
 const StyledCardBody = styled(Card.Body)`

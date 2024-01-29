@@ -137,7 +137,7 @@ try {
             .then(() => {
                 this.setState({
                     showExportModal: true,
-                    exportStateMessage: <p>成功匯處 <span
+                    exportStateMessage: <p>成功匯出 <span
                         className="text-danger">{exportData.length}</span> 個課程，腳本已複製到剪貼板</p>,
                     generatedCode: genCode
                 });
