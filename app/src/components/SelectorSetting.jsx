@@ -156,7 +156,9 @@ class SelectorSetting extends Component {
             onClearAllSelectedCourses,
             onCourseHover,
             hoveredCourseId,
-            isCollapsed
+            isCollapsed,
+            latestCourseHistoryData,
+            convertVersion,
         } = this.props;
         const {filterOptions} = this.state;
 
@@ -199,7 +201,10 @@ class SelectorSetting extends Component {
                 calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
                 onClearAllSelectedCourses={onClearAllSelectedCourses}
             />,
-            '公告': <Announcement/>,
+            '公告': <Announcement
+                latestCourseHistoryData={latestCourseHistoryData}
+                convertVersion={convertVersion}
+            />,
         }
 
         return (

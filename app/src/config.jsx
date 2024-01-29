@@ -8,8 +8,6 @@ import exportCourse7 from "./images/ExportCourse7.png";
 
 export const announcementData = {
     version: "v5.0.0 dev",
-    latestSemester: "112下",
-    updateDate: "2024/01/16",
     feedbackFormUrl: "https://forms.gle/gFBZDgkSbj85zukP6",
     description: [
         <>

@@ -133,7 +133,7 @@ class App extends Component {
             const formattedAcademicYear = `${parseInt(academicYear, 10)}`;
 
             // Format the update date
-            const formattedDate = `${month}/${day}資料`;
+            const formattedDate = `${month}/${day} 資料`;
 
             return `${formattedAcademicYear}${semesterText} ${formattedDate}`;
         } else {
@@ -233,6 +233,7 @@ class App extends Component {
             selectedCourses,
             hoveredCourseId,
             currentCourseHistoryData,
+            latestCourseHistoryData,
             availableCourseHistoryData,
         } = this.state;
         const slideStyle = {
@@ -277,6 +278,8 @@ class App extends Component {
                                 onCourseSelect={this.handleCourseSelect}
                                 onClearAllSelectedCourses={this.handleClearAllSelectedCourses}
                                 onCourseHover={this.handleCourseHover}
+                                latestCourseHistoryData={latestCourseHistoryData}
+                                convertVersion={this.convertVersion}
                             />
                         </div>
                     </div>

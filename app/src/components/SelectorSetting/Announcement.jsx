@@ -30,6 +30,7 @@ class Announcement extends Component {
     }
 
     render() {
+        const {latestCourseHistoryData, convertVersion} = this.props;
         return (
             <Card className="h-100 mb-3">
                 <Card.Header className="text-center">
@@ -42,7 +43,7 @@ class Announcement extends Component {
                         <div className="col">
                             <TextWithIcon><JournalText/> 更新紀錄：</TextWithIcon>
                             <ul>
-                                <li>學期課程資料: {announcementData.latestSemester} ({announcementData.updateDate})</li>
+                                <li>學期課程資料: {convertVersion(latestCourseHistoryData)}</li>
                             </ul>
 
                             <TextWithIcon><FileEarmarkText/> 回饋表單：</TextWithIcon>
