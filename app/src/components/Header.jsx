@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {Container, Nav, Navbar, Offcanvas} from "react-bootstrap";
-import {BookFill, Check2Square, JournalCheck, List, Megaphone, Search} from "react-bootstrap-icons";
+import {Container, Nav, Navbar, NavDropdown, Offcanvas} from "react-bootstrap";
+import {BookFill, Check2Square, ClockHistory, JournalCheck, List, Megaphone, Search} from "react-bootstrap-icons";
 import styled from 'styled-components';
 import {websiteColor} from "../config";
 
@@ -40,6 +40,34 @@ const StyledNavLink = styled(Nav.Link)`
 
     display: flex;
     align-items: center; // 確保內容垂直居中
+`;
+
+const StyledNavDropdown = styled(NavDropdown)`
+    color: white !important;
+
+    .dropdown-toggle {
+        display: flex;
+        align-items: center;
+        color: white !important;
+
+        @media (max-width: 767px) {
+            color: black !important;
+        }
+    }
+
+    .dropdown-menu {
+        .dropdown-item {
+            &:hover {
+                color: white;
+                background-color: ${websiteColor.mainDarkerColor};
+            }
+        }
+    }
+
+    .nav-link {
+        padding-right: 0;
+        padding-left: 0;
+    }
 `;
 
 class Header extends Component {
@@ -109,25 +137,32 @@ class Header extends Component {
      * 註冊 scroll 事件
      */
     handleScroll = () => {
-        const { lastScrollY } = this.state;
+        const {lastScrollY} = this.state;
         const currentScrollY = window.scrollY;
 
         if (currentScrollY > lastScrollY) {
             // 向下滾動
-            this.setState({ showNavbar: false });
+            this.setState({showNavbar: false});
         } else {
             // 向上滾動
-            this.setState({ showNavbar: true });
+            this.setState({showNavbar: true});
         }
 
-        this.setState({ lastScrollY: currentScrollY });
+        this.setState({lastScrollY: currentScrollY});
     };
 
     render() {
-        const {currentTab} = this.props;
+        const {
+            currentTab,
+            currentCourseHistoryData,
+            availableCourseHistoryData,
+            switchVersion,
+            convertVersion,
+        } = this.props;
+        const currentVersionDisplay = convertVersion(currentCourseHistoryData);
 
         return (
-            <StyledNavbar expand="md" style={{ top: this.state.showNavbar ? '0' : '-100%' }} fixed="top">
+            <StyledNavbar expand="md" style={{top: this.state.showNavbar ? '0' : '-100%'}} fixed="top" variant="dark">
                 <Container fluid>
                     <Navbar.Brand href="#">
                         <img src={logo} height="30" className="d-inline-block align-top" alt="React Bootstrap logo"/>
@@ -147,7 +182,7 @@ class Header extends Component {
                         </Offcanvas.Header>
                         <Offcanvas.Body className="p-0">
                             <Nav className="justify-content-end flex-grow-1" activeKey={currentTab}>
-                                {this.navTabs.map((tab, index) => (
+                                {this.navTabs.map((tab) => (
                                     <Nav.Item key={tab.title}>
                                         <StyledNavLink
                                             href={`#${tab.title.toLowerCase().replace(/\s+/g, '-')}`}
@@ -159,6 +194,20 @@ class Header extends Component {
                                         </StyledNavLink>
                                     </Nav.Item>
                                 ))}
+
+                                <StyledNavDropdown
+                                    title={(<><ClockHistory/><span
+                                        className="ms-2">{currentVersionDisplay}</span></>) || '找尋資料中...'}
+                                    id="nav-dropdown-course-history"
+                                    align="end"
+                                    className="px-3"
+                                >
+                                    {availableCourseHistoryData.map((data, index) => (
+                                        <NavDropdown.Item key={index} onClick={() => switchVersion(data)}>
+                                            {convertVersion(data.name)}
+                                        </NavDropdown.Item>
+                                    ))}
+                                </StyledNavDropdown>
                             </Nav>
                         </Offcanvas.Body>
                     </Navbar.Offcanvas>

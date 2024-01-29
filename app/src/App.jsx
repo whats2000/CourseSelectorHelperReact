@@ -32,11 +32,12 @@ const ToggleButton = styled.button`
 class App extends Component {
     state = {
         isCollapsed: false,
-        currentTab: '公告',
+        currentTab: "公告",
         courses: [],
         selectedCourses: new Set(),
         hoveredCourseId: null,
-        currentCourseHistoryData: null,
+        currentCourseHistoryData: "",
+        latestCourseHistoryData: "",
         availableCourseHistoryData: [],
     };
 
@@ -45,19 +46,36 @@ class App extends Component {
             .then(response => response.json())
             .then(files => {
                 if (files && files.length) {
-                    // Filter out the .csv files and get their download URLs
-                    const csvFiles = files
+                    // Filter out the .csv files and group by academic year and semester
+                    const groupedFiles = files
                         .filter(file => file.name.endsWith('.csv'))
-                        .map(file => ({ name: file.name, url: file.download_url }));
+                        .reduce((acc, file) => {
+                            const match = file.name.match(/all_classes_(\d{3})([123])_/);
+                            if (match) {
+                                const key = `${match[1]}-${match[2]}`; // Group key: academicYear-semester
+                                if (!acc[key]) {
+                                    acc[key] = [];
+                                }
+                                acc[key].push(file);
+                            }
+                            return acc;
+                        }, {});
 
-                    // Save all the CSV file names and URLs
-                    this.setState({ availableCourseHistoryData: csvFiles });
+                    // Select the latest file for each academic year and semester
+                    const latestFiles = Object.values(groupedFiles).map(group => {
+                        return group.sort((a, b) => b.name.localeCompare(a.name))[0];
+                    });
 
-                    // Sort to find the latest file and get its download URL
-                    const latestFile = csvFiles.sort((a, b) => b.name.localeCompare(a.name))[0];
+                    // Update the state with the latest files
+                    this.setState({availableCourseHistoryData: latestFiles});
+
+                    // Fetch the content of the latest file
+                    const latestFile = latestFiles.sort((a, b) => b.name.localeCompare(a.name))[0];
+                    this.setState({currentCourseHistoryData: latestFile.name});
+                    this.setState({latestCourseHistoryData: latestFile.name})
 
                     if (latestFile) {
-                        return fetch(latestFile.url);
+                        return fetch(latestFile['download_url']);
                     } else {
                         throw new Error('沒有找到課程資料。');
                     }
@@ -74,6 +92,53 @@ class App extends Component {
                 this.setState({courses: uniqueResults}, this.loadSelectedCourses);
             })
             .catch(error => console.error('轉換課程資料失敗：', error));
+    }
+
+    /**
+     * 轉換版本
+     * @param version {Object} 版本
+     */
+    switchVersion = (version) => {
+        // Fetch the CSV file associated with the selected version
+        fetch(version['download_url'])
+            .then(response => response.text())
+            .then(csvText => {
+                // Parse the CSV content
+                const results = Papa.parse(csvText, {header: true, skipEmptyLines: true});
+                const uniqueResults = this.filterUniqueCourses(results.data);
+
+                // Update the state with the new course data and selected version
+                this.setState({
+                    courses: uniqueResults,
+                    currentCourseHistoryData: version.name
+                }, this.loadSelectedCourses); // Optionally call loadSelectedCourses to reload any saved selections
+            })
+            .catch(error => console.error('轉換課程資料失敗：', error));
+    }
+
+    /**
+     * 轉換版本資訊成可閱讀的格式
+     * @param version
+     */
+    convertVersion = (version) => {
+        // Regular expression to extract parts of the version string
+        const regex = /all_classes_(\d{3})([123])_(\d{4})(\d{2})(\d{2})\.csv/;
+        const match = version.match(regex);
+
+        if (match) {
+            const [, academicYear, semesterCode, , month, day] = match;
+
+            // Convert the academic year and semester code to a readable format
+            const semesterText = semesterCode === '1' ? '上' : semesterCode === '2' ? '下' : '暑';
+            const formattedAcademicYear = `${parseInt(academicYear, 10)}`;
+
+            // Format the update date
+            const formattedDate = `${month}/${day}資料`;
+
+            return `${formattedAcademicYear}${semesterText} ${formattedDate}`;
+        } else {
+            return version; // Return the original string if it doesn't match the expected format
+        }
     }
 
     /**
@@ -161,7 +226,15 @@ class App extends Component {
      * @returns {React.ReactNode} 元件
      */
     render() {
-        const {isCollapsed, currentTab, courses, selectedCourses, hoveredCourseId} = this.state;
+        const {
+            isCollapsed,
+            currentTab,
+            courses,
+            selectedCourses,
+            hoveredCourseId,
+            currentCourseHistoryData,
+            availableCourseHistoryData,
+        } = this.state;
         const slideStyle = {
             marginLeft: isCollapsed ? (window.innerWidth >= 992 ? '-50%' : '0') : '0',
             marginTop: isCollapsed ? (window.innerWidth < 992 ? '-600%' : '0') : '0'
@@ -169,7 +242,14 @@ class App extends Component {
 
         return (
             <>
-                <Header currentTab={this.state.currentTab} onTabChange={this.handleTabChange}/>
+                <Header
+                    currentTab={this.state.currentTab}
+                    onTabChange={this.handleTabChange}
+                    currentCourseHistoryData={currentCourseHistoryData}
+                    availableCourseHistoryData={availableCourseHistoryData}
+                    switchVersion={this.switchVersion}
+                    convertVersion={this.convertVersion}
+                />
                 <EntryNotification/>
 
                 <ToggleButton className="btn btn-secondary w-auto" onClick={this.toggleSchedule}>
