@@ -65,8 +65,8 @@ const StyledNavDropdown = styled(NavDropdown)`
     }
 
     .nav-link {
-        padding-right: 0;
-        padding-left: 0;
+        padding-right: 0 !important;
+        padding-left: 0 !important;
     }
 `;
 
