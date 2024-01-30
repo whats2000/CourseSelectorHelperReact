@@ -31,6 +31,7 @@ const ToggleButton = styled.button`
 
 class App extends Component {
     state = {
+        loading: true,
         isCollapsed: false,
         currentTab: "公告",
         courses: [],
@@ -42,6 +43,13 @@ class App extends Component {
     };
 
     componentDidMount() {
+        // 移除靜態載入畫面
+        const loading = document.getElementById('loading');
+        if (loading) {
+            loading.style.display = 'none';
+            this.setState({loading: false});
+        }
+
         fetch(courseData.targetAPI)
             .then(response => response.json())
             .then(files => {
