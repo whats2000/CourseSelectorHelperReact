@@ -1,10 +1,13 @@
 import {Component} from "react";
+import styled from 'styled-components';
+import Papa from "papaparse";
+
 import Header from "./components/Header";
+import LoadingSpinner from "./components/LoadingSpinner";
 import ScheduleTable from "./components/ScheduleTable";
 import SelectorSetting from "./components/SelectorSetting";
-import styled from 'styled-components';
 import EntryNotification from "./components/EntryNotification";
-import Papa from "papaparse";
+
 import {courseData} from "./config";
 
 const MainContent = styled.main`
@@ -31,7 +34,7 @@ const ToggleButton = styled.button`
 
 class App extends Component {
     state = {
-        loading: true,
+        loading: "資料",
         isCollapsed: false,
         currentTab: "公告",
         courses: [],
@@ -44,10 +47,13 @@ class App extends Component {
 
     componentDidMount() {
         // 移除靜態載入畫面
-        const loading = document.getElementById('loading');
-        if (loading) {
-            loading.style.display = 'none';
-            this.setState({loading: false});
+        const loadingScreen = document.getElementById('loading');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+        }
+
+        const removeLoadingScreen = () => {
+            this.endLoading();
         }
 
         fetch(courseData.targetAPI)
@@ -97,8 +103,14 @@ class App extends Component {
                 const uniqueResults = this.filterUniqueCourses(results.data);
 
                 this.setState({courses: uniqueResults}, this.loadSelectedCourses);
+
+                removeLoadingScreen();
             })
-            .catch(error => console.error('轉換課程資料失敗：', error));
+            .catch(error => {
+                console.error('轉換課程資料失敗：', error);
+
+                removeLoadingScreen();
+            });
     }
 
     /**
@@ -106,6 +118,8 @@ class App extends Component {
      * @param version {Object} 版本
      */
     switchVersion = (version) => {
+        this.startLoading("資料");
+
         // Fetch the CSV file associated with the selected version
         fetch(version['download_url'])
             .then(response => response.text())
@@ -117,10 +131,16 @@ class App extends Component {
                 // Update the state with the new course data and selected version
                 this.setState({
                     courses: uniqueResults,
-                    currentCourseHistoryData: version.name
+                    currentCourseHistoryData: version.name,
                 }, this.loadSelectedCourses);
+
+                this.endLoading();
             })
-            .catch(error => console.error('轉換課程資料失敗：', error));
+            .catch(error => {
+                console.error('轉換課程資料失敗：', error);
+
+                this.endLoading();
+            });
     }
 
     /**
@@ -228,6 +248,21 @@ class App extends Component {
     };
 
     /**
+     * 開始載入
+     * @param loadingName {string} 載入名稱
+     */
+    startLoading = (loadingName) => {
+        this.setState({loading: loadingName});
+    }
+
+    /**
+     * 結束載入
+     */
+    endLoading = () => {
+        this.setState({loading: null});
+    }
+
+    /**
      * 渲染元件
      * @returns {React.ReactNode} 元件
      */
@@ -241,6 +276,7 @@ class App extends Component {
             currentCourseHistoryData,
             latestCourseHistoryData,
             availableCourseHistoryData,
+            loading,
         } = this.state;
         const slideStyle = {
             marginLeft: isCollapsed ? (window.innerWidth >= 992 ? '-50%' : '0') : '0',
@@ -258,6 +294,7 @@ class App extends Component {
                     convertVersion={this.convertVersion}
                 />
                 <EntryNotification/>
+                {loading && <LoadingSpinner loadingName={loading}/>}
 
                 <ToggleButton className="btn btn-secondary w-auto" onClick={this.toggleSchedule}>
                     {isCollapsed ? '>' : '<'}

@@ -44,6 +44,7 @@ const StyledNavLink = styled(Nav.Link)`
 
 const StyledNavDropdown = styled(NavDropdown)`
     color: white !important;
+    width: 100%;
 
     .dropdown-toggle {
         display: flex;
@@ -68,9 +69,6 @@ const StyledNavDropdown = styled(NavDropdown)`
         padding-right: 0 !important;
         padding-left: 0 !important;
     }
-    
-    display: flex;
-    align-items: center; // 確保內容垂直居中
 `;
 
 class Header extends Component {
@@ -185,19 +183,20 @@ class Header extends Component {
                         </Offcanvas.Header>
                         <Offcanvas.Body className="p-0">
                             <Nav className="justify-content-start flex-grow-1" activeKey={currentTab}>
-                                <StyledNavDropdown
-                                    title={(<><ClockHistory/><span
-                                        className="ms-2">{currentVersionDisplay}</span></>) || '找尋資料中...'}
-                                    id="nav-dropdown-course-history"
-                                    align="end"
-                                    className="px-3 float-start"
-                                >
-                                    {availableCourseHistoryData.map((data, index) => (
-                                        <NavDropdown.Item key={index} onClick={() => switchVersion(data)}>
-                                            {convertVersion(data.name)}
-                                        </NavDropdown.Item>
-                                    ))}
-                                </StyledNavDropdown>
+                                <Nav.Item className="d-flex align-items-center">
+                                    <StyledNavDropdown
+                                        title={(<><ClockHistory/><span
+                                            className="ms-2">{currentVersionDisplay}</span></>) || '找尋資料中...'}
+                                        id="nav-dropdown-course-history"
+                                        className="px-3 float-start"
+                                    >
+                                        {availableCourseHistoryData.map((data, index) => (
+                                            <NavDropdown.Item key={index} onClick={() => switchVersion(data)}>
+                                                {convertVersion(data.name)}
+                                            </NavDropdown.Item>
+                                        ))}
+                                    </StyledNavDropdown>
+                                </Nav.Item>
                             </Nav>
                             <Nav className="justify-content-end flex-grow-1" activeKey={currentTab}>
                                 {this.navTabs.map((tab) => (
