@@ -118,8 +118,21 @@ class ListInformation extends Component {
                         <InputGroup.Text>{totalCredits} 學分</InputGroup.Text>
                         <InputGroup.Text>{totalHours} 小時</InputGroup.Text>
                     </InputGroup>
-                    <StyledButton variant="success" onClick={this.handleSelectAll}>全填</StyledButton>
-                    <Button variant="danger" className="ms-2" onClick={this.handleDeselectAll}>全取消</Button>
+                    <StyledButton
+                        variant="success"
+                        onClick={this.handleSelectAll}
+                        disabled={requiredCourseFilters['Department'] === ""}
+                    >
+                        全填
+                    </StyledButton>
+                    <Button
+                        variant="danger"
+                        className="ms-2"
+                        onClick={this.handleDeselectAll}
+                        disabled={requiredCourseFilters['Department'] === ""}
+                    >
+                        全取消
+                    </Button>
                 </ButtonsRow>
             </Card.Body>
         );
