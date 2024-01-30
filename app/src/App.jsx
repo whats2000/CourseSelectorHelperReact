@@ -45,42 +45,41 @@ class App extends Component {
         fetch(courseData.targetAPI)
             .then(response => response.json())
             .then(files => {
-                if (files && files.length) {
-                    // Filter out the .csv files and group by academic year and semester
-                    const groupedFiles = files
-                        .filter(file => file.name.endsWith('.csv'))
-                        .reduce((acc, file) => {
-                            const match = file.name.match(/all_classes_(\d{3})([123])_/);
-                            if (match) {
-                                const key = `${match[1]}-${match[2]}`; // Group key: academicYear-semester
-                                if (!acc[key]) {
-                                    acc[key] = [];
-                                }
-                                acc[key].push(file);
-                            }
-                            return acc;
-                        }, {});
+                if (!(files && files.length)) throw new Error('抓取課程資料失敗。');
 
-                    // Select the latest file for each academic year and semester
-                    const latestFiles = Object.values(groupedFiles).map(group => {
-                        return group.sort((a, b) => b.name.localeCompare(a.name))[0];
-                    });
+                // Filter out the .csv files and group by academic year and semester
+                const groupedFiles = files
+                    .filter(file => file.name.endsWith('.csv'))
+                    .reduce((acc, file) => {
+                        const match = file.name.match(/all_classes_(\d{3})([123])_/);
+                        if (!match) return acc;
 
-                    // Update the state with the latest files
-                    this.setState({availableCourseHistoryData: latestFiles});
+                        const key = `${match[1]}-${match[2]}`; // Group key: academicYear-semester
+                        if (!acc[key]) {
+                            acc[key] = [];
+                        }
+                        acc[key].push(file);
 
-                    // Fetch the content of the latest file
-                    const latestFile = latestFiles.sort((a, b) => b.name.localeCompare(a.name))[0];
-                    this.setState({currentCourseHistoryData: latestFile.name});
-                    this.setState({latestCourseHistoryData: latestFile.name})
+                        return acc;
+                    }, {});
 
-                    if (latestFile) {
-                        return fetch(latestFile['download_url']);
-                    } else {
-                        throw new Error('沒有找到課程資料。');
-                    }
+                // Select the latest file for each academic year and semester
+                const latestFiles = Object.values(groupedFiles).map(group => {
+                    return group.sort((a, b) => b.name.localeCompare(a.name))[0];
+                });
+
+                // Update the state with the latest files
+                this.setState({availableCourseHistoryData: latestFiles});
+
+                // Fetch the content of the latest file
+                const latestFile = latestFiles.sort((a, b) => b.name.localeCompare(a.name))[0];
+                this.setState({currentCourseHistoryData: latestFile.name});
+                this.setState({latestCourseHistoryData: latestFile.name})
+
+                if (latestFile) {
+                    return fetch(latestFile['download_url']);
                 } else {
-                    throw new Error('抓取課程資料失敗。');
+                    throw new Error('沒有找到課程資料。');
                 }
             })
             .then(response => response.text())
@@ -111,7 +110,7 @@ class App extends Component {
                 this.setState({
                     courses: uniqueResults,
                     currentCourseHistoryData: version.name
-                }, this.loadSelectedCourses); // Optionally call loadSelectedCourses to reload any saved selections
+                }, this.loadSelectedCourses);
             })
             .catch(error => console.error('轉換課程資料失敗：', error));
     }
@@ -125,20 +124,19 @@ class App extends Component {
         const regex = /all_classes_(\d{3})([123])_(\d{4})(\d{2})(\d{2})\.csv/;
         const match = version.match(regex);
 
-        if (match) {
-            const [, academicYear, semesterCode, , month, day] = match;
+        // Return the original string if it doesn't match the expected format
+        if (!match) return version;
 
-            // Convert the academic year and semester code to a readable format
-            const semesterText = semesterCode === '1' ? '上' : semesterCode === '2' ? '下' : '暑';
-            const formattedAcademicYear = `${parseInt(academicYear, 10)}`;
+        const [, academicYear, semesterCode, , month, day] = match;
 
-            // Format the update date
-            const formattedDate = `${month}/${day} 資料`;
+        // Convert the academic year and semester code to a readable format
+        const semesterText = semesterCode === '1' ? '上' : semesterCode === '2' ? '下' : '暑';
+        const formattedAcademicYear = `${parseInt(academicYear, 10)}`;
 
-            return `${formattedAcademicYear}${semesterText} ${formattedDate}`;
-        } else {
-            return version; // Return the original string if it doesn't match the expected format
-        }
+        // Format the update date
+        const formattedDate = `${month}/${day} 資料`;
+
+        return `${formattedAcademicYear}${semesterText} ${formattedDate}`;
     }
 
     /**
@@ -161,13 +159,13 @@ class App extends Component {
      */
     loadSelectedCourses = () => {
         const savedSelectedCoursesNumbers = localStorage.getItem('selectedCoursesNumbers');
-        if (savedSelectedCoursesNumbers) {
-            const selectedCourseNumbers = new Set(JSON.parse(savedSelectedCoursesNumbers));
-            const selectedCourses = new Set(
-                this.state.courses.filter(course => selectedCourseNumbers.has(course['Number']))
-            );
-            this.setState({selectedCourses});
-        }
+        if (!savedSelectedCoursesNumbers) return;
+
+        const selectedCourseNumbers = new Set(JSON.parse(savedSelectedCoursesNumbers));
+        const selectedCourses = new Set(
+            this.state.courses.filter(course => selectedCourseNumbers.has(course['Number']))
+        );
+        this.setState({selectedCourses});
     }
 
     /**
