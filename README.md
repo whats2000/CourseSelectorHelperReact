@@ -1,4 +1,4 @@
-# 中山大學選課助手React版
+# 中山大學選課助手 React 版
 ## 回饋表單：
 https://forms.gle/gFBZDgkSbj85zukP6
 
@@ -28,3 +28,6 @@ https://forms.gle/gFBZDgkSbj85zukP6
 
 ## 錯誤回報 & 聯絡：
 * 總負責人：yochen0123@gmail.com
+
+## 中山大學選課助手4.0版
+https://github.com/CelleryLin/selector_helper
