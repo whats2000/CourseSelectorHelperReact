@@ -1,5 +1,6 @@
 import {Component} from "react";
 import {Card} from "react-bootstrap";
+import ListInformation from "./CourseDetective/ListInformation";
 
 class CourseDetective extends Component {
     render() {
@@ -9,6 +10,7 @@ class CourseDetective extends Component {
                     <Card.Header className="text-center">
                         <Card.Title className="fw-bolder mb-0 p-2">課程偵探</Card.Title>
                     </Card.Header>
+                    {/*<ListInformation/>*/}
                     <Card.Body className="d-flex flex-column">
                         <Card.Text className="text-center">
                             <span className="text-danger fw-bold d-block">此功能尚未完成，</span>

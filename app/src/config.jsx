@@ -88,7 +88,20 @@ export const howToUseExportCode = [
         image: exportCourse7,
         description: "完成！",
     },
-]
+];
+
+export const courseDetectiveElements = [
+    { id: "liberal-arts", content: "博雅課程" },
+    { id: "sports-fitness", content: "運動與健康(體適能或游泳)" },
+    { id: "sports-other", content: "運動與健康(其他)" },
+    { id: "cross-department", content: "跨院選修" },
+    { id: "random", content: "隨機課程" },
+    { id: "chinese-critical-thinking", content: "中文思辨與表達" },
+    { id: "english-beginner", content: "英文初級" },
+    { id: "english-intermediate", content: "英文中級" },
+    { id: "english-advanced-mid", content: "英文中高級" },
+    { id: "english-advanced", content: "英文高級" },
+];
 
 export const websiteColor = {
     mainColor: "#009e96",
