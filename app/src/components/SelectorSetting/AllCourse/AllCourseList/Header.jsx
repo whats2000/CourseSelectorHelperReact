@@ -8,10 +8,6 @@ const HeaderRow = styled.div`
     border-bottom: 2px solid #ddd;
     background-color: #f5f5f5;
     font-weight: bold;
-    
-    @media (hover: hover) {
-        padding-right: 27px;
-    }
 `;
 
 const CourseInfo = styled.div`

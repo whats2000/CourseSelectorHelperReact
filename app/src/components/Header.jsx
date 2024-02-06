@@ -141,7 +141,7 @@ class Header extends Component {
         const {lastScrollY} = this.state;
         const currentScrollY = window.scrollY;
 
-        if (currentScrollY > lastScrollY) {
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
             // 向下滾動
             this.setState({showNavbar: false});
         } else {
