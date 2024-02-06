@@ -26,6 +26,7 @@ export function SortableItem(props) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        touchAction: 'none',
     };
 
     return (
