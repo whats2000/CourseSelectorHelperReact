@@ -5,6 +5,7 @@ import { CSS } from '@dnd-kit/utilities';
 export function SortableItem(props) {
     const {
         index,
+        content,
     } = props;
     const {
         attributes,
@@ -29,7 +30,7 @@ export function SortableItem(props) {
 
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            {index} {props.content}
+            {index + 1} {content}
         </div>
     );
 }

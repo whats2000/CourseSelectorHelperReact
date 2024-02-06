@@ -190,7 +190,10 @@ class SelectorSetting extends Component {
                 calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
                 courseDataNameMap={this.courseDataNameMap}
             />,
-            '課程偵探': <CourseDetective/>,
+            '課程偵探': <CourseDetective
+                selectedCourses={selectedCourses}
+                calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
+            />,
             '已選匯出': <SelectedCourse
                 isCollapsed={isCollapsed}
                 courses={courses}

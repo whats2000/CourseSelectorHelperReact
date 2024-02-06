@@ -16,9 +16,11 @@ export const announcementData = {
         </>,
         <>
             這是輔助大家選課的系統，<span className="text-danger fw-bold">僅供參考</span>。
-            </>,
+        </>,
         <>
-            課程資料是爬蟲下來的靜態資料，若有校方<span className="text-danger fw-bold">有異動</span>，本人尚未更新的話<span className="text-danger fw-bold">請聯絡</span>，感謝。
+            課程資料是爬蟲下來的靜態資料，若有校方<span
+            className="text-danger fw-bold">有異動</span>，本人尚未更新的話<span
+            className="text-danger fw-bold">請聯絡</span>，感謝。
         </>
     ],
     updates: [
@@ -91,16 +93,21 @@ export const howToUseExportCode = [
 ];
 
 export const courseDetectiveElements = [
-    { id: "liberal-arts", content: "博雅課程" },
-    { id: "sports-fitness", content: "運動與健康(體適能或游泳)" },
-    { id: "sports-other", content: "運動與健康(其他)" },
-    { id: "cross-department", content: "跨院選修" },
-    { id: "random", content: "隨機課程" },
-    { id: "chinese-critical-thinking", content: "中文思辨與表達" },
-    { id: "english-beginner", content: "英文初級" },
-    { id: "english-intermediate", content: "英文中級" },
-    { id: "english-advanced-mid", content: "英文中高級" },
-    { id: "english-advanced", content: "英文高級" },
+    {id: "liberal-arts-6", content: "博雅課程向度六", enabled: true},
+    {id: "liberal-arts-5", content: "博雅課程向度五", enabled: true},
+    {id: "liberal-arts-1", content: "博雅課程向度一", enabled: true},
+    {id: "liberal-arts-2", content: "博雅課程向度二", enabled: true},
+    {id: "liberal-arts-3", content: "博雅課程向度三", enabled: true},
+    {id: "liberal-arts-4", content: "博雅課程向度四", enabled: true},
+    {id: "sports-fitness", content: "運動與健康(大一必修)", enabled: true},
+    {id: "sports-other", content: "運動與健康(其他)", enabled: true},
+    {id: "cross-department", content: "跨院選修", enabled: true},
+    {id: "chinese-critical-thinking", content: "中文思辨與表達", enabled: true},
+    {id: "random", content: "隨機課程", enabled: false},
+    {id: "english-beginner", content: "英文初級", enabled: false},
+    {id: "english-intermediate", content: "英文中級", enabled: false},
+    {id: "english-advanced-mid", content: "英文中高級", enabled: false},
+    {id: "english-advanced", content: "英文高級", enabled: false},
 ];
 
 export const websiteColor = {
