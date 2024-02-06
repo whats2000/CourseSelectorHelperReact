@@ -93,17 +93,13 @@ export const howToUseExportCode = [
 ];
 
 export const courseDetectiveElements = [
-    {id: "liberal-arts-6", content: "博雅課程向度六", enabled: true},
-    {id: "liberal-arts-5", content: "博雅課程向度五", enabled: true},
-    {id: "liberal-arts-1", content: "博雅課程向度一", enabled: true},
-    {id: "liberal-arts-2", content: "博雅課程向度二", enabled: true},
-    {id: "liberal-arts-3", content: "博雅課程向度三", enabled: true},
-    {id: "liberal-arts-4", content: "博雅課程向度四", enabled: true},
+    {id: "liberal-arts", content: "博雅課程", enabled: true},
     {id: "sports-fitness", content: "運動與健康(大一必修)", enabled: true},
     {id: "sports-other", content: "運動與健康(其他)", enabled: true},
     {id: "cross-department", content: "跨院選修", enabled: true},
     {id: "chinese-critical-thinking", content: "中文思辨與表達", enabled: true},
-    {id: "random", content: "隨機課程", enabled: false},
+    {id: "random-courses", content: "隨機大學部課程", enabled: false},
+    {id: "random-graduate-courses", content: "隨機研究所課程", enabled: false},
     {id: "english-beginner", content: "英文初級", enabled: false},
     {id: "english-intermediate", content: "英文中級", enabled: false},
     {id: "english-advanced-mid", content: "英文中高級", enabled: false},
