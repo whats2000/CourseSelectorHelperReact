@@ -25,6 +25,12 @@ const ButtonsRow = styled.div`
     align-items: center;
 `;
 
+const StyledTextRow = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+`;
+
 function ListInformation({elements, setElements, calculateTotalCreditsAndHours, selectedCourses, toggleElementEnable}) {
     const [show, setShow] = useState(false);
     const sensors = useSensors(
@@ -79,6 +85,9 @@ function ListInformation({elements, setElements, calculateTotalCreditsAndHours, 
                     <Offcanvas.Title className="fw-bolder">排序優先序位</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
+                    <StyledTextRow className="text-muted fst-italic">
+                        拖動來交換自己喜好的排序，歡迎填問卷告訴我們您的需求，使我們能夠更好的改進這個功能。
+                    </StyledTextRow>
                     <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
