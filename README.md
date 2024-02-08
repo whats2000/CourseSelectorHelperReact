@@ -1,4 +1,7 @@
 # 中山大學選課助手 React 版
+## 進入網頁
+https://whats2000.github.io/CourseSelectorHelperReact/
+
 ## 回饋表單：
 https://forms.gle/gFBZDgkSbj85zukP6
 
