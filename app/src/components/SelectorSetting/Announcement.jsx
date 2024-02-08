@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card} from 'react-bootstrap';
+import {Card, Col, Row} from 'react-bootstrap';
 import {
     FileEarmarkText, JournalText,
     InfoCircle, ArrowUpCircle,
@@ -39,13 +39,14 @@ class Announcement extends Component {
                     </Card.Title>
                 </Card.Header>
                 <Card.Body>
-                    <div className="row">
-                        <div className="col">
+                    <Row>
+                        <Col lg={6} md={6}>
                             <TextWithIcon><JournalText/> 更新紀錄：</TextWithIcon>
                             <ul>
                                 <li>學期課程資料: {convertVersion(latestCourseHistoryData)}</li>
                             </ul>
-
+                        </Col>
+                        <Col lg={6} md={6}>
                             <TextWithIcon><FileEarmarkText/> 回饋表單：</TextWithIcon>
                             <ul>
                                 <li><a href={announcementData.feedbackFormUrl}
@@ -54,35 +55,39 @@ class Announcement extends Component {
                                     {announcementData.feedbackFormUrl}
                                 </a></li>
                             </ul>
-
+                        </Col>
+                        <Col lg={6} md={6}>
                             <TextWithIcon><InfoCircle/> 使用須知：</TextWithIcon>
                             <ul>{this.renderList(announcementData.description)}</ul>
-
+                        </Col>
+                        <Col lg={6} md={6}>
                             <TextWithIcon><ArrowUpCircle/> 更新內容：</TextWithIcon>
                             <ul>{this.renderList(announcementData.updates)}</ul>
-                        </div>
-
-                        <div className="col">
+                        </Col>
+                        <Col lg={6} md={6}>
                             <TextWithIcon><Gear/> 主要功能：</TextWithIcon>
                             <ul>{this.renderList(announcementData.features)}</ul>
-
+                        </Col>
+                        <Col lg={6} md={6}>
                             <TextWithIcon><ExclamationCircle/> 已知問題：</TextWithIcon>
                             <ul>{this.renderList(announcementData.knownIssues)}</ul>
-
+                        </Col>
+                        <Col lg={6} md={6}>
                             <TextWithIcon><CodeSlash/> 專案程式：</TextWithIcon>
                             <ul>
                                 <li><a href={announcementData.githubUrl} target="_blank" rel="noreferrer">Github</a>
                                 </li>
                             </ul>
-
+                        </Col>
+                        <Col lg={6} md={6}>
                             <TextWithIcon><Envelope/> 錯誤回報 & 聯絡：</TextWithIcon>
                             <ul>
                                 <li>總負責人：<a
                                     href={`mailto:${announcementData.contactEmail}`}>{announcementData.contactEmail}</a>
                                 </li>
                             </ul>
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 </Card.Body>
                 <Card.Footer className="text-center text-muted fst-italic fw-light">
                     <Card.Text className="text-center">
