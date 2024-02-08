@@ -1,59 +1,17 @@
 import {Component} from "react";
+
 import AllCourse from "./SelectorSetting/AllCourse";
 import RequiredCourse from "./SelectorSetting/RequiredCourse";
 import CourseDetective from "./SelectorSetting/CourseDetective";
 import Announcement from "./SelectorSetting/Announcement";
 import SelectedCourse from "./SelectorSetting/SelectedCourse";
 
+import {courseDayName, defaultFilterOptions} from "../config";
+
 class SelectorSetting extends Component {
     state = {
-        filterOptions: {
-            "名稱": {options: [], dropdown: false},
-            "教師": {options: [], dropdown: false},
-            "學程": {options: [], dropdown: false},
-            "節次": {
-                options: ['A', '1', '2', '3', 'B', '4', '5', '6', '7', '8', '9', 'C', 'D', 'E', 'F'],
-                dropdown: true
-            },
-            "星期": {
-                options: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                optionDisplayName: ['一', '二', '三', '四', '五', '六', '日'],
-                dropdown: true
-            },
-            "年級": {
-                options: ['0', '1', '2', '3', '4'],
-                optionDisplayName: ['不分', '大一', '大二', '大三', '大四'],
-                dropdown: true
-            },
-            "班別": {options: ['甲班', '乙班', '全英班', '不分班'], dropdown: true},
-            "系所": {options: [], dropdown: true},
-            "必修": {options: ['必', '選'], optionDisplayName: ['必修', '選修'], dropdown: true},
-            "學分": {options: [], dropdown: true},
-            "英課": {options: ['1', '0'], optionDisplayName: ['是', '否'], dropdown: true},
-        },
+        filterOptions: defaultFilterOptions,
     };
-
-    courseDataNameMap = {
-        "名稱": "Name",
-        "教師": "Teacher",
-        "學程": "Programs",
-        "年級": "Grade",
-        "班別": "Class",
-        "系所": "Department",
-        "必修": "CompulsoryElective",
-        "學分": "Credit",
-        "英課": "EMI",
-    }
-
-    courseDayName = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-    ]
 
     componentDidMount() {
         this.calculateFilterOptions(this.props.courses);
@@ -105,7 +63,7 @@ class SelectorSetting extends Component {
 
         selectedCourses.forEach(course => {
             totalCredits += parseFloat(course['Credit'] ?? "0.0");
-            this.courseDayName.forEach(day => {
+            courseDayName.forEach(day => {
                 totalHours += course[day]?.length ?? 0;
             });
         });
@@ -135,7 +93,7 @@ class SelectorSetting extends Component {
      * @returns {boolean} 如果衝突，返回 true
      */
     isConflict = (course1, course2) => {
-        for (let day of this.courseDayName) {
+        for (let day of courseDayName) {
             if (course1[day] && course2[day]) {
                 const time1 = course1[day].split('');
                 const time2 = course2[day].split('');
@@ -174,8 +132,6 @@ class SelectorSetting extends Component {
                 filterOptions={filterOptions}
                 detectTimeConflict={this.detectTimeConflict}
                 calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
-                courseDataNameMap={this.courseDataNameMap}
-                courseDayName={this.courseDayName}
             />,
             '學期必修': <RequiredCourse
                 isCollapsed={isCollapsed}
@@ -188,7 +144,6 @@ class SelectorSetting extends Component {
                 filterOptions={filterOptions}
                 detectTimeConflict={this.detectTimeConflict}
                 calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
-                courseDataNameMap={this.courseDataNameMap}
             />,
             '課程偵探': <CourseDetective
                 isCollapsed={isCollapsed}

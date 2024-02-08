@@ -45,7 +45,9 @@ export const announcementData = {
     knownIssues: [
         "Safari 瀏覽器有可能會出現渲染問題，有任何選染錯誤請聯絡我，並註記您的瀏覽器版本。(如果願意擔當測試者，請在表單說想當 IOS 前端測試，不勝感激)",
         "Bundle 初始化載入較慢，目前考慮使用 Vite 進行重構，如果有任何使用上卡頓的問題，請幫忙填寫表單反饋，並註記位置。",
-        <>課程資料是爬蟲下來的靜態資料，更新依賴於手動，計畫未來會進行自動化更新，但目前尚未進行。有興趣協助的話，請看<a href="https://github.com/whats2000/NSYSUCourseAPI">中山課程開放API</a></>,
+        <>課程資料是爬蟲下來的靜態資料，更新依賴於手動，計畫未來會進行自動化更新，但目前尚未進行。有興趣協助的話，請看
+            <a href="https://github.com/whats2000/NSYSUCourseAPI">中山課程開放API</a>
+        </>,
     ],
     githubUrl: "https://github.com/whats2000/CourseSelectorHelperReact",
     contactEmail: "yochen0123@gmail.com",
@@ -111,6 +113,31 @@ export const courseDetectiveElements = [
     {id: "english-advanced", content: "英文高級", enabled: false},
 ];
 
+export const defaultFilterOptions = {
+    "名稱": {options: [], dropdown: false},
+    "教師": {options: [], dropdown: false},
+    "學程": {options: [], dropdown: false},
+    "節次": {
+        options: ['A', '1', '2', '3', 'B', '4', '5', '6', '7', '8', '9', 'C', 'D', 'E', 'F'],
+        dropdown: true
+    },
+    "星期": {
+        options: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        optionDisplayName: ['一', '二', '三', '四', '五', '六', '日'],
+        dropdown: true
+    },
+    "年級": {
+        options: ['0', '1', '2', '3', '4'],
+        optionDisplayName: ['不分', '大一', '大二', '大三', '大四'],
+        dropdown: true
+    },
+    "班別": {options: ['甲班', '乙班', '全英班', '不分班'], dropdown: true},
+    "系所": {options: [], dropdown: true},
+    "必修": {options: ['必', '選'], optionDisplayName: ['必修', '選修'], dropdown: true},
+    "學分": {options: [], dropdown: true},
+    "英課": {options: ['1', '0'], optionDisplayName: ['是', '否'], dropdown: true},
+};
+
 export const timeSlot = [
     {key: 'A', value: '7:00\n~\n7:50'},
     {key: '1', value: '8:10\n~\n9:00'},
@@ -138,6 +165,20 @@ export const weekday = [
     {key: 'Saturday', value: '六'},
     {key: 'Sunday', value: '日'},
 ];
+
+export const courseDataNameMap = {
+    "名稱": "Name",
+    "教師": "Teacher",
+    "學程": "Programs",
+    "年級": "Grade",
+    "班別": "Class",
+    "系所": "Department",
+    "必修": "CompulsoryElective",
+    "學分": "Credit",
+    "英課": "EMI",
+}
+
+export const courseDayName = weekday.map(day => day.key);
 
 export const websiteColor = {
     mainColor: "#009e96",

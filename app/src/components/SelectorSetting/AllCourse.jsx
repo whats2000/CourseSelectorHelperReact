@@ -5,6 +5,8 @@ import styled from "styled-components";
 import CoursesList from "./AllCourse/CoursesList";
 import ListInformation from "./AllCourse/ListInformation";
 
+import {courseDataNameMap, courseDayName} from "../../config";
+
 const StyledCardBody = styled(Card.Body)`
     height: 100%;
     min-height: 65vh;
@@ -136,7 +138,7 @@ class AllCourse extends Component {
      * @returns {boolean} 如果匹配，返回 true
      */
     applyTextFilter = (course, filterName, filter) => {
-        const courseValue = course[this.props.courseDataNameMap[filterName]]?.toLowerCase();
+        const courseValue = course[courseDataNameMap[filterName]]?.toLowerCase();
         const isInclude = filter.include === undefined ? true : filter.include;
         // 使用逗號或空格分割每個組
         const filterGroups = filter.value.toLowerCase().split(/[，,]/);
@@ -163,7 +165,7 @@ class AllCourse extends Component {
 
         if (filterName === '星期') {
             // 檢查是否有任何一天匹配
-            const daysMatched = this.props.courseDayName.some(day => {
+            const daysMatched = courseDayName.some(day => {
                 return filter[day] && course[day];
             });
             return isInclude ? daysMatched : !daysMatched;
@@ -172,7 +174,7 @@ class AllCourse extends Component {
         if (filterName === '節次') {
             // 檢查是否有任何一節匹配
             let periodsMatched = false;
-            this.props.courseDayName.forEach(day => {
+            courseDayName.forEach(day => {
                 if (course[day]) {
                     periodsMatched = periodsMatched || course[day].split('').some(period => {
                         return filter[period];
@@ -194,7 +196,7 @@ class AllCourse extends Component {
      * @returns {boolean} 如果匹配，返回 true
      */
     applyOptionFilter = (course, filterName, filter) => {
-        const courseValue = course[this.props.courseDataNameMap[filterName]]?.toString();
+        const courseValue = course[courseDataNameMap[filterName]]?.toString();
         let matched = Object.keys(filter).some(option => {
             if (option === 'active' || option === 'include') return false;
             return filter[option] && courseValue === option;

@@ -1,6 +1,7 @@
 import {Component} from "react";
 import {Card, Col} from "react-bootstrap";
 import styled from "styled-components";
+
 import ListInformation from "./RequiredCourse/ListInformation";
 import CoursesList from "./AllCourse/CoursesList";
 
