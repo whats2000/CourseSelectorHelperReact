@@ -191,7 +191,13 @@ class SelectorSetting extends Component {
                 courseDataNameMap={this.courseDataNameMap}
             />,
             '課程偵探': <CourseDetective
+                isCollapsed={isCollapsed}
+                courses={courses}
                 selectedCourses={selectedCourses}
+                hoveredCourseId={hoveredCourseId}
+                onCourseSelect={onCourseSelect}
+                onCourseHover={onCourseHover}
+                detectTimeConflict={this.detectTimeConflict}
                 calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
             />,
             '已選匯出': <SelectedCourse

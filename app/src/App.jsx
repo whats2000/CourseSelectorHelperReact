@@ -304,7 +304,7 @@ class App extends Component {
                 <MainContent id="app" className="container-fluid">
                     <Row className="d-flex flex-wrap">
                         <SlideColContainer
-                            style={slideStyle} 
+                            style={slideStyle}
                             className="d-flex flex-column"
                             lg={6}
                         >
