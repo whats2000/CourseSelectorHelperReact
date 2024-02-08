@@ -61,7 +61,7 @@ function ListInformation({elements, setElements, calculateTotalCreditsAndHours, 
                     <InputGroup.Text>{totalHours} 小時</InputGroup.Text>
                 </InputGroup>
                 <StyledButton className="ms-auto" variant="success" onClick={handleShow}>
-                    <SortNumericUp/><span className="ms-3">排序優先序位</span>
+                    <SortNumericUp/><span className="ms-3">排序</span>
                 </StyledButton>
             </ButtonsRow>
 
@@ -72,7 +72,7 @@ function ListInformation({elements, setElements, calculateTotalCreditsAndHours, 
                 backdrop={false}
             >
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title className="fw-bolder">排序顯示序位</Offcanvas.Title>
+                    <Offcanvas.Title className="fw-bolder">排序優先序位</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <DndContext
@@ -83,7 +83,13 @@ function ListInformation({elements, setElements, calculateTotalCreditsAndHours, 
                             items={elements}
                             strategy={verticalListSortingStrategy}>
                             {elements.map((element, index) => (
-                                <SortableItem index={index} key={element.id} id={element.id} content={element.content}/>
+                                <SortableItem
+                                    index={index}
+                                    key={element.id}
+                                    id={element.id}
+                                    content={element.content}
+                                    enableDrag={element.enabled}
+                                />
                             ))}
                         </SortableContext>
                     </DndContext>
