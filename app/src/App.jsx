@@ -1,6 +1,7 @@
 import {Component} from "react";
 import styled from 'styled-components';
 import Papa from "papaparse";
+import {Col, Row} from "react-bootstrap";
 
 import Header from "./components/Header";
 import LoadingSpinner from "./components/LoadingSpinner";
@@ -14,7 +15,7 @@ const MainContent = styled.main`
     margin-top: 68px;
 `;
 
-const SlideContainer = styled.div`
+const SlideColContainer = styled(Col)`
     transition: margin 0.5s;
 `;
 
@@ -301,17 +302,21 @@ class App extends Component {
                 </ToggleButton>
 
                 <MainContent id="app" className="container-fluid">
-                    <div className="row d-flex flex-wrap">
-                        <SlideContainer style={slideStyle} className="col-lg-6 d-flex flex-column">
+                    <Row className="d-flex flex-wrap">
+                        <SlideColContainer
+                            style={slideStyle} 
+                            className="d-flex flex-column"
+                            lg={6}
+                        >
                             <ScheduleTable
                                 selectedCourses={selectedCourses}
                                 handleCourseSelect={this.handleCourseSelect}
                                 hoveredCourseId={hoveredCourseId}
                                 onCourseHover={this.handleCourseHover}
                             />
-                        </SlideContainer>
+                        </SlideColContainer>
 
-                        <div className="col-lg d-flex flex-column">
+                        <Col className="d-flex flex-column">
                             <SelectorSetting
                                 isCollapsed={isCollapsed}
                                 currentTab={currentTab}
@@ -324,8 +329,8 @@ class App extends Component {
                                 latestCourseHistoryData={latestCourseHistoryData}
                                 convertVersion={this.convertVersion}
                             />
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 </MainContent>
             </>
         );

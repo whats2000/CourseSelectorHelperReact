@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors} from '@dnd-kit/core';
 import {arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy} from '@dnd-kit/sortable';
 import {Button, Card, InputGroup, Offcanvas} from "react-bootstrap";
-import {SortableItem} from "./ListInformation/SortableItem";
 import {SortNumericUp} from "react-bootstrap-icons";
 import styled from "styled-components";
+import {SortableItem} from "./ListInformation/SortableItem";
 import {websiteColor} from "../../../config";
 
 const StyledButton = styled(Button)`
