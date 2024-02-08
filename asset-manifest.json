@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/CourseSelectorHelperReact/static/css/main.f2d791a2.css",
-    "main.js": "/CourseSelectorHelperReact/static/js/main.e4a9fde6.js",
+    "main.js": "/CourseSelectorHelperReact/static/js/main.cb1ca74d.js",
     "static/js/787.0f8d78ff.chunk.js": "/CourseSelectorHelperReact/static/js/787.0f8d78ff.chunk.js",
     "static/media/ExportCourse7.png": "/CourseSelectorHelperReact/static/media/ExportCourse7.88d29b00de8ea4e6f6e0.png",
     "static/media/ExportCourse5.png": "/CourseSelectorHelperReact/static/media/ExportCourse5.ba0f05d5b58c58e7b133.png",
@@ -13,11 +13,11 @@
     "static/media/logo.png": "/CourseSelectorHelperReact/static/media/logo.23725ab80e5069b9ed54.png",
     "index.html": "/CourseSelectorHelperReact/index.html",
     "main.f2d791a2.css.map": "/CourseSelectorHelperReact/static/css/main.f2d791a2.css.map",
-    "main.e4a9fde6.js.map": "/CourseSelectorHelperReact/static/js/main.e4a9fde6.js.map",
+    "main.cb1ca74d.js.map": "/CourseSelectorHelperReact/static/js/main.cb1ca74d.js.map",
     "787.0f8d78ff.chunk.js.map": "/CourseSelectorHelperReact/static/js/787.0f8d78ff.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f2d791a2.css",
-    "static/js/main.e4a9fde6.js"
+    "static/js/main.cb1ca74d.js"
   ]
 }
