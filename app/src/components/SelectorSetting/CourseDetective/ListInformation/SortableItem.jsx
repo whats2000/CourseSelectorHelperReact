@@ -1,13 +1,38 @@
 import React from 'react';
+import {Form} from "react-bootstrap";
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
+import styled from "styled-components";
+import {websiteColor} from "../../../../config";
 
-export function SortableItem(props) {
-    const {
-        index,
-        content,
-        enableDrag,
-    } = props;
+const StyledFormCheckWrapper = styled.div`
+    .form-check-input:checked {
+        background-color: ${websiteColor.mainColor};
+        border-color: ${websiteColor.mainColor};
+    }
+
+    .form-check-input:focus {
+        box-shadow: 0 0 0 0.25rem ${websiteColor.boxShadowColor};
+    }
+
+    .form-check-input:disabled ~ .form-check-label {
+        color: ${websiteColor.mainLighterColor};
+    }
+
+    .form-check-input:checked ~ .form-check-label::before {
+        background-color: ${websiteColor.mainColor};
+    }
+
+    .form-switch .form-check-input:checked ~ .form-check-label::before {
+        border-color: ${websiteColor.mainColor};
+    }
+
+    .form-check-label::before {
+        border-color: ${websiteColor.mainColor};
+    }
+`;
+
+export function SortableItem({id, index, content, enableDrag, toggleEnable}) {
     const {
         attributes,
         listeners,
@@ -15,7 +40,7 @@ export function SortableItem(props) {
         transform,
         transition,
     } = useSortable({
-        id: props.id,
+        id: id,
         disabled: !enableDrag,
     });
 
@@ -33,9 +58,22 @@ export function SortableItem(props) {
         touchAction: 'none',
     };
 
+    const handleToggle = (event) => {
+        event.stopPropagation();
+        toggleEnable(id);
+    };
+
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            {index + 1} {content}
+            <span>{index + 1} {content}</span>
+            <StyledFormCheckWrapper>
+                <Form.Check
+                    type="switch"
+                    id={`order-element-${id}`}
+                    checked={enableDrag}
+                    onChange={handleToggle}
+                />
+            </StyledFormCheckWrapper>
         </div>
     );
 }

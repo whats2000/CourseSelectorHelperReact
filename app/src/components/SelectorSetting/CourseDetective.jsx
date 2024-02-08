@@ -14,6 +14,21 @@ class CourseDetective extends Component {
      */
     setOrderElements = (newOrderElements) => this.setState({orderElements: newOrderElements});
 
+    /**
+     * 切換排序元素啟用狀態
+     * @param id {string} 元素 id
+     */
+    toggleOrderElementEnable = (id) => {
+        this.setState(prevState => ({
+            orderElements: prevState.orderElements.map(element => {
+                if (element.id === id) {
+                    return {...element, enabled: !element.enabled};
+                }
+                return element;
+            })
+        }));
+    }
+
     render() {
         const {
             selectedCourses,
@@ -32,6 +47,7 @@ class CourseDetective extends Component {
                         setElements={this.setOrderElements}
                         selectedCourses={selectedCourses}
                         calculateTotalCreditsAndHours={calculateTotalCreditsAndHours}
+                        toggleElementEnable={this.toggleOrderElementEnable}
                     />
                     <Card.Body className="d-flex flex-column">
                         <Card.Text className="text-center">

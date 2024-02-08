@@ -25,17 +25,21 @@ const ButtonsRow = styled.div`
     align-items: center;
 `;
 
-function ListInformation({elements, setElements, calculateTotalCreditsAndHours, selectedCourses}) {
+function ListInformation({elements, setElements, calculateTotalCreditsAndHours, selectedCourses, toggleElementEnable}) {
     const [show, setShow] = useState(false);
     const sensors = useSensors(
-        useSensor(PointerSensor),
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 5,
+            },
+        }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleCloseOrderElement = () => setShow(false);
+    const handleToggleOrderElement = () => setShow(!show);
 
     const handleDragEnd = (event) => {
         const {active, over} = event;
@@ -60,14 +64,14 @@ function ListInformation({elements, setElements, calculateTotalCreditsAndHours, 
                     <InputGroup.Text>{totalCredits} 學分</InputGroup.Text>
                     <InputGroup.Text>{totalHours} 小時</InputGroup.Text>
                 </InputGroup>
-                <StyledButton className="ms-auto" variant="success" onClick={handleShow}>
+                <StyledButton className="ms-auto" variant="success" onClick={handleToggleOrderElement}>
                     <SortNumericUp/><span className="ms-3">排序</span>
                 </StyledButton>
             </ButtonsRow>
 
             <Offcanvas
                 show={show}
-                onHide={handleClose}
+                onHide={handleCloseOrderElement}
                 scroll={true}
                 backdrop={false}
             >
@@ -89,6 +93,7 @@ function ListInformation({elements, setElements, calculateTotalCreditsAndHours, 
                                     id={element.id}
                                     content={element.content}
                                     enableDrag={element.enabled}
+                                    toggleEnable={toggleElementEnable}
                                 />
                             ))}
                         </SortableContext>
