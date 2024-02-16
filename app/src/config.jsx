@@ -7,7 +7,7 @@ import exportCourse6 from "./images/ExportCourse6.png";
 import exportCourse7 from "./images/ExportCourse7.png";
 
 export const announcementData = {
-    version: "v5.0.0 dev",
+    version: "v5.0.0 beta",
     feedbackFormUrl: "https://forms.gle/gFBZDgkSbj85zukP6",
     description: [
         <>
