@@ -37,6 +37,12 @@ const CourseCell = styled.td`
     padding: 2px !important;
 `;
 
+const CourseCellDetectiveMode = styled(CourseCell)`
+    &:hover {
+        background: lightgray;
+    }
+`;
+
 class ScheduleTable extends Component {
     setting = {
         columns: weekday.length + 1,
@@ -77,10 +83,11 @@ class ScheduleTable extends Component {
         const coursesTable = this.createCourseTable();
 
         const isAtCourseDetectiveTab = currentTab === '課程偵探';
-        const TableContainer = isAtCourseDetectiveTab ? StyledTableContainerDetectiveMode : StyledTableContainer;
+        const TableContainerComponent = isAtCourseDetectiveTab ? StyledTableContainerDetectiveMode : StyledTableContainer;
+        const CourseCellComponent = isAtCourseDetectiveTab ? CourseCellDetectiveMode : CourseCell;
 
         return (
-            <TableContainer
+            <TableContainerComponent
                 className="table-responsive"
             >
                 <StyledTable
@@ -101,7 +108,7 @@ class ScheduleTable extends Component {
                                 <span>{timeSlot.value}</span>
                             </TimeSlotCell>
                             {this.setting.weekday.map((weekday) => (
-                                <CourseCell
+                                <CourseCellComponent
                                     key={`${weekday.key}-${timeSlot.key}`}
                                 >
                                     {coursesTable[`${weekday.key}-${timeSlot.key}`].map((course, i) =>
@@ -112,13 +119,13 @@ class ScheduleTable extends Component {
                                                      onCourseHover={onCourseHover}
                                         />
                                     )}
-                                </CourseCell>
+                                </CourseCellComponent>
                             ))}
                         </tr>
                     ))}
                     </tbody>
                 </StyledTable>
-            </TableContainer>
+            </TableContainerComponent>
         );
     }
 }
