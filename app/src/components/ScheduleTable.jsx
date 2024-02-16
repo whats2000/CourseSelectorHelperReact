@@ -73,6 +73,24 @@ class ScheduleTable extends Component {
         return coursesTable;
     };
 
+    /**
+     * 切換課程時間區塊選取狀態
+     */
+    toggleTimeSlotSelect = (weekday, timeSlot) => {
+        const {toggleSearchTimeSlot} = this.props;
+
+        toggleSearchTimeSlot({weekday, timeSlot});
+    }
+
+    /**
+     * 檢查時間區塊是否被選取
+     * @returns {boolean}
+     */
+    isTimeSlotSelected = (weekday, timeSlot) => {
+        const {searchTimeSlot} = this.props;
+        return searchTimeSlot.some(slot => slot.weekday === weekday && slot.timeSlot === timeSlot);
+    }
+
     render() {
         const {
             hoveredCourseId,
@@ -110,6 +128,8 @@ class ScheduleTable extends Component {
                             {this.setting.weekday.map((weekday) => (
                                 <CourseCellComponent
                                     key={`${weekday.key}-${timeSlot.key}`}
+                                    className={this.isTimeSlotSelected(weekday.key, timeSlot.key) ? 'bg-success-subtle' : ''}
+                                    onClick={() => this.toggleTimeSlotSelect(weekday.key, timeSlot.key)}
                                 >
                                     {coursesTable[`${weekday.key}-${timeSlot.key}`].map((course, i) =>
                                         <CourseBlock key={i}

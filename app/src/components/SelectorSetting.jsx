@@ -117,6 +117,7 @@ class SelectorSetting extends Component {
             isCollapsed,
             latestCourseHistoryData,
             convertVersion,
+            searchTimeSlot,
         } = this.props;
         const {filterOptions} = this.state;
 
@@ -152,6 +153,7 @@ class SelectorSetting extends Component {
                 hoveredCourseId={hoveredCourseId}
                 onCourseSelect={onCourseSelect}
                 onCourseHover={onCourseHover}
+                searchTimeSlot={searchTimeSlot}
                 detectTimeConflict={this.detectTimeConflict}
                 calculateTotalCreditsAndHours={this.calculateTotalCreditsAndHours}
             />,

@@ -44,6 +44,7 @@ class App extends Component {
         currentCourseHistoryData: "",
         latestCourseHistoryData: "",
         availableCourseHistoryData: [],
+        searchTimeSlot: [],
     };
 
     componentDidMount() {
@@ -249,6 +250,26 @@ class App extends Component {
     };
 
     /**
+     * 切換課程時間選取狀態
+     * @param timeSlot {Object} 時間格子
+     */
+    toggleSearchTimeSlot = (timeSlot) => {
+        const {searchTimeSlot} = this.state;
+
+        const searchTimeSlotIndex = searchTimeSlot.findIndex(slot => slot.weekday === timeSlot.weekday && slot.timeSlot === timeSlot.timeSlot);
+
+        if (searchTimeSlotIndex === -1) {
+            this.setState(prevState => ({
+                searchTimeSlot: [...prevState.searchTimeSlot, timeSlot]
+            }));
+        } else {
+            this.setState(prevState => ({
+                searchTimeSlot: prevState.searchTimeSlot.filter((slot, index) => index !== searchTimeSlotIndex)
+            }));
+        }
+    }
+
+    /**
      * 開始載入
      * @param loadingName {string} 載入名稱
      */
@@ -278,6 +299,7 @@ class App extends Component {
             latestCourseHistoryData,
             availableCourseHistoryData,
             loading,
+            searchTimeSlot,
         } = this.state;
         const slideStyle = {
             marginLeft: isCollapsed ? (window.innerWidth >= 992 ? '-50%' : '0') : '0',
@@ -314,6 +336,8 @@ class App extends Component {
                                 handleCourseSelect={this.handleCourseSelect}
                                 hoveredCourseId={hoveredCourseId}
                                 onCourseHover={this.handleCourseHover}
+                                searchTimeSlot={searchTimeSlot}
+                                toggleSearchTimeSlot={this.toggleSearchTimeSlot}
                             />
                         </SlideColContainer>
 
@@ -329,6 +353,7 @@ class App extends Component {
                                 onCourseHover={this.handleCourseHover}
                                 latestCourseHistoryData={latestCourseHistoryData}
                                 convertVersion={this.convertVersion}
+                                searchTimeSlot={searchTimeSlot}
                             />
                         </Col>
                     </Row>
