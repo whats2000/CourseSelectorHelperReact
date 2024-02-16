@@ -47,7 +47,6 @@ class CourseDetective extends Component {
     reorderAndFilterCourses = () => {
         const {orderElements} = this.state;
         const {courses, searchTimeSlot} = this.props;
-        console.log(searchTimeSlot);
 
         // searchTimeSlot: [{day: "Monday", time: "1"}, {day: "Tuesday", time: "2"}]
         // courses: [{Name: "課程名稱", Department: "系所", "Monday": "123", "Tuesday": "456", ...}, ...]
