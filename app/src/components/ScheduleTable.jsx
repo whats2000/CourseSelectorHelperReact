@@ -77,7 +77,8 @@ class ScheduleTable extends Component {
      * 切換課程時間區塊選取狀態
      */
     toggleTimeSlotSelect = (weekday, timeSlot) => {
-        const {toggleSearchTimeSlot} = this.props;
+        const {currentTab, toggleSearchTimeSlot} = this.props;
+        if (currentTab !== '課程偵探') return;
 
         toggleSearchTimeSlot({weekday, timeSlot});
     }
@@ -87,7 +88,8 @@ class ScheduleTable extends Component {
      * @returns {boolean}
      */
     isTimeSlotSelected = (weekday, timeSlot) => {
-        const {searchTimeSlot} = this.props;
+        const {currentTab, searchTimeSlot} = this.props;
+        if (currentTab !== '課程偵探') return false;
         return searchTimeSlot.some(slot => slot.weekday === weekday && slot.timeSlot === timeSlot);
     }
 
