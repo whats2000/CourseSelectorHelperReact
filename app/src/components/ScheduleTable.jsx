@@ -2,11 +2,17 @@ import {Component} from 'react';
 import styled from 'styled-components';
 
 import CourseBlock from "./ScheduleTable/CourseBlock";
+
 import {timeSlot, weekday} from "../config";
 
 const StyledTableContainer = styled.div`
     border-radius: 0.375rem;
 `;
+
+const StyledTableContainerDetectiveMode = styled(StyledTableContainer)`
+    cursor: zoom-in;
+`;
+
 
 const StyledTable = styled.table`
     font-size: 10px;
@@ -62,11 +68,21 @@ class ScheduleTable extends Component {
     };
 
     render() {
-        const {hoveredCourseId, onCourseHover, handleCourseSelect} = this.props;
+        const {
+            hoveredCourseId,
+            onCourseHover,
+            handleCourseSelect,
+            currentTab,
+        } = this.props;
         const coursesTable = this.createCourseTable();
 
+        const isAtCourseDetectiveTab = currentTab === '課程偵探';
+        const TableContainer = isAtCourseDetectiveTab ? StyledTableContainerDetectiveMode : StyledTableContainer;
+
         return (
-            <StyledTableContainer className="table-responsive">
+            <TableContainer
+                className="table-responsive"
+            >
                 <StyledTable
                     className="table table-bordered border-white border-5 table-secondary text-center">
                     <thead>
@@ -84,7 +100,7 @@ class ScheduleTable extends Component {
                                 <span className="d-block fw-bold">{timeSlot.key}</span>
                                 <span>{timeSlot.value}</span>
                             </TimeSlotCell>
-                            {this.setting.weekday.map((weekday, n) => (
+                            {this.setting.weekday.map((weekday) => (
                                 <CourseCell
                                     key={`${weekday.key}-${timeSlot.key}`}
                                 >
@@ -102,7 +118,7 @@ class ScheduleTable extends Component {
                     ))}
                     </tbody>
                 </StyledTable>
-            </StyledTableContainer>
+            </TableContainer>
         );
     }
 }

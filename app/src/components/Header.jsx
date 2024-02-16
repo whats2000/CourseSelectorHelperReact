@@ -4,7 +4,7 @@ import {BookFill, Check2Square, ClockHistory, JournalCheck, List, Megaphone, Sea
 import styled from 'styled-components';
 import {websiteColor} from "../config";
 
-import logo from './logo.png';
+import Banner from './banner.svg';
 
 // 自定義 Navbar 樣式
 const StyledNavbar = styled(Navbar)`
@@ -165,8 +165,8 @@ class Header extends Component {
         return (
             <StyledNavbar expand="md" style={{top: this.state.showNavbar ? '0' : '-100%'}} fixed="top" variant="dark">
                 <Container fluid>
-                    <Navbar.Brand href="#">
-                        <img src={logo} height="30" className="d-inline-block align-top" alt="React Bootstrap logo"/>
+                    <Navbar.Brand className="p-0" href="#">
+                        <img src={Banner} height="40" className="d-inline-block align-top" alt="中山大學選課助手v5.0.0"/>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={this.handleToggleOffcanvas}>
                         <List size={24} color="white"/>

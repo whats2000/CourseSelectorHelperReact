@@ -287,7 +287,7 @@ class App extends Component {
         return (
             <>
                 <Header
-                    currentTab={this.state.currentTab}
+                    currentTab={currentTab}
                     onTabChange={this.handleTabChange}
                     currentCourseHistoryData={currentCourseHistoryData}
                     availableCourseHistoryData={availableCourseHistoryData}
@@ -310,6 +310,7 @@ class App extends Component {
                         >
                             <ScheduleTable
                                 selectedCourses={selectedCourses}
+                                currentTab={currentTab}
                                 handleCourseSelect={this.handleCourseSelect}
                                 hoveredCourseId={hoveredCourseId}
                                 onCourseHover={this.handleCourseHover}
