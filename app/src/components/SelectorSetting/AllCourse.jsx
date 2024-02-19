@@ -22,19 +22,6 @@ class AllCourse extends Component {
         filteredCourses: this.props.courses,
     };
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.basicFilter !== prevState.basicFilter ||
-            this.state.advancedFilters !== prevState.advancedFilters ||
-            this.state.displayConflictCourses !== prevState.displayConflictCourses ||
-            this.props.selectedCourses !== prevProps.selectedCourses) {
-            localStorage.setItem('basicFilter', this.state.basicFilter);
-            localStorage.setItem('advancedFilters', JSON.stringify(this.state.advancedFilters));
-
-            const filteredCourses = this.getFilteredCourses();
-            this.setState({filteredCourses});
-        }
-    }
-
     componentDidMount() {
         const savedBasicFilter = localStorage.getItem('basicFilter');
         const savedAdvancedFilters = localStorage.getItem('advancedFilters');
@@ -45,6 +32,19 @@ class AllCourse extends Component {
                 advancedFilters: savedAdvancedFilters ? JSON.parse(savedAdvancedFilters) : {},
                 filteredCourses: this.getFilteredCourses(),
             });
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.basicFilter !== prevState.basicFilter ||
+            this.state.advancedFilters !== prevState.advancedFilters ||
+            this.state.displayConflictCourses !== prevState.displayConflictCourses ||
+            this.props.selectedCourses !== prevProps.selectedCourses) {
+            localStorage.setItem('basicFilter', this.state.basicFilter);
+            localStorage.setItem('advancedFilters', JSON.stringify(this.state.advancedFilters));
+
+            const filteredCourses = this.getFilteredCourses();
+            this.setState({filteredCourses});
         }
     }
 

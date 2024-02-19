@@ -51,10 +51,18 @@ class CourseDetective extends Component {
     };
 
     componentDidMount() {
-        this.setState({filteredCourses: this.props.courses}, () => {
-            this.reorderAndFilterCourses();
-        });
+        const savedOrderElements = localStorage.getItem('orderElements') ? JSON.parse(localStorage.getItem('orderElements')) : null;
+        if (savedOrderElements) {
+            this.setState({ orderElements: savedOrderElements }, () => {
+                this.reorderAndFilterCourses();
+            });
+        } else {
+            this.setState({ filteredCourses: this.props.courses }, () => {
+                this.reorderAndFilterCourses();
+            });
+        }
     }
+
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.courses !== this.props.courses || prevProps.searchTimeSlot !== this.props.searchTimeSlot) {
@@ -69,6 +77,7 @@ class CourseDetective extends Component {
     setOrderElements = (newOrderElements) => this.setState({
         orderElements: newOrderElements
     }, () => {
+        localStorage.setItem('orderElements', JSON.stringify(this.state.orderElements));
         this.reorderAndFilterCourses();
     });
 
@@ -137,6 +146,7 @@ class CourseDetective extends Component {
                 return element;
             })
         }), () => {
+            localStorage.setItem('orderElements', JSON.stringify(this.state.orderElements));
             this.reorderAndFilterCourses();
         });
     }
