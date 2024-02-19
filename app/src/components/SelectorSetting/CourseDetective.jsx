@@ -19,6 +19,37 @@ class CourseDetective extends Component {
         filteredCourses: [],
     }
 
+    filterConditions = {
+        "liberal-arts": (course) => course.Department.startsWith("博雅"),
+        "sports-fitness": (course) =>
+            course.Name === "運動與健康：體適能" || course.Name === "運動與健康：初級游泳",
+        "sports-other": (course) =>
+            course.Name.startsWith("運動與健康：") &&
+            course.Name !== "運動與健康：體適能" &&
+            course.Name !== "運動與健康：初級游泳",
+        "cross-department": (course) => course.Department.startsWith("跨院"),
+        "chinese-critical-thinking": (course) =>
+            course.Name.startsWith("中文思辨與表達"),
+        "random-courses": (course) =>
+            !course.Department.includes("碩") &&
+            !course.Department.includes("博") &&
+            !course.Department.startsWith("博雅") &&
+            !course.Name.startsWith("運動與健康：") &&
+            !course.Name.startsWith("中文思辨與表達") &&
+            !course.Department.startsWith("跨院") &&
+            course.Name !== "英文初級" &&
+            course.Name !== "英文中級" &&
+            course.Name !== "英文中高級" &&
+            course.Name !== "英文高級",
+        "random-graduate-courses": (course) =>
+            (course.Department.includes("碩") || course.Department.includes("博")) &&
+            !course.Department.startsWith("博雅"),
+        "english-beginner": (course) => course.Name === "英文初級",
+        "english-intermediate": (course) => course.Name === "英文中級",
+        "english-advanced-mid": (course) => course.Name === "英文中高級",
+        "english-advanced": (course) => course.Name === "英文高級",
+    };
+
     componentDidMount() {
         this.setState({filteredCourses: this.props.courses}, () => {
             this.reorderAndFilterCourses();
@@ -42,74 +73,56 @@ class CourseDetective extends Component {
     });
 
     /**
+     * 洗牌陣列
+     * @param array {Array} 陣列
+     * @returns {Array} 洗牌後的陣列
+     */
+    shuffleArray = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]]; // 交换元素
+        }
+        return array;
+    }
+
+    /**
      * 重新排序並篩選課程
      */
     reorderAndFilterCourses = () => {
-        const {orderElements} = this.state;
-        const {courses, searchTimeSlot} = this.props;
+        const { orderElements } = this.state;
+        const { courses, searchTimeSlot } = this.props;
 
-        // searchTimeSlot: [{day: "Monday", time: "1"}, {day: "Tuesday", time: "2"}]
-        // courses: [{Name: "課程名稱", Department: "系所", "Monday": "123", "Tuesday": "456", ...}, ...]
-        const filteredCourses = courses.filter(course => {
-            if (searchTimeSlot?.length === 0) return true;
+        // Step 1: 篩選時段
+        let timeSlotFilteredCourses = searchTimeSlot?.length > 0
+            ? courses.filter(course =>
+                searchTimeSlot.some(({ weekday, timeSlot }) => course[weekday]?.includes(timeSlot))
+            )
+            : [...courses];
 
-            for (let i = 0; i < searchTimeSlot.length; i++) {
-                const {weekday, timeSlot} = searchTimeSlot[i];
-                if (course[weekday].includes(timeSlot)) return true;
-            }
-        });
+        // Step 2: 基於排序元素篩選課程
+        let orderedAndFilteredCourses = [];
+        let addedCourseIds = new Set();
 
-        const finalFilteredCourses = [];
+        orderElements.filter(element => element.enabled).forEach(element => {
+            const filterCondition = this.filterConditions[element.id];
+            if (!filterCondition) return;
 
-        orderElements.forEach(element => {
-            if (!element.enabled) return;
+            let matchingCourses = timeSlotFilteredCourses.filter(course =>
+                filterCondition(course) && !addedCourseIds.has(course['Number'])
+            );
 
-            let matchingCourses = [];
-            switch (element.id) {
-                case "liberal-arts":
-                    matchingCourses = filteredCourses.filter(course => course.Department.startsWith("博雅"));
-                    break;
-                case "sports-fitness":
-                    matchingCourses = filteredCourses.filter(course =>
-                        course.Name === "運動與健康：體適能" || course.Name === "運動與健康：初級游泳");
-                    break;
-                case "sports-other":
-                    matchingCourses = filteredCourses.filter(course =>
-                        course.Name.startsWith("運動與健康：") && course.Name !== "運動與健康：體適能" && course.Name !== "運動與健康：初級游泳");
-                    break;
-                case "cross-department":
-                    matchingCourses = filteredCourses.filter(course => course.Department.startsWith("跨院"));
-                    break;
-                case "chinese-critical-thinking":
-                    matchingCourses = filteredCourses.filter(course => course.Name.startsWith("中文思辨與表達"));
-                    break;
-                case "random-courses":
-                    matchingCourses = filteredCourses.filter(course => !course.Department.includes("碩") && !course.Department.includes("博"));
-                    break;
-                case "random-graduate-courses":
-                    matchingCourses = filteredCourses.filter(course => course.Department.includes("碩") || course.Department.includes("博"));
-                    break;
-                case "english-beginner":
-                    matchingCourses = filteredCourses.filter(course => course.Name === "英文初級");
-                    break;
-                case "english-intermediate":
-                    matchingCourses = filteredCourses.filter(course => course.Name === "英文中級");
-                    break;
-                case "english-advanced-mid":
-                    matchingCourses = filteredCourses.filter(course => course.Name === "英文中高級");
-                    break;
-                case "english-advanced":
-                    matchingCourses = filteredCourses.filter(course => course.Name === "英文高級");
-                    break;
-                default:
-                    break;
+            if (element.id === "random-courses" || element.id === "random-graduate-courses") {
+                matchingCourses = this.shuffleArray(matchingCourses);
             }
 
-            finalFilteredCourses.push(...matchingCourses);
+            matchingCourses.forEach(course => {
+                orderedAndFilteredCourses.push(course);
+                addedCourseIds.add(course['Number']);
+            });
         });
 
-        this.setState({filteredCourses: finalFilteredCourses});
-    }
+        this.setState({ filteredCourses: orderedAndFilteredCourses });
+    };
 
     /**
      * 切換排序元素啟用狀態
